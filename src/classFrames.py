@@ -1,5 +1,5 @@
 from pyshark.packet.packet import Packet
-from pyshark.packet.packet_summary import PacketSummary
+from pyshark.packet.fields import *
 
 
 class Target:
@@ -126,11 +126,25 @@ class NetworkLAN:
         if ('ip' in packet):
             dev.update_ip(packet.ip.src.show)
 
-        if('mdns' in packet and int(packet.mdns.dns_count_answers)>0):
+        if('mdns' in packet and int(packet.mdns.dns_resp_name.all_fields.__len__())>0):
+            resp_names:list=packet.mdns.dns_resp_name.all_fields
+            resp_types:list=packet.mdns.dns_resp_type.all_fields
+            resp_lens:list = packet.mdns.dns_resp_len.all_fields
+            txts:list = packet.mdns.dns_txt.all_fields
+            txts.reverse()
+            txts_len:list = packet.mdns.dns_txt_length.all_fields
+            txts_len.reverse()
 
-
-            srv=ServiceMDNS(name)
-
+            for i in range(0,resp_names.__len__()):
+                srv:ServiceMDNS
+                _typ:LayerField = resp_types[i]
+                _nam:LayerField
+                if(_typ.hex_value==16):
+                    _nam = resp_names[i]
+                    srv=ServiceMDNS(_nam.showname_value)
+                    r_len=resp_lens[i]
+                    #while(r_len>1):
+                        #r_len-=
         else:
             return
 
