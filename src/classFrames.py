@@ -111,5 +111,27 @@ class NetworkLAN:
         pass
 
     def new_knowledge(self, packet:Packet):
+        name=''
         if('eth' in packet):
             name = packet.eth.src.show
+        else:
+            return
+
+        dev=None
+        if(name in self._devices):
+            dev=self._devices[name]
+        else:
+            dev=Device(name)
+
+        if ('ip' in packet):
+            dev.update_ip(packet.ip.src.show)
+
+        if('mdns' in packet and int(packet.mdns.dns_count_answers)>0):
+
+
+            srv=ServiceMDNS(name)
+
+        else:
+            return
+
+
