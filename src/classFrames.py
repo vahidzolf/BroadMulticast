@@ -235,20 +235,28 @@ class NetworkLAN:
 
             srv: ServiceMDNS = None
 
-            for i in range(0, resp_names.__len__()):
-
-                dbg_str:str = resp_names[i].showname_value
-                if(dbg_str.count('workstation')>0 or i==16):
-                    dbg_str.find('.')
+            #for i in range(0, resp_names.__len__()):
+            while(resp_names.__len__()>0):
 
                 srv = None
-                _typ: LayerField = resp_types[i]
-                _nam: LayerField
+                _typ: LayerField = resp_types.pop(0)#resp_types[i]
+                r_len:int = int(resp_lens.pop(0).showname_value)
+                _nam: LayerField = None
+                if(_typ.hex_value!=33):
+                    _nam: LayerField = resp_names.pop(0)  # resp_names[i]
 
+################### DEBUG ################################
+                # Trigger debug breackpoints
+                if(_nam!=None):
+                    dbg_str: str = _nam.showname_value
+                    if (dbg_str.count('XXXXXXX') > 0):
+                        dbg_str.find('.')
+                if(_typ.hex_value==33):
+                    print('DBG')
+#######################################################
                 if (_typ.hex_value == 16):
-                    _nam: LayerField = resp_names[i]
                     srv = ServiceMDNS(_nam.showname_value)
-                    r_len = int(resp_lens[i].showname_value)
+                    #r_len = int(resp_lens[i].showname_value)
                     while (r_len > 0 and (txts.__len__()>0 and txts_len.__len__()>0)):
                         _len:int= int(txts_len.pop().showname_value)+1
                         r_len -=  _len
@@ -257,7 +265,7 @@ class NetworkLAN:
 
                 elif (_typ.hex_value == 1 and addr_a.__len__()>0):
                     a: LayerField = addr_a.pop()
-                    alias: LayerField = resp_names[i]
+                    alias: LayerField = _nam #resp_names[i]
                     if (a.showname_value == dev.last_IPv4_know()):
                         dev.add_alias(alias.showname_value)
                     else:
@@ -267,7 +275,7 @@ class NetworkLAN:
                                 d.add_alias(alias.showname_value)
                 elif (_typ.hex_value == 28 and addr_aaaa.__len__()>0):
                     aaaa: LayerField = addr_aaaa.pop()
-                    alias: LayerField = resp_names[i]
+                    alias: LayerField = _nam #resp_names[i]
                     if (aaaa.showname_value == dev.last_IPv4_know()):
                         dev.add_alias(alias.showname_value)
                     else:
