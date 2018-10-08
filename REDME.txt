@@ -1,0 +1,5 @@
+What is what:
+    In src folder
+    - classFrames.py    -> all classes implementations
+    - mdns_study.py     -> run the study on mdns pakets
+    - prova.py          -> private file test(unuseful to run for you)

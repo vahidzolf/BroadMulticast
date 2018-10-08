@@ -149,6 +149,7 @@ class Device:
             serv: ServiceMDNS = self._services[answ_name]
 
             serv.update_SRV_detail(new_serv.service(), new_serv.protocol(), new_serv.domain())
+            self.add_alias(new_serv.service())
 
             for trg_v in new_serv.targets().values():
                 trg:Target=trg_v
@@ -187,7 +188,10 @@ class NetworkLAN:
 
     def new_knowledge(self, packet: Packet):
         name:str
-        if ('eth' in packet):
+        if ('eth' in packet and
+                'mdns' in packet and
+                #'dns_count_answers' in packet.mdns and
+                packet.mdns.dns_count_answers.hex_value>0):
             name = packet.eth.src.show[:]
         else:
             return
@@ -235,6 +239,9 @@ class NetworkLAN:
 
             srv: ServiceMDNS = None
 
+            aaaa_list:list=[]
+            alias_list:list=[]
+
             #for i in range(0, resp_names.__len__()):
             while(resp_names.__len__()>0):
 
@@ -242,17 +249,17 @@ class NetworkLAN:
                 _typ: LayerField = resp_types.pop(0)#resp_types[i]
                 r_len:int = int(resp_lens.pop(0).showname_value)
                 _nam: LayerField = None
-                if(_typ.hex_value!=33):
+                if(_typ.hex_value!=33): # is not present response name if type in SRV(33)
                     _nam: LayerField = resp_names.pop(0)  # resp_names[i]
 
 ################### DEBUG ################################
-                # Trigger debug breackpoints
+                # Trigger debug breackpoints: set condition on 'if' and breackpoint on next line
                 if(_nam!=None):
                     dbg_str: str = _nam.showname_value
-                    if (dbg_str.count('XXXXXXX') > 0):
-                        dbg_str.find('.')
+                    if (dbg_str.count('xxxxxxxxxxx') > 0):
+                        print('DBG', dbg_str)
                 if(_typ.hex_value==33):
-                    print('DBG')
+                    print('DBG', _typ.hex_value)
 #######################################################
                 if (_typ.hex_value == 16):
                     srv = ServiceMDNS(_nam.showname_value)
@@ -264,7 +271,7 @@ class NetworkLAN:
                         if(txt!=''): srv.add_txt(txt)
 
                 elif (_typ.hex_value == 1 and addr_a.__len__()>0):
-                    a: LayerField = addr_a.pop()
+                    a: LayerField = addr_a.pop(0)
                     alias: LayerField = _nam #resp_names[i]
                     if (a.showname_value == dev.last_IPv4_know()):
                         dev.add_alias(alias.showname_value)
@@ -274,20 +281,8 @@ class NetworkLAN:
                             if (a.showname_value == str(d.last_IPv4_know())):
                                 d.add_alias(alias.showname_value)
                 elif (_typ.hex_value == 28 and addr_aaaa.__len__()>0):
-                    aaaa: LayerField = addr_aaaa.pop()
-                    alias: LayerField = _nam #resp_names[i]
-                    if (aaaa.showname_value == dev.last_IPv4_know()):
-                        dev.add_alias(alias.showname_value)
-                    else:
-                        for _d in self._devices.values():
-                            d: Device = _d
-                            _aaaa:str = aaaa.showname_value
-                            _ip:str = str(d.last_IPv6_know())
-                            #if (aaaa.showname_value == str(d.last_IP_know())):
-                            if(_aaaa==_ip):
-                                d.add_alias(alias.showname_value)
-                            elif(alias.showname_value in d.alias()):
-                                d.update_IPv6(_aaaa)
+                    aaaa_list.append(addr_aaaa.pop(0))
+                    alias_list.append(_nam)
 
                 if (srv != None and dev != None):
                     dev.update_services(srv)
@@ -312,6 +307,20 @@ class NetworkLAN:
                 if (srv != None and dev != None):
                     dev.update_services(srv)
 
-
+            while(aaaa_list.__len__()>0):
+                aaaa: LayerField = aaaa_list.pop(0)
+                alias: LayerField = alias_list.pop(0)  # resp_names[i]
+                if (aaaa.showname_value == dev.last_IPv6_know()):
+                    dev.add_alias(alias.showname_value)
+                else:
+                    for _d in self._devices.values():
+                        d: Device = _d
+                        _aaaa: str = aaaa.showname_value
+                        _ip: str = str(d.last_IPv6_know())
+                        # if (aaaa.showname_value == str(d.last_IP_know())):
+                        if (_aaaa == _ip):
+                            d.add_alias(alias.showname_value)
+                        elif (alias.showname_value in d.alias()):
+                            d.update_IPv6(_aaaa)
         else:
             return
