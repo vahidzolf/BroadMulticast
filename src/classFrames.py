@@ -253,7 +253,7 @@ class NetworkLAN:
                     _nam: LayerField = resp_names.pop(0)  # resp_names[i]
 
 ################### DEBUG ################################
-                # Trigger debug breackpoints: set condition on 'if' and breackpoint on next line
+                # Trigger debug breakpoints: set condition on 'if' and breakpoint on next line
                 if(_nam!=None):
                     dbg_str: str = _nam.showname_value
                     if (dbg_str.count('xxxxxxxxxxx') > 0):
