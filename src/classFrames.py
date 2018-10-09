@@ -206,6 +206,9 @@ class NetworkLAN:
         if ('ip' in packet):
             dev.update_IPv4(packet.ip.src.show)
 
+        if('ipv6' in packet):
+            dev.update_IPv6(packet.ipv6.src.show)
+
         if ('mdns' in packet and int(packet.mdns.dns_resp_name.all_fields.__len__()) > 0):
             resp_names: list = packet.mdns.dns_resp_name.all_fields[:]
             resp_types: list = packet.mdns.dns_resp_type.all_fields[:]
@@ -276,7 +279,7 @@ class NetworkLAN:
                     if (a.showname_value == dev.last_IPv4_know()):
                         dev.add_alias(alias.showname_value)
                     else:
-                        for _d in self._devices:
+                        for _d in self._devices.values():
                             d:Device = _d
                             if (a.showname_value == str(d.last_IPv4_know())):
                                 d.add_alias(alias.showname_value)

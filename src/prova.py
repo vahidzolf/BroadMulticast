@@ -1,33 +1,47 @@
 import pyshark
+from pyshark import *
+from pyshark.capture.capture import *
+from pyshark.capture.file_capture import *
+from pyshark.capture import *
 from pyshark.packet.layer import *
 from pyshark.packet.packet import *
+from pyshark.tshark.tshark import *
+
+print('tshark config:',get_config())
+
 cap = pyshark.FileCapture("/home/edoardo/MEGAsync/Tesi/test_canon.pcap")
-#cap
-#print(cap[0])
-pkt:Packet=cap[0]
 
-txts:list=pkt.mdns.dns_txt.all_fields
-txts_len:list=pkt.mdns.dns_txt_length.all_fields
+folder:str='/home/edoardo/MEGAsync/Tesi/'
+files:list=['unipi-multicast.pcap_test.pcap',   #0
+            'unipi-multicast.pcap.gz',
+            'unipi-multicast_fitered.pcap',     #2
+            'ArsenaleCapture_filtered.pcapng',
+            'casaCapture_filtered.pcapng',      #4
+            'casaCapture_filtered_missed.pcapng'
+            ]
+num_pkt_contain:list=[5,
+                      35516,
+                      516,
+                      31,
+                      68,
+                      47
+]
+for i in range(len(files)):
+    cap:FileCapture=pyshark.FileCapture(
+        input_file=folder+files[i],
+        keep_packets=False
+    )
+    cap.load_packets(0)
+    print('#',i ,cap, '\tlen(cap)=', len(cap))
 
-txts_cp=txts[:]
-txts_len_cp=txts_len[:]
-
-txts.reverse()
-txts_len.reverse()
-#txts_cp.reverse()
-#txts_len_cp.reverse()
-
-for i in range(txts.__len__()):
-    i_rv=txts.__len__()-i-1
-    print(i_rv,'\t',txts[i_rv].showname_value, '|---|', txts_len[i_rv].showname_value)
-    print(i, 'cp', '\t', txts_cp[i].showname_value, '|---|', txts_len_cp[i].showname_value)
-
-for i in range(txts_cp.__len__()):
-    i_rv = txts_cp.__len__() - i - 1
-    print(i_rv,'\t',txts[i_rv].showname_value, '|---|', txts_len[i_rv].showname_value)
-    print(i, 'cp', '\t', txts_cp[i].showname_value, '|---|', txts_len_cp[i].showname_value)
-    txt:LayerField=txts.pop()
-    txt_len:LayerField=txts_len.pop()
-    print(i, 'pop', '\t', txt.showname_value, '|---|', int(txt_len.showname_value))
-
-print(txts.__len__(), txts_cp.__len__(), txts_len.__len__(), txts_len_cp.__len__(),sep='\n')
+    cnt:int=0
+    for k in cap:
+        cnt+=1
+        if(cnt==len(cap)):
+            k:Packet=k
+            print('#', i, 'last pkt read:', k.sniff_time)
+    print('#',i,'\t',files[i],'\tletti --->',cnt,'/',num_pkt_contain[i])
+    #pkt:Packet=cap[cnt-1]
+    #pkt.show
+    cap.close()
+    cap.clear()
