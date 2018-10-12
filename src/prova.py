@@ -21,7 +21,7 @@ files:list=['unipi-multicast.pcap_test.pcap',   #0
             ]
 num_pkt_contain:list=[5,
                       35516,
-                      516,
+                      561,
                       31,
                       68,
                       47

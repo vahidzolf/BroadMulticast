@@ -38,8 +38,14 @@ class ServiceMDNS:
         self._service=''
         self._protocol=''
         self._domain=''
+        self.__dissect_fullname()
         if (service != '' or protocol != '' or domain != ''):
             self.update_SRV_detail(service, protocol, domain)
+
+    def __dissect_fullname(self):
+        full:list=self._full_name.rsplit('.',3)
+        if(len(full)>3):
+            self.update_SRV_detail(full[0],full[1],full[2]+'.'+full[3])
 
     # GETTERS:
     def name(self):
@@ -69,9 +75,15 @@ class ServiceMDNS:
         :param domain:
         :return:
         '''
-        self._service = service
-        self._protocol = protocol
-        self._domain = domain
+        if(service=='' or protocol=='' or domain==''):
+            return
+
+        if(self._service==''):
+            self._service = service
+        if(self._protocol==''):
+            self._protocol = protocol
+        if(self._domain==''):
+            self._domain = domain
 
     def add_target(self, targ: str, port: int):
         '''
@@ -92,6 +104,8 @@ class ServiceMDNS:
         :param txt:  str of form " 'key'='value' "
         :return: None, and insert txt in a dictionary made of txts key:value
         '''
+        if(txt==None or txt==''):
+            return
         eql_pos:int = txt.find('=')
         if eql_pos>0 :
             key = txt[:eql_pos]
@@ -112,7 +126,7 @@ class ServiceMDNS:
             self._txts[txt_k] = dict_txts[txt_k]
 
 
-class Device:
+class Device(object):
     _id:str
     _lastIPv4:str
     _lastIPv6: str
@@ -149,7 +163,7 @@ class Device:
             serv: ServiceMDNS = self._services[answ_name]
 
             serv.update_SRV_detail(new_serv.service(), new_serv.protocol(), new_serv.domain())
-            self.add_alias(new_serv.service())
+            #self.add_alias(new_serv.service())
 
             for trg_v in new_serv.targets().values():
                 trg:Target=trg_v
@@ -159,7 +173,8 @@ class Device:
             serv.add_txts(new_serv.txts())
 
     def add_alias(self, new_alias: str):
-        self._alias.add(str(new_alias))
+        if(new_alias!=None and new_alias!=''):
+            self._alias.add(str(new_alias))
 
     def id(self):
         return self._id[:]
@@ -186,6 +201,35 @@ class NetworkLAN:
     def __init__(self):
         self._devices=dict()
 
+    def printAllAlias(self):
+        for _d in self._devices.values():
+            d:Device=_d
+            print('***************************************')
+            print('Device ID: ',d.id())
+            print('Aliases: ',end='')
+            for al in d.alias():
+                print(al,end='  || ')
+            print('')
+
+            for _srv in d.get_services().values():
+                srv:ServiceMDNS=_srv
+                print('\t> ', srv.name())
+                #print('\t   ', srv.service(),'.',srv.protocol(),'.',srv.domain(),sep='')
+                for trg in srv.targets():
+                    print('\t   Target',)
+                    print('\t          --->',trg)
+                txts:dict=srv.txts()
+                if(txts.__len__()>0):
+                    print('\t   Txts')
+                    print('\t   ',end='')
+                    for txt_k in txts:
+                        print(txt_k,'=',txts[txt_k],sep='',end=' , ')
+                    print('')
+
+
+
+            print('/----------------------------------/')
+
     def new_knowledge(self, packet: Packet):
         name:str
         if ('eth' in packet and
@@ -196,12 +240,44 @@ class NetworkLAN:
         else:
             return
 
+        try:
+            answ_len:int = int(packet.mdns.dns_resp_name.all_fields.__len__())
+        except AttributeError:
+            return
+
         dev: Device = None
         if (name in self._devices):
             dev = self._devices[name]
         else:
             dev = Device(name)
-            self._devices[name] = dev
+            #self._devices[name] = dev
+
+        if(name=='08:60:6e:e5:91:a8'):
+            #print('DBG',end='')
+            print('', end='')
+
+        def update(disp:Device, srv_record:ServiceMDNS):
+            _dev: Device = None
+            for _trgt in srv_record.targets():
+                trgt:str=_trgt
+                als:set=disp.alias()
+                if (als.__contains__(trgt)):
+                    disp.add_alias(srv_record.service())
+                    _dev = disp
+                    break
+            if (_dev != None):
+                _dev.update_services(srv_record)
+            else:
+                _dev = disp
+                for _trgt in srv_record.targets():
+                    for _d in self._devices.values():
+                        d: Device = _d
+                        if (d.alias().__contains__(_trgt) or d.alias().__contains__(srv_record.service())):
+                            d.add_alias(srv_record.service())
+                            _dev = d
+                            break
+                _dev.update_services(srv_record)
+
 
         if ('ip' in packet):
             dev.update_IPv4(packet.ip.src.show)
@@ -209,7 +285,7 @@ class NetworkLAN:
         if('ipv6' in packet):
             dev.update_IPv6(packet.ipv6.src.show)
 
-        if ('mdns' in packet and int(packet.mdns.dns_resp_name.all_fields.__len__()) > 0):
+        if ('mdns' in packet and answ_len>0):
             resp_names: list = packet.mdns.dns_resp_name.all_fields[:]
             resp_types: list = packet.mdns.dns_resp_type.all_fields[:]
             resp_lens: list = packet.mdns.dns_resp_len.all_fields[:]
@@ -223,9 +299,11 @@ class NetworkLAN:
                 txts_len:list=[]
             try:
                 addr_a: list = packet.mdns.dns_a.all_fields[:]
-                addr_aaaa: list = packet.mdns.dns_aaaa.all_fields[:]
             except AttributeError:
                 addr_a: list = []
+            try:
+                addr_aaaa: list = packet.mdns.dns_aaaa.all_fields[:]
+            except AttributeError:
                 addr_aaaa: list = []
             try:
                 srv_servs:list = packet.mdns.dns_srv_service.all_fields[:]
@@ -259,10 +337,12 @@ class NetworkLAN:
                 # Trigger debug breakpoints: set condition on 'if' and breakpoint on next line
                 if(_nam!=None):
                     dbg_str: str = _nam.showname_value
-                    if (dbg_str.count('xxxxxxxxxxx') > 0):
-                        print('DBG', dbg_str)
+                    if (dbg_str.count('XXXX') > 0 or dev.id()=='08:60:6e:e5:91:a8'):
+                        #print('DBG', dbg_str)
+                        print('', end='')
                 if(_typ.hex_value==33):
-                    print('DBG', _typ.hex_value)
+                    #print('DBG', _typ.hex_value)
+                    print('', end='')
 #######################################################
                 if (_typ.hex_value == 16):
                     srv = ServiceMDNS(_nam.showname_value)
@@ -288,7 +368,7 @@ class NetworkLAN:
                     alias_list.append(_nam)
 
                 if (srv != None and dev != None):
-                    dev.update_services(srv)
+                    update(dev,srv)
 
             #for _serv in srv_servs:
             while(srv_servs.__len__()>0):
@@ -308,7 +388,7 @@ class NetworkLAN:
                 srv.add_target(trg.showname_value, int(port.showname_value))
 
                 if (srv != None and dev != None):
-                    dev.update_services(srv)
+                    update(dev,srv)
 
             while(aaaa_list.__len__()>0):
                 aaaa: LayerField = aaaa_list.pop(0)
@@ -325,5 +405,30 @@ class NetworkLAN:
                             d.add_alias(alias.showname_value)
                         elif (alias.showname_value in d.alias()):
                             d.update_IPv6(_aaaa)
-        else:
-            return
+
+        if(len(dev.alias())>0 or len(dev.get_services())>0):
+            self._devices[name] = dev
+            for _srv in dev.get_services().values():
+                dev.add_alias(_srv.service())
+                #dev.add_alias('?_' + _srv.service() + '_?')
+
+    def cleanup(self):
+        for _device in self._devices.values():
+            dev:Device=_device
+            aliases:list=dev.alias()
+            for _alias in aliases:
+                alias:str=_alias
+
+    def all_kind_protocol(self):
+        all_Prot:set=set()
+        for _d in  self._devices.values():
+            d:Device=_d
+            srvs:dict=d.get_services()
+            for _s in srvs.values():
+                s:ServiceMDNS=_s
+                all_Prot.add(s.protocol())
+
+        print('__________________')
+        print('##################### All*Protocols #####################')
+        for p in all_Prot:
+            print(p)
