@@ -46,6 +46,25 @@ class ServiceMDNS:
         full:list=self._full_name.rsplit('.',3)
         if(len(full)>3):
             self.update_SRV_detail(full[0],full[1],full[2]+'.'+full[3])
+        else:
+            i:int=len(full)-1
+            dom:str = ''
+            proto:str=''
+            istance:str=''
+            if i >= 0:
+                dom = full[i]
+                i-=1
+            if i >= 0:
+                dom = full[i] + '.' + dom
+                i -= 1
+            if i >= 0:
+                proto = full[i]
+                i -= 1
+            if i >= 0:
+                istance = full[i]
+                i -= 1
+            self.update_SRV_detail(istance,proto,dom)
+
 
     # GETTERS:
     def name(self):
@@ -75,14 +94,12 @@ class ServiceMDNS:
         :param domain:
         :return:
         '''
-        if(service=='' or protocol=='' or domain==''):
-            return
 
-        if(self._service==''):
+        if(self._service=='' and service!=''):
             self._service = service
-        if(self._protocol==''):
+        if(self._protocol=='' and protocol!=''):
             self._protocol = protocol
-        if(self._domain==''):
+        if(self._domain=='' and domain!=''):
             self._domain = domain
 
     def add_target(self, targ: str, port: int):
@@ -427,8 +444,15 @@ class NetworkLAN:
             for _s in srvs.values():
                 s:ServiceMDNS=_s
                 all_Prot.add(s.protocol())
+                if s.protocol() == '':
+                    print('',end='')
 
-        print('__________________')
+        try:
+            all_Prot.remove('')
+        except KeyError:
+            pass
+
+        print('')
         print('##################### All*Protocols #####################')
         for p in all_Prot:
             print(p)
