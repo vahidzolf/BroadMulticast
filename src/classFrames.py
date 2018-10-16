@@ -1,7 +1,6 @@
 from pyshark.packet.packet import Packet
 from pyshark.packet.fields import *
-import src.protKinds
-from src.protKinds import HowIsWhat
+from protKinds import HowIsWhat
 
 
 class Target:

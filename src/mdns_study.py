@@ -1,4 +1,4 @@
-from src.classFrames import NetworkLAN
+from classFrames import NetworkLAN
 import pyshark
 from pyshark import *
 
