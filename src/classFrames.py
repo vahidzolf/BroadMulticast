@@ -1,5 +1,7 @@
 from pyshark.packet.packet import Packet
 from pyshark.packet.fields import *
+import src.protKinds
+from src.protKinds import HowIsWhat
 
 
 class Target:
@@ -145,6 +147,7 @@ class ServiceMDNS:
 
 class Device(object):
     _id:str
+    _kind:str
     _lastIPv4:str
     _lastIPv6: str
     _services:dict
@@ -156,6 +159,7 @@ class Device(object):
         self._lastIPv6=''
         self._services=dict()
         self._alias=set()
+        self._kind=''
 
     def update_IPv4(self, new_ip: str):
         if new_ip != '' and new_ip != None:
@@ -193,6 +197,19 @@ class Device(object):
         if(new_alias!=None and new_alias!=''):
             self._alias.add(str(new_alias))
 
+    def update_kind(self):
+        protos:set=set()
+        for s in self._services.values():
+            s:ServiceMDNS
+            protos.add(s.protocol())
+
+        checker:HowIsWhat=HowIsWhat()
+        kindList:list=checker.check(protos)
+        self._kind=kindList.pop(0)
+        while(len(kindList)>0):
+            self._kind=self._kind + '/' + kindList.pop(0)
+
+
     def id(self):
         return self._id[:]
 
@@ -211,6 +228,9 @@ class Device(object):
     def alias(self):
         return set(self._alias)
 
+    def kind(self):
+        return  str(self._kind)
+
 
 class NetworkLAN:
     _devices:dict
@@ -227,6 +247,9 @@ class NetworkLAN:
             for al in d.alias():
                 print(al,end='  || ')
             print('')
+
+            d.update_kind()
+            print('How I am: ',d.kind())
 
             for _srv in d.get_services().values():
                 srv:ServiceMDNS=_srv
