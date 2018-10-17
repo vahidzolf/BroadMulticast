@@ -1,6 +1,15 @@
-from classFrames import NetworkLAN
 import pyshark
 from pyshark import *
+from pyshark.packet.packet import Packet
+
+from classFrames import NetworkLAN
+from DropBox_utils import DBlspDISC
+
+
+def dropboxStudy(pkt:Packet):
+    pass
+
+
 
 folder:str='/home/edoardo/MEGAsync/Tesi/pcap/'
 files:list=['ArsenaleCapture_filtered.pcapng',
@@ -8,9 +17,21 @@ files:list=['ArsenaleCapture_filtered.pcapng',
             'catturaArsenale_filtered.pcapng',
             'golf_filtered.pcapng',
             'mdns_responses_filtered.pcap',
-            'unipi-multicast_fitered.pcap'
+            'unipi-multicast_fitered.pcap',
+            'unipi-multicast_DB.pcap'
             ]
 net=NetworkLAN()
+
+cap:FileCapture=pyshark.FileCapture(input_file=folder+files[6], use_json=True)
+
+for pkt in cap:
+    d:DBlspDISC=DBlspDISC(pkt)
+    print('host_int:', d.host_int,end=',  ')
+    print('version:', d.version,end=',  ')
+    print('displayname:',d.displayname,end=',  ')
+    print('port:',d.port)
+    print(d.namespaces)
+
 for file in files:
     print('###################### ',file,' #######################')
     cap:FileCapture=pyshark.FileCapture(

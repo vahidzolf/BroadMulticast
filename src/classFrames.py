@@ -1,6 +1,6 @@
 from pyshark.packet.packet import Packet
 from pyshark.packet.fields import *
-from protKinds import HowIsWhat
+from src.discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot
 
 
 class Target:
@@ -198,12 +198,9 @@ class Device(object):
 
     def update_kind(self):
         protos:set=set()
-        for s in self._services.values():
-            s:ServiceMDNS
-            protos.add(s.protocol())
+        checker: HowIsWhat = HowIsWhat(self._services)
 
-        checker:HowIsWhat=HowIsWhat()
-        kindList:list=checker.check(protos)
+        kindList:list=checker.get_bestMatches()
         self._kind=kindList.pop(0)
         while(len(kindList)>0):
             self._kind=self._kind + '/' + kindList.pop(0)
@@ -478,3 +475,77 @@ class NetworkLAN:
         print('##################### All*Protocols #####################')
         for p in all_Prot:
             print(p)
+
+class HowIsWhat:
+    ALL: dict = _ALLprot
+    SPEC: dict = _SPECprot
+    UNKNOWN: str = '???'
+    _bestMatches: set
+    kindPool: dict
+
+
+    def __init__(self, srv_dict:dict):
+        self.protos:set=set()
+        self.kindPool = {}
+        self._bestMatches = set()
+        for kind in self.ALL:
+            self.kindPool[kind] = 0
+
+        self.srv_records=dict(srv_dict)
+
+        for s in srv_dict.values():
+            s:ServiceMDNS
+            self.protos.add(s.protocol())
+            if(s.protocol()=='_device-info'):
+                info:str=self.check_dev_info(s)
+                if(info!=None):
+                    self._bestMatches.add(info)
+
+        if(len(self._bestMatches)==0):
+            self.check_MDNS_proto()
+
+    def check_dev_info(self, record:ServiceMDNS):
+        if(record.protocol()!='_device-info'):
+            return None
+        info=None
+        txts:dict=record.txts()
+        model=txts['model']
+        if(model in apple_products):
+            info=apple_products[model]
+            if('osxvers' in txts):
+                osx = txts['osxvers']
+                if(osx in apple_osx_versions):
+                    info = info + ' with ' + apple_osx_versions[osx]
+        return info
+
+
+    def check_MDNS_proto(self):
+        # prots:list[str]=protocols[:]
+        # while(self._bestMatches and len(prots)>0):
+        for p in self.protos:
+            for kind, kind_set in zip(self.SPEC, self.SPEC.values()):
+                if p in kind_set:
+                    self._bestMatches.add(kind)
+                    break
+
+        if (len(self._bestMatches) == 0):
+            for p in self.protos:
+                for kind, kind_set in zip(self.ALL, self.ALL.values()):
+                    if p in kind_set:
+                        self.kindPool[kind] += 1
+
+            max: int = 0
+            best: str = self.UNKNOWN
+            for kind, count in zip(self.kindPool, self.kindPool.values()):
+                if (count > max):
+                    best = kind
+                    max = count
+                elif (count == max and max>0):
+                    best = best + '/' + kind
+
+            self._bestMatches.add(best)
+
+        return list(self._bestMatches)
+
+    def get_bestMatches(self):
+        return list(self._bestMatches)
