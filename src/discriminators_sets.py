@@ -11,35 +11,105 @@ Like _ALLprot, but every set of protocols contain only the protocols that can be
 Fields: Same of _ALLprot
 '''
 
-pWORKSTATION: set = {'_sleep-proxy', '_sftp-ssh', '_adisk', '_afpovertcp', '_pdl-datastream', '_net-assistant',
-                     '_device-info', '_ssh', '_workstation', '_teamviewer', '_companion-link', '_smb', '_sleep-proxy',
-                     '_rfb',
-                     '_nomachine', '_afpovertcp', '_sftp-ssh', '_net-assistant', '_airdrop', '_sketchmirror', '_distcc',
-                     '_eppc',
-                     '_esdevice', '_esfileshare', '_hudson', '_ichat', '_jenkins', '_keynotepair', '_omnistate',
-                     '_photoshopserver',
-                     '_raop', '_telnet', '_tunnel', '_udisks-ssh', '_adisk', '_afpovertcp', '_nfs', '_ssh', '_smb',
-                     '_webdavs',
-                     '_apple-sasl', '_cloud', '_hudson',
-                     '_jenkins', '_readynas', '_servermgr', '_xserveraid', '_ftp'}
+pWORKSTATION: set = {
+    '_sleep-proxy',
+    '_sftp-ssh',
+    '_adisk',
+    '_afpovertcp',
+    '_pdl-datastream',
+    '_net-assistant',
+    '_device-info',
+    '_ssh',
+    '_workstation',
+    '_teamviewer',
+    '_companion-link',
+    '_smb',
+    '_sleep-proxy',
+    '_rfb',
+    '_nomachine',
+    '_afpovertcp',
+    '_sftp-ssh',
+    '_net-assistant',
+    '_airdrop',
+    '_sketchmirror',
+    '_distcc',
+    '_eppc',
+    '_esdevice',
+    '_esfileshare',
+    '_hudson',
+    '_ichat',
+    '_jenkins',
+    '_keynotepair',
+    '_omnistate',
+    '_photoshopserver',
+    '_raop',
+    '_telnet',
+    '_tunnel',
+    '_udisks-ssh',
+    '_adisk',
+    '_afpovertcp',
+    '_nfs',
+    '_ssh',
+    '_smb',
+    '_webdavs',
+    '_apple-sasl',
+    '_cloud',
+    '_hudson',
+    '_jenkins',
+    '_readynas',
+    '_servermgr',
+    '_xserveraid',
+    '_ftp'
+}
 _ALLprot['WORKSTATION'] = pWORKSTATION
 
 pNAS: set = {'smb'}
 _ALLprot['NAS'] = pNAS
 
-pPRINTER: set = {'_ipps', '_pdl-datastream', '_scanner', '_ipp', '_printer'}  # '_ica-networking'
+pPRINTER: set = {
+    '_ipps',
+    '_pdl-datastream',
+    '_scanner',
+    '_ipp',
+    '_printer'
+}  # '_ica-networking'
 _ALLprot['PRINTER'] = pPRINTER
 
-pMEDIA: set = {'_spotify-connect', '_airplay', '_amzn-wplay', '_appletv-v2', '_atc', '_daap', '_cloud', '_dpap',
-               '_googlecast', '_hap', '_homekit', '_home-sharing', '_mediaremotetv', '_nvstream', '_raop', '_rsp',
-               '_touch-able'}
+pMEDIA: set = {
+    '_spotify-connect',
+    '_airplay',
+    '_amzn-wplay',
+    '_appletv-v2',
+    '_atc',
+    '_daap',
+    '_cloud',
+    '_dpap',
+    '_googlecast',
+    '_hap',
+    '_homekit',
+    '_home-sharing',
+    '_mediaremotetv',
+    '_nvstream',
+    '_raop',
+    '_rsp',
+    '_touch-able'
+}
 _ALLprot['MEDIA'] = pMEDIA
 
-pMOBILE: set = {'_companion-link', '_apple-mobdev2', '_airdroid', '_KeynoteControl', '_keynotepair',
-                '_touch-able'}
+pMOBILE: set = {
+    '_companion-link',
+    '_apple-mobdev2',
+    '_airdroid',
+    '_KeynoteControl',
+    '_keynotepair',
+    '_touch-able'
+}
 _ALLprot['MOBILE'] = pMOBILE
 
-pACCESSPOINT: set = {'_riousbprint', '_airport'}
+pACCESSPOINT: set = {
+    '_riousbprint',
+    '_airport'
+}
 _ALLprot['ACCESSPOINT'] = pACCESSPOINT
 
 # print('Diff:', pPC.symmetric_difference(pSERVER).intersection(pPC).__len__())#.intersection(pPC)
@@ -163,7 +233,8 @@ apple_products = {
     'MacBookAir4,1': 'MacBook Air "Core i7" 1.8 11" (Mid-2011)',
     'MacPro3,1': 'Mac Pro "Eight Core" 3.2 (2008)',
     'J81AP': ' iPad Air 2 (iPad5,3 model)',
-    'J71bAP': 'iPad (6th generation) (iPad7,5 model)'
+    'J71bAP': 'iPad (6th generation) (iPad7,5 model)',
+    'J82AP' : 'iPad Air 2 (iPad5,4 model)'
 }
 
 apple_osx_versions = {
@@ -181,4 +252,26 @@ apple_osx_versions = {
     '15': 'OS X 10.11 (El Capitan)',
     '16': 'OS X 10.12 (Sierra)',
     '17': 'OS X 10.13 (High Sierra)',
+}
+
+iPhone = 'iPhone'
+iPad = 'iPad Tablet'
+PC = 'Personal Computer'
+keyword_on_alias = {
+    'Android': 'Android Device',
+    'DESKTOP': 'Windows Desktop',
+    's-iPad': iPad,
+    'iPhone-de-': iPhone,
+    'iPad-di-': iPad,
+    'iPhone': iPhone,
+    's-MacBook-Air': 'MacBook Air Notebook',
+    'PC': PC,
+    'Computer': PC,
+    'MacBook-Pro-di-': 'MacBook Pro Notebook',
+    'iMac-di-': 'iMac PC Desktop',
+    'iMac': 'iMac PC Desktop',
+    's-iMac': 'iMac PC Desktop',
+    's-MacBookPro': 'MacBook Pro Notebook',
+    's-mac-mini': 'Mac Mini Desktop',
+    'Computer-di-': PC
 }

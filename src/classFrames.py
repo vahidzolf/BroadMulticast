@@ -1,6 +1,6 @@
 from pyshark.packet.packet import Packet
 from pyshark.packet.fields import *
-from src.discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot
+from src.discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_on_alias
 
 
 class Target:
@@ -198,7 +198,7 @@ class Device(object):
 
     def update_kind(self):
         protos:set=set()
-        checker: HowIsWhat = HowIsWhat(self._services)
+        checker: HowIsWhat = HowIsWhat(self)
 
         kindList:list=checker.get_bestMatches()
         self._kind=kindList.pop(0)
@@ -476,30 +476,42 @@ class NetworkLAN:
         for p in all_Prot:
             print(p)
 
+    def all_local_alias(self):
+        for d in self._devices.values():
+            d:Device
+            for a in d.alias():
+                a:str
+                if(a.count('.local')>0):
+                    print(a.replace('.local',''))
+
 class HowIsWhat:
+    _device:Device
     ALL: dict = _ALLprot
     SPEC: dict = _SPECprot
     UNKNOWN: str = '???'
+    protos: set
     _bestMatches: set
     kindPool: dict
 
-
-    def __init__(self, srv_dict:dict):
+    def __init__(self, dev:Device):
         self.protos:set=set()
         self.kindPool = {}
         self._bestMatches = set()
         for kind in self.ALL:
             self.kindPool[kind] = 0
 
-        self.srv_records=dict(srv_dict)
+        self._device:Device=dev
 
-        for s in srv_dict.values():
+        for s in dev.get_services().values():
             s:ServiceMDNS
             self.protos.add(s.protocol())
             if(s.protocol()=='_device-info'):
                 info:str=self.check_dev_info(s)
                 if(info!=None):
                     self._bestMatches.add(info)
+
+        if (len(self._bestMatches) == 0):
+            self.check_on_local_alias()
 
         if(len(self._bestMatches)==0):
             self.check_MDNS_proto()
@@ -518,6 +530,25 @@ class HowIsWhat:
                     info = info + ' with ' + apple_osx_versions[osx]
         return info
 
+    def check_on_local_alias(self):
+        for alias in self._device.alias():
+            alias:str
+            if(alias.count('.local')>0):
+                keyw:str=alias.replace('.local','')
+
+                for k in keyword_on_alias:
+                    if(keyw.count(k)>0):
+                        keyw = k #keyword_on_alias[k]
+                        break
+
+                if (keyw in keyword_on_alias):
+                    howis = keyword_on_alias[keyw]
+                    owner = alias.replace(keyw,'').replace('.local','')
+                    owner = owner.replace('s-','').replace('-',' ')
+                    owner = owner.replace('di','').replace('de','').replace('von','')
+                    if(len(owner) < 3):
+                        owner=self.UNKNOWN
+                    self._bestMatches.add(howis + ', guess Owner: ' + owner)
 
     def check_MDNS_proto(self):
         # prots:list[str]=protocols[:]

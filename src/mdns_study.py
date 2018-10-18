@@ -22,6 +22,7 @@ files:list=['ArsenaleCapture_filtered.pcapng',
             ]
 net=NetworkLAN()
 
+'''
 cap:FileCapture=pyshark.FileCapture(input_file=folder+files[6], use_json=True)
 
 for pkt in cap:
@@ -31,6 +32,7 @@ for pkt in cap:
     print('displayname:',d.displayname,end=',  ')
     print('port:',d.port)
     print(d.namespaces)
+'''
 
 for file in files:
     print('###################### ',file,' #######################')
@@ -49,9 +51,10 @@ for file in files:
         print('.',end='')
     print(count_pkt)
 
-
 net.printAllAlias()
 
-net.all_kind_protocol()
+#net.all_kind_protocol()
+
+#net.all_local_alias()
 
 print('End')
