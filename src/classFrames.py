@@ -489,31 +489,41 @@ class HowIsWhat:
     ALL: dict = _ALLprot
     SPEC: dict = _SPECprot
     UNKNOWN: str = '???'
-    protos: set
+    _protos: set
     _bestMatches: set
-    kindPool: dict
+    _kindPool: dict
+    _kind:str
+    _rel_lev:int
+    '''Reliability about what a Device's kind it is. Range value: 1(Unknown) <---> 9(Sure)'''
+    _guess_owner:str
 
     def __init__(self, dev:Device):
-        self.protos:set=set()
-        self.kindPool = {}
+        self._protos:set=set()
+        self._kindPool = {}
         self._bestMatches = set()
+        self._kind=self.UNKNOWN
+
         for kind in self.ALL:
-            self.kindPool[kind] = 0
+            self._kindPool[kind] = 0
 
         self._device:Device=dev
 
+        self.check()
+
+    def check(self):
+        dev:Device=self._device
         for s in dev.get_services().values():
-            s:ServiceMDNS
-            self.protos.add(s.protocol())
-            if(s.protocol()=='_device-info'):
-                info:str=self.check_dev_info(s)
-                if(info!=None):
-                    self._bestMatches.add(info)
+            s: ServiceMDNS
+            self._protos.add(s.protocol())
+            if (s.protocol() == '_device-info'):
+                info: str = self.check_dev_info(s)
+                if (info != None):
+                    self._kind=info
+                    self._rel_lev=9
+
+        self.check_on_local_alias()
 
         if (len(self._bestMatches) == 0):
-            self.check_on_local_alias()
-
-        if(len(self._bestMatches)==0):
             self.check_MDNS_proto()
 
     def check_dev_info(self, record:ServiceMDNS):
@@ -548,7 +558,10 @@ class HowIsWhat:
                     owner = owner.replace('di','').replace('de','').replace('von','')
                     if(len(owner) < 3):
                         owner=self.UNKNOWN
-                    self._bestMatches.add(howis + ', guess Owner: ' + owner)
+                    self._guess_owner=owner
+                    if(self._rel_lev<5):
+                        self._kind=howis
+                        self._rel_lev=5
 
     def check_MDNS_proto(self):
         # prots:list[str]=protocols[:]

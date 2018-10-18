@@ -24,12 +24,8 @@ pWORKSTATION: set = {
     '_teamviewer',
     '_companion-link',
     '_smb',
-    '_sleep-proxy',
     '_rfb',
     '_nomachine',
-    '_afpovertcp',
-    '_sftp-ssh',
-    '_net-assistant',
     '_airdrop',
     '_sketchmirror',
     '_distcc',
@@ -46,34 +42,71 @@ pWORKSTATION: set = {
     '_telnet',
     '_tunnel',
     '_udisks-ssh',
-    '_adisk',
-    '_afpovertcp',
     '_nfs',
-    '_ssh',
-    '_smb',
     '_webdavs',
     '_apple-sasl',
     '_cloud',
-    '_hudson',
-    '_jenkins',
     '_readynas',
     '_servermgr',
     '_xserveraid',
     '_ftp'
 }
 _ALLprot['WORKSTATION'] = pWORKSTATION
+_SPECprot['WORKSTATION'] = {
+    '_sleep-proxy',
+    '_adisk',
+    '_afpovertcp',
+    '_net-assistant',
+    '_device-info',
+    '_ssh',
+    '_workstation',
+    '_teamviewer',
+    '_smb',
+    '_rfb',
+    '_nomachine',
+    '_sketchmirror',
+    '_distcc',
+    '_eppc',
+    '_hudson',
+    '_ichat',
+    '_jenkins',
+    '_omnistate',
+    '_photoshopserver',
+    '_raop',
+    '_telnet',
+    '_tunnel',
+    '_udisks-ssh',
+    '_nfs',
+    '_webdavs',
+    '_apple-sasl',
+    '_servermgr',
+    '_xserveraid'
+}
 
-pNAS: set = {'smb'}
+pNAS: set = {
+    'smb',
+    '_readynas'
+}
 _ALLprot['NAS'] = pNAS
-
+_SPECprot['NAS'] = {
+    #'smb'
+}
 pPRINTER: set = {
     '_ipps',
     '_pdl-datastream',
     '_scanner',
     '_ipp',
-    '_printer'
+    '_printer',
+    '_tcp'
 }  # '_ica-networking'
 _ALLprot['PRINTER'] = pPRINTER
+_SPECprot['PRINTER'] = {
+    #'_ipps',
+    #'_pdl-datastream',
+    #'_scanner',
+    #'_ipp',
+    #'_printer'
+}
 
 pMEDIA: set = {
     '_spotify-connect',
@@ -95,7 +128,25 @@ pMEDIA: set = {
     '_touch-able'
 }
 _ALLprot['MEDIA'] = pMEDIA
-
+_SPECprot['MEDIA'] = {
+    #'_spotify-connect',
+    '_airplay',
+    '_amzn-wplay',
+    '_appletv-v2',
+    '_atc',
+    '_daap',
+    '_cloud',
+    '_dpap',
+    '_googlecast',
+    '_hap',
+    '_homekit',
+    '_home-sharing',
+    '_mediaremotetv',
+    '_nvstream',
+    '_raop',
+    '_rsp',
+    '_touch-able'
+}
 pMOBILE: set = {
     '_companion-link',
     '_apple-mobdev2',
@@ -105,14 +156,21 @@ pMOBILE: set = {
     '_touch-able'
 }
 _ALLprot['MOBILE'] = pMOBILE
+_SPECprot['MOBILE']={
+    '_apple-mobdev2',
+    '_airdroid',
+    '_KeynoteControl',
+    '_keynotepair',
+    '_touch-able'
+}
 
 pACCESSPOINT: set = {
-    '_riousbprint',
-    '_airport'
+    '_riousbprint'
 }
 _ALLprot['ACCESSPOINT'] = pACCESSPOINT
 
 # print('Diff:', pPC.symmetric_difference(pSERVER).intersection(pPC).__len__())#.intersection(pPC)
+'''
 
 for i in _ALLprot:
     si: set = _ALLprot[i]
@@ -129,6 +187,7 @@ for i in _ALLprot:
             # print('')
     print(diff)
     _SPECprot[i] = set(diff)
+'''
 
 apple_products = {
     'Macmini5,3': 'Mac mini "Core i7" 2.0 (Mid-2011/Server)',
