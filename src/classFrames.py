@@ -192,6 +192,15 @@ class Device(object):
 
             serv.add_txts(new_serv.txts())
 
+    def remove_service(self,srv: ServiceMDNS):
+        '''
+        Remove srv from the device services and return it
+        :param srv:
+        :return:
+        '''
+        srv_to_rem:str=srv.name()
+        return self._services.pop(srv_to_rem)
+
     def add_alias(self, new_alias: str):
         if(new_alias!=None and new_alias!=''):
             self._alias.add(str(new_alias))
@@ -221,7 +230,7 @@ class Device(object):
         '''
         return dict(self._services)
 
-    def alias(self):
+    def aliases(self):
         return set(self._alias)
 
     def kind(self):
@@ -230,9 +239,11 @@ class Device(object):
 
 class NetworkLAN:
     _devices:dict
+    _lost_srv_propertyes:dict
 
     def __init__(self):
         self._devices=dict()
+        self._lost_srv_propertyes=dict()
 
     def printAllAlias(self):
         for _d in self._devices.values():
@@ -240,7 +251,7 @@ class NetworkLAN:
             print('***************************************')
             print('Device ID: ',d.id())
             print('Aliases: ',end='')
-            for al in d.alias():
+            for al in d.aliases():
                 print(al,end='  || ')
             print('')
 
@@ -265,6 +276,66 @@ class NetworkLAN:
 
 
             print('/----------------------------------/')
+
+    def add_lost_property(self, lost_srv:ServiceMDNS):
+        _targets:set = lost_srv.targets()
+        if not (len(_targets) > 0):
+            _fictitious_trg = lost_srv.service()
+            # use where srv recorn has no targets, and dont knew how provide the service
+            _targets[_fictitious_trg] = Target(_fictitious_trg, -1)
+
+        for trg in _targets:
+            if(trg in self._lost_srv_propertyes):
+                _lost_srvs:list=self._lost_srv_propertyes[trg]
+                _lost_srvs.append(lost_srv)
+            else:
+                self._lost_srv_propertyes[trg]=list()
+                _lost_srvs: list = self._lost_srv_propertyes[trg]
+                _lost_srvs.append(lost_srv)
+
+    def search_lost_propertyes(self, owner:str, device:Device):
+        _owner:str = owner
+        dev_to_update:Device=None
+
+        if(_owner in self._lost_srv_propertyes):
+            dev_to_update=device
+        else:
+            _dev_aliases: set = device.aliases()
+            for alias in _dev_aliases:
+                if ( alias in self._lost_srv_propertyes ):
+                    dev_to_update=device
+                    _owner=alias
+        if(dev_to_update!=None):
+            _lost_srvs:list = self._lost_srv_propertyes[_owner]
+            while(len(_lost_srvs)>0):
+                _srv:ServiceMDNS = _lost_srvs.pop(0)
+                device.update_services(_srv)
+
+
+    def cleanup(self, device: Device):
+        for _srv in device.get_services().values():  # TODO: Verificare che la 'remove***' non dia problemi al for (nondovrebbe perche' la .get_services() return una copia
+            _srv: ServiceMDNS
+            _targets = _srv.targets()
+            if not(len(_targets)>0):
+                _fictitious_trg = _srv.service()
+                # use where srv recorn has no targets, and dont knew how provide the service
+                _targets[_fictitious_trg]=Target(_fictitious_trg, -1)
+            for _trg in _targets:
+                if not (_trg in device.aliases()):
+                    _lost: ServiceMDNS = device.remove_service(_srv)  # remove***
+                    trg_dev = None
+                    for _device in self._devices.values():
+                        _device: Device
+                        _aliases: set = _device.aliases()
+                        if ( (_trg in _aliases) ):
+                            trg_dev = _device
+                            break
+
+                    if (trg_dev != None):
+                        trg_dev.update_services(_lost)
+                    else:
+                        self.add_lost_property(_lost)
+
 
     def new_knowledge(self, packet: Packet):
         name:str
@@ -296,7 +367,7 @@ class NetworkLAN:
             _dev: Device = None
             for _trgt in srv_record.targets():
                 trgt:str=_trgt
-                als:set=disp.alias()
+                als:set=disp.aliases()
                 if (als.__contains__(trgt)):
                     disp.add_alias(srv_record.service())
                     _dev = disp
@@ -308,7 +379,7 @@ class NetworkLAN:
                 for _trgt in srv_record.targets():
                     for _d in self._devices.values():
                         d: Device = _d
-                        if (d.alias().__contains__(_trgt) or d.alias().__contains__(srv_record.service())):
+                        if (d.aliases().__contains__(_trgt) ): #or d.aliases().__contains__(srv_record.service())
                             d.add_alias(srv_record.service())
                             _dev = d
                             break
@@ -394,11 +465,16 @@ class NetworkLAN:
                     alias: LayerField = _nam #resp_names[i]
                     if (a.showname_value == dev.last_IPv4_know()):
                         dev.add_alias(alias.showname_value)
+                        self.search_lost_propertyes(alias.showname_value, dev)
                     else:
                         for _d in self._devices.values():
                             d:Device = _d
                             if (a.showname_value == str(d.last_IPv4_know())):
                                 d.add_alias(alias.showname_value)
+                                self.search_lost_propertyes(alias.showname_value, d)
+                            elif(alias.showname_value in d.aliases()):
+                                d.update_IPv4(a.showname_value)
+                                #self.search_lost_propertyes(alias.showname_value, d)
                 elif (_typ.hex_value == 28 and addr_aaaa.__len__()>0):
                     aaaa_list.append(addr_aaaa.pop(0))
                     alias_list.append(_nam)
@@ -431,6 +507,7 @@ class NetworkLAN:
                 alias: LayerField = alias_list.pop(0)  # resp_names[i]
                 if (aaaa.showname_value == dev.last_IPv6_know()):
                     dev.add_alias(alias.showname_value)
+                    self.search_lost_propertyes(alias.showname_value, dev)
                 else:
                     for _d in self._devices.values():
                         d: Device = _d
@@ -439,21 +516,19 @@ class NetworkLAN:
                         # if (aaaa.showname_value == str(d.last_IP_know())):
                         if (_aaaa == _ip):
                             d.add_alias(alias.showname_value)
-                        elif (alias.showname_value in d.alias()):
+                            self.search_lost_propertyes(alias.showname_value, d)
+                        elif (alias.showname_value in d.aliases()):
                             d.update_IPv6(_aaaa)
+                            #self.search_lost_propertyes(alias.showname_value, d)
 
-        if(len(dev.alias())>0 or len(dev.get_services())>0):
+        self.cleanup(dev)
+
+        if(len(dev.aliases())>0 or len(dev.get_services())>0):
             self._devices[name] = dev
-            for _srv in dev.get_services().values():
-                dev.add_alias(_srv.service())
+            #for _srv in dev.get_services().values():
+                #dev.add_alias(_srv.service())
                 #dev.add_alias('?_' + _srv.service() + '_?')
 
-    def cleanup(self):
-        for _device in self._devices.values():
-            dev:Device=_device
-            aliases:list=dev.alias()
-            for _alias in aliases:
-                alias:str=_alias
 
     def all_kind_protocol(self):
         all_Prot:set=set()
@@ -479,7 +554,7 @@ class NetworkLAN:
     def all_local_alias(self):
         for d in self._devices.values():
             d:Device
-            for a in d.alias():
+            for a in d.aliases():
                 a:str
                 if(a.count('.local')>0):
                     print(a.replace('.local',''))
@@ -502,6 +577,7 @@ class HowIsWhat:
         self._kindPool = {}
         self._bestMatches = set()
         self._kind=self.UNKNOWN
+        self._rel_lev=0
 
         for kind in self.ALL:
             self._kindPool[kind] = 0
@@ -541,7 +617,7 @@ class HowIsWhat:
         return info
 
     def check_on_local_alias(self):
-        for alias in self._device.alias():
+        for alias in self._device.aliases():
             alias:str
             if(alias.count('.local')>0):
                 keyw:str=alias.replace('.local','')
@@ -566,21 +642,21 @@ class HowIsWhat:
     def check_MDNS_proto(self):
         # prots:list[str]=protocols[:]
         # while(self._bestMatches and len(prots)>0):
-        for p in self.protos:
+        for p in self._protos:
             for kind, kind_set in zip(self.SPEC, self.SPEC.values()):
                 if p in kind_set:
                     self._bestMatches.add(kind)
                     break
 
         if (len(self._bestMatches) == 0):
-            for p in self.protos:
+            for p in self._protos:
                 for kind, kind_set in zip(self.ALL, self.ALL.values()):
                     if p in kind_set:
-                        self.kindPool[kind] += 1
+                        self._kindPool[kind] += 1
 
             max: int = 0
             best: str = self.UNKNOWN
-            for kind, count in zip(self.kindPool, self.kindPool.values()):
+            for kind, count in zip(self._kindPool, self._kindPool.values()):
                 if (count > max):
                     best = kind
                     max = count

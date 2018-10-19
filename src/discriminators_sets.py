@@ -30,7 +30,7 @@ pWORKSTATION: set = {
     '_sketchmirror',
     '_distcc',
     '_eppc',
-    '_esdevice',
+    #'_esdevice',
     '_esfileshare',
     '_hudson',
     '_ichat',
