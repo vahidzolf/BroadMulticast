@@ -208,11 +208,14 @@ class Device(object):
     def update_kind(self):
         protos:set=set()
         checker: HowIsWhat = HowIsWhat(self)
+        self._kind=checker.get_kind()
 
-        kindList:list=checker.get_bestMatches()
-        self._kind=kindList.pop(0)
-        while(len(kindList)>0):
-            self._kind=self._kind + '/' + kindList.pop(0)
+        if(checker.reliability()<9):
+            kindList:list=checker.get_bestMatches()
+            if(len(kindList)>0):
+                self._kind=kindList.pop(0)
+            while(len(kindList)>0):
+                self._kind=self._kind + '/' + kindList.pop(0)
 
 
     def id(self):
@@ -595,25 +598,50 @@ class HowIsWhat:
                 info: str = self.check_dev_info(s)
                 if (info != None):
                     self._kind=info
-                    self._rel_lev=9
+                    #self._rel_lev=9
 
         self.check_on_local_alias()
 
-        if (len(self._bestMatches) == 0):
+        if (self._rel_lev < 9):
             self.check_MDNS_proto()
 
     def check_dev_info(self, record:ServiceMDNS):
         if(record.protocol()!='_device-info'):
             return None
-        info=None
         txts:dict=record.txts()
-        model=txts['model']
-        if(model in apple_products):
+        info=None
+
+        model=None
+        if ('model'in txts):
+            model = txts.pop('model') #txts['model']
+
+        osx=None
+        if ('osxvers' in txts):
+            osx = txts.pop('osxvers') #txts['osxvers']
+
+        if(model!=None and model in apple_products):
             info=apple_products[model]
-            if('osxvers' in txts):
-                osx = txts['osxvers']
-                if(osx in apple_osx_versions):
-                    info = info + ' with ' + apple_osx_versions[osx]
+            self._rel_lev=9
+        elif ( model!=None ):
+            info='Model #: ' + model
+            self._rel_lev = 9
+
+        if(osx!=None and osx in apple_osx_versions):
+            info = info + ' with ' + apple_osx_versions[osx]
+        elif(osx!=None):
+            if(info!=None):
+                info = info + ', OsX: ' + osx
+            else:
+                info = 'OsX: ' + osx
+
+        if(len(txts)>0):
+            if(info==None):
+                info=''
+            for inf in txts:
+                info = info + ' = ' + txts[inf] + ', '
+
+            info = info [:len(info)-3]
+
         return info
 
     def check_on_local_alias(self):
@@ -655,17 +683,25 @@ class HowIsWhat:
                         self._kindPool[kind] += 1
 
             max: int = 0
-            best: str = self.UNKNOWN
+            best: str = None
             for kind, count in zip(self._kindPool, self._kindPool.values()):
                 if (count > max):
                     best = kind
                     max = count
                 elif (count == max and max>0):
+                    if (best==None): best = ''
                     best = best + '/' + kind
 
-            self._bestMatches.add(best)
+            if(best!=None):
+                self._bestMatches.add(best)
 
-        return list(self._bestMatches)
+        #return list(self._bestMatches)
+
+    def get_kind(self):
+        return self._kind[:]
+
+    def reliability(self):
+        return int(self._rel_lev)
 
     def get_bestMatches(self):
         return list(self._bestMatches)
