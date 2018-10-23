@@ -1,6 +1,6 @@
 from pyshark.packet.packet import Packet
 from pyshark.packet.fields import *
-from src.discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_on_alias
+from src.discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_WORKST_on_alias
 
 
 class Target:
@@ -206,6 +206,11 @@ class Device(object):
             self._alias.add(str(new_alias))
 
     def update_kind(self):
+########################### DEBUG ######################
+        if(self._id == '00:d0:b8:22:3b:c4' or self._id=='48:4b:aa:5d:84:65'):
+            print('', end='')
+########################################################
+
         protos:set=set()
         checker: HowIsWhat = HowIsWhat(self)
         self._kind=checker.get_kind()
@@ -605,6 +610,7 @@ class HowIsWhat:
         if (self._rel_lev < 9):
             self.check_MDNS_proto()
 
+
     def check_dev_info(self, record:ServiceMDNS):
         if(record.protocol()!='_device-info'):
             return None
@@ -650,13 +656,13 @@ class HowIsWhat:
             if(alias.count('.local')>0):
                 keyw:str=alias.replace('.local','')
 
-                for k in keyword_on_alias:
+                for k in keyword_WORKST_on_alias:
                     if(keyw.count(k)>0):
                         keyw = k #keyword_on_alias[k]
                         break
 
-                if (keyw in keyword_on_alias):
-                    howis = keyword_on_alias[keyw]
+                if (keyw in keyword_WORKST_on_alias):
+                    howis = keyword_WORKST_on_alias[keyw]
                     owner = alias.replace(keyw,'').replace('.local','')
                     owner = owner.replace('s-','').replace('-',' ')
                     owner = owner.replace('di','').replace('de','').replace('von','')
@@ -664,7 +670,8 @@ class HowIsWhat:
                         owner=self.UNKNOWN
                     self._guess_owner=owner
                     if(self._rel_lev<5):
-                        self._kind=howis
+                        self._bestMatches.add(howis)
+                        self._kindPool['WORKSTATION']=5
                         self._rel_lev=5
 
     def check_MDNS_proto(self):
@@ -674,23 +681,34 @@ class HowIsWhat:
             for kind, kind_set in zip(self.SPEC, self.SPEC.values()):
                 if p in kind_set:
                     self._bestMatches.add(kind)
-                    break
+                    self._rel_lev=9
 
         if (len(self._bestMatches) == 0):
+            max: int = 0
+            best: str = None
             for p in self._protos:
-                for kind, kind_set in zip(self.ALL, self.ALL.values()):
-                    if p in kind_set:
-                        self._kindPool[kind] += 1
+                for kind, kind_dict in zip(self.ALL, self.ALL.values()):
+                    if p in kind_dict:
+                        trust = kind_dict[p][0]
+                        if(trust > self._kindPool[kind]):
+                            self._kindPool[kind]=trust
+                            if(trust > max):
+                                max=trust
+                                self._kind=kind_dict[p][1]
+                                best=kind
+
+                        #else:
+                        #   self._kindPool[kind] = int( (self._kindPool[kind] + trust) / 2 )
 
             max: int = 0
             best: str = None
             for kind, count in zip(self._kindPool, self._kindPool.values()):
                 if (count > max):
-                    best = kind
+                    #best = kind
                     max = count
                 elif (count == max and max>0):
                     if (best==None): best = ''
-                    best = best + '/' + kind
+                    #best = best + '/' + kind
 
             if(best!=None):
                 self._bestMatches.add(best)
@@ -698,6 +716,10 @@ class HowIsWhat:
         #return list(self._bestMatches)
 
     def get_kind(self):
+        if (self._kind==self.UNKNOWN or self._rel_lev>5):
+            self._kind.replace(self.UNKNOWN,'')
+            for b in self._bestMatches:
+                self._kind = self._kind + ' / ' + b
         return self._kind[:]
 
     def reliability(self):

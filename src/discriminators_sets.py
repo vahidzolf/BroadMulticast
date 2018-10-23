@@ -11,45 +11,45 @@ Like _ALLprot, but every set of protocols contain only the protocols that can be
 Fields: Same of _ALLprot
 '''
 
-pWORKSTATION: set = {
-    '_sleep-proxy',
-    '_sftp-ssh',
-    '_adisk',
-    '_afpovertcp',
-    '_pdl-datastream',
-    '_net-assistant',
-    '_device-info',
-    '_ssh',
-    '_workstation',
-    '_teamviewer',
-    '_companion-link',
-    '_smb',
-    '_rfb',
-    '_nomachine',
-    '_airdrop',
-    '_sketchmirror',
-    '_distcc',
-    '_eppc',
+pWORKSTATION: dict = {
+    '_sleep-proxy' : (4, 'AirPort'),
+    '_sftp-ssh' : (8, 'Remote Terminal'),
+    '_adisk': (8, 'Time Capsule'),
+    '_afpovertcp' : (6, 'Apple Filesharing'),
+    '_pdl-datastream' : (3, 'Sharing a Printer'),
+    '_net-assistant': (9, 'Apple Remote Desktop'),
+    #'_device-info' : (5, 'A generic Device'),
+    '_ssh' : (7, 'Remote Terminal'),
+    '_workstation' : (9, 'Workstation'),
+    '_teamviewer' : (9, 'PC Remote control whith TeamViewer'),
+    '_companion-link': (3, 'Sharing & Sync Contacts, Agenda & More'),
+    '_smb' : (6, 'Server Message Block'),
+    '_rfb' : (8, 'Screen Sharing OSX'),
+    '_nomachine': (9, 'Remote Desktop'),
+    '_airdrop' : (7, 'Apple File Sharing'),
+    '_sketchmirror' : (9, 'PC running Sketch App'),
+    '_distcc' : (9, 'Workstation Running a Distribute Compiler'),
+    '_eppc' : (9, 'Remote AppleEvents'),
     #'_esdevice',
-    '_esfileshare',
-    '_hudson',
-    '_ichat',
-    '_jenkins',
-    '_keynotepair',
-    '_omnistate',
-    '_photoshopserver',
-    '_raop',
-    '_telnet',
-    '_tunnel',
-    '_udisks-ssh',
-    '_nfs',
-    '_webdavs',
-    '_apple-sasl',
-    '_cloud',
-    '_readynas',
-    '_servermgr',
-    '_xserveraid',
-    '_ftp'
+    #'_esfileshare',
+    '_hudson' : (9, 'Workstation Running Jenkins App'),
+    '_ichat' : (9, 'Apple PC'),
+    '_jenkins' : (9, 'Workstation Running Jenkins App'),
+    #'_keynotepair' : (5, 'PC or Mobile with Apple Keynote'),
+    '_omnistate' : (9, 'PC running a Omnigroup App'),
+    '_photoshopserver': (9, 'Workstation with Photoshop Server'),
+    '_raop' : (3, 'Device with Airplay'),
+    '_telnet' : (9, 'telnet'),
+    '_tunnel' : (1, 'tunnel'),
+    '_udisks-ssh' : (6, 'Device with Linux Kernel (Ubuntu/Raspberry Pi)'),
+    '_nfs' : (5, 'Workstation using Network File System'),
+    '_webdavs' : (3, 'Workstation that offer WebDav instructions'),
+    '_apple-sasl' : (9, 'Apple Password Server'),
+    '_cloud' : (7, 'Home-Cloud Device (by Daplie)'),
+    #'_readynas' : (),
+    '_servermgr' : (9, 'Server Admin (Apple)'),
+    '_xserveraid' : (9, 'Xserver RAID (Apple)'),
+    '_ftp' : (3, 'Workstation Share Files')
 }
 _ALLprot['WORKSTATION'] = pWORKSTATION
 _SPECprot['WORKSTATION'] = {
@@ -83,21 +83,22 @@ _SPECprot['WORKSTATION'] = {
     '_xserveraid'
 }
 
-pNAS: set = {
-    'smb',
-    '_readynas'
+pNAS: dict = {
+    'smb' : (3, 'NAS Share resouces(files, printers, ...)'),
+    '_readynas': (9, 'Netgear`s NAS')
 }
 _ALLprot['NAS'] = pNAS
 _SPECprot['NAS'] = {
     #'smb'
+    '_readynas'
 }
-pPRINTER: set = {
-    '_ipps',
-    '_pdl-datastream',
-    '_scanner',
-    '_ipp',
-    '_printer',
-    '_tcp'
+pPRINTER: dict = {
+    '_ipps' : (4, 'Printer'),
+    '_pdl-datastream' : (4, 'Printer'),
+    '_scanner' : (4, 'Printer'),
+    '_ipp' : (4, 'Printer'),
+    '_printer' : (4, 'Printer'),
+    '_tcp' : (4, 'Printer')
 }  # '_ica-networking'
 _ALLprot['PRINTER'] = pPRINTER
 _SPECprot['PRINTER'] = {
@@ -108,24 +109,24 @@ _SPECprot['PRINTER'] = {
     #'_printer'
 }
 
-pMEDIA: set = {
-    '_spotify-connect',
-    '_airplay',
-    '_amzn-wplay',
-    '_appletv-v2',
-    '_atc',
-    '_daap',
-    '_cloud',
-    '_dpap',
-    '_googlecast',
-    '_hap',
-    '_homekit',
-    '_home-sharing',
-    '_mediaremotetv',
-    '_nvstream',
-    '_raop',
-    '_rsp',
-    '_touch-able'
+pMEDIA: dict = {
+    '_spotify-connect' : (7, 'Device running Spotify'),
+    '_airplay' : (6, 'Device running AirPlay'),
+    '_amzn-wplay' : (9, 'Firestick Amazon'),
+    '_appletv-v2' : (9, 'Apple TV'),
+    '_atc' : (6, 'Device sharing iTunes Library'),
+    '_daap' : (8, 'Digital Audio Access Protocol'),
+    '_cloud' : (4, 'Daplie`s Device sharing media'),
+    '_dpap' : (7, 'Photo Share'),
+    '_googlecast' : (9, 'GoogleCast'),
+    '_hap' : (8, 'Homekit Apple'),
+    '_homekit' : (8, 'Homekit Apple'),
+    '_home-sharing' : (6, 'iTunes Sharing'),
+    '_mediaremotetv' : (7, 'Apple TV'),
+    '_nvstream' : (9, 'NVIDIA Shield'),
+    '_raop' : (4, 'Device running Airplay'),
+    '_rsp' : (9, 'Roku Server'),
+    '_touch-able' : (3, 'Apple TV')
 }
 _ALLprot['MEDIA'] = pMEDIA
 _SPECprot['MEDIA'] = {
@@ -147,13 +148,13 @@ _SPECprot['MEDIA'] = {
     '_rsp',
     '_touch-able'
 }
-pMOBILE: set = {
-    '_companion-link',
-    '_apple-mobdev2',
-    '_airdroid',
-    '_KeynoteControl',
-    '_keynotepair',
-    '_touch-able'
+pMOBILE: dict = {
+    '_companion-link' : (5, 'Sharing & Sync Contacts, Agenda & More'),
+    '_apple-mobdev2' : (9, 'Device Mobile Apple'),
+    '_airdroid' : (9, 'Airdroid App'),
+    '_KeynoteControl' : (9, 'Apple Mobile running Keynote'),
+    '_keynotepair' : (7, 'Keynote Pair'),
+    '_touch-able' : (3, 'Able Touch on Apple TV from Mobile')
 }
 _ALLprot['MOBILE'] = pMOBILE
 _SPECprot['MOBILE']={
@@ -316,7 +317,7 @@ apple_osx_versions = {
 iPhone = 'iPhone'
 iPad = 'iPad Tablet'
 PC = 'Personal Computer'
-keyword_on_alias = {
+keyword_WORKST_on_alias = {
     'Android': 'Android Device',
     'DESKTOP': 'Windows Desktop',
     's-iPad': iPad,
