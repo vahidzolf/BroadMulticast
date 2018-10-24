@@ -1,3 +1,9 @@
+WORKSTATION = 'WORKSTATION'
+NAS = 'NAS'
+PRINTER = 'PRINTER'
+MOBILE = 'MOBILE'
+MEDIA = 'MEDIA'
+
 _ALLprot: dict = {}
 '''
 Dictionary where are collected all known protocols, subdivided by kind of device:\n
@@ -12,18 +18,17 @@ Fields: Same of _ALLprot
 '''
 
 pWORKSTATION: dict = {
-    '_sleep-proxy' : (4, 'AirPort'),
-    '_sftp-ssh' : (8, 'Remote Terminal'),
-    '_adisk': (8, 'Time Capsule'),
+    '_sleep-proxy' : (3, 'AirPort'),
+    '_sftp-ssh' : (7, 'Remote Terminal'),
     '_afpovertcp' : (6, 'Apple Filesharing'),
-    '_pdl-datastream' : (3, 'Sharing a Printer'),
+    #'_pdl-datastream' : (3, 'Sharing a Printer'),
     '_net-assistant': (9, 'Apple Remote Desktop'),
     #'_device-info' : (5, 'A generic Device'),
     '_ssh' : (7, 'Remote Terminal'),
     '_workstation' : (9, 'Workstation'),
     '_teamviewer' : (9, 'PC Remote control whith TeamViewer'),
     '_companion-link': (3, 'Sharing & Sync Contacts, Agenda & More'),
-    '_smb' : (6, 'Server Message Block'),
+    '_smb' : (3, 'Server Message Block'),
     '_rfb' : (8, 'Screen Sharing OSX'),
     '_nomachine': (9, 'Remote Desktop'),
     '_airdrop' : (7, 'Apple File Sharing'),
@@ -39,7 +44,7 @@ pWORKSTATION: dict = {
     '_omnistate' : (9, 'PC running a Omnigroup App'),
     '_photoshopserver': (9, 'Workstation with Photoshop Server'),
     '_raop' : (3, 'Device with Airplay'),
-    '_telnet' : (9, 'telnet'),
+    '_telnet' : (3, 'telnet'),
     '_tunnel' : (1, 'tunnel'),
     '_udisks-ssh' : (6, 'Device with Linux Kernel (Ubuntu/Raspberry Pi)'),
     '_nfs' : (5, 'Workstation using Network File System'),
@@ -49,16 +54,12 @@ pWORKSTATION: dict = {
     #'_readynas' : (),
     '_servermgr' : (9, 'Server Admin (Apple)'),
     '_xserveraid' : (9, 'Xserver RAID (Apple)'),
-    '_ftp' : (3, 'Workstation Share Files')
+    #'_ftp' : (3, 'Workstation Share Files')
 }
 _ALLprot['WORKSTATION'] = pWORKSTATION
 _SPECprot['WORKSTATION'] = {
-    '_sleep-proxy',
-    '_adisk',
-    '_afpovertcp',
     '_net-assistant',
     '_device-info',
-    '_ssh',
     '_workstation',
     '_teamviewer',
     '_smb',
@@ -73,8 +74,6 @@ _SPECprot['WORKSTATION'] = {
     '_omnistate',
     '_photoshopserver',
     '_raop',
-    '_telnet',
-    '_tunnel',
     '_udisks-ssh',
     '_nfs',
     '_webdavs',
@@ -85,12 +84,16 @@ _SPECprot['WORKSTATION'] = {
 
 pNAS: dict = {
     'smb' : (3, 'NAS Share resouces(files, printers, ...)'),
-    '_readynas': (9, 'Netgear`s NAS')
+    '_readynas': (9, 'Netgear`s NAS'),
+    '_afpovertcp' : (6, 'Apple Filesharing'),
+    '_adisk': (9, 'Time Capsule'),
 }
 _ALLprot['NAS'] = pNAS
 _SPECprot['NAS'] = {
-    #'smb'
-    '_readynas'
+    'smb'
+    '_readynas',
+    '_adisk',
+    '_afpovertcp'
 }
 pPRINTER: dict = {
     '_ipps' : (4, 'Printer'),
@@ -100,13 +103,13 @@ pPRINTER: dict = {
     '_printer' : (4, 'Printer'),
     '_tcp' : (4, 'Printer')
 }  # '_ica-networking'
-_ALLprot['PRINTER'] = pPRINTER
-_SPECprot['PRINTER'] = {
-    #'_ipps',
-    #'_pdl-datastream',
-    #'_scanner',
-    #'_ipp',
-    #'_printer'
+_ALLprot[PRINTER] = pPRINTER
+_SPECprot[PRINTER] = {
+    '_ipps',
+    '_pdl-datastream',
+    '_scanner',
+    '_ipp',
+    '_printer'
 }
 
 pMEDIA: dict = {
@@ -128,8 +131,8 @@ pMEDIA: dict = {
     '_rsp' : (9, 'Roku Server'),
     '_touch-able' : (3, 'Apple TV')
 }
-_ALLprot['MEDIA'] = pMEDIA
-_SPECprot['MEDIA'] = {
+_ALLprot[MEDIA] = pMEDIA
+_SPECprot[MEDIA] = {
     #'_spotify-connect',
     '_airplay',
     '_amzn-wplay',
@@ -156,8 +159,8 @@ pMOBILE: dict = {
     '_keynotepair' : (7, 'Keynote Pair'),
     '_touch-able' : (3, 'Able Touch on Apple TV from Mobile')
 }
-_ALLprot['MOBILE'] = pMOBILE
-_SPECprot['MOBILE']={
+_ALLprot[MOBILE] = pMOBILE
+_SPECprot[MOBILE]={
     '_apple-mobdev2',
     '_airdroid',
     '_KeynoteControl',
@@ -317,13 +320,14 @@ apple_osx_versions = {
 iPhone = 'iPhone'
 iPad = 'iPad Tablet'
 PC = 'Personal Computer'
-keyword_WORKST_on_alias = {
-    'Android': 'Android Device',
+keyword_on_alias = {}
+'''
+Contain all dictionaries of common keyword on name devices, subdivided by kind(WORKSTATION, MOBILE), ...
+\nEx: keyword_on_alias[WORKSTATION] = it contain keyword of form: < 'MacBook-Pro-di-': 'MacBook Pro Notebook' > 
+'''
+
+keyword_on_alias[WORKSTATION] = {
     'DESKTOP': 'Windows Desktop',
-    's-iPad': iPad,
-    'iPhone-de-': iPhone,
-    'iPad-di-': iPad,
-    'iPhone': iPhone,
     's-MacBook-Air': 'MacBook Air Notebook',
     'PC': PC,
     'Computer': PC,
@@ -333,5 +337,16 @@ keyword_WORKST_on_alias = {
     's-iMac': 'iMac PC Desktop',
     's-MacBookPro': 'MacBook Pro Notebook',
     's-mac-mini': 'Mac Mini Desktop',
-    'Computer-di-': PC
+    'Computer-di-': PC,
+    'Mac' : 'Mac PC'
 }
+
+keyword_on_alias[MOBILE] = {
+    'Android': 'Android Device',
+    's-iPad': iPad,
+    'iPhone-de-': iPhone,
+    'iPad-di-': iPad,
+    'iPhone': iPhone
+}
+
+

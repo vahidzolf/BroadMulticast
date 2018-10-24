@@ -1,6 +1,6 @@
 from pyshark.packet.packet import Packet
 from pyshark.packet.fields import *
-from src.discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_WORKST_on_alias
+from src.discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_on_alias
 
 
 class Target:
@@ -215,12 +215,14 @@ class Device(object):
         checker: HowIsWhat = HowIsWhat(self)
         self._kind=checker.get_kind()
 
+        '''
         if(checker.reliability()<9):
             kindList:list=checker.get_bestMatches()
             if(len(kindList)>0):
                 self._kind=kindList.pop(0)
             while(len(kindList)>0):
                 self._kind=self._kind + '/' + kindList.pop(0)
+        '''
 
 
     def id(self):
@@ -656,73 +658,87 @@ class HowIsWhat:
             if(alias.count('.local')>0):
                 keyw:str=alias.replace('.local','')
 
-                for k in keyword_WORKST_on_alias:
-                    if(keyw.count(k)>0):
-                        keyw = k #keyword_on_alias[k]
-                        break
+                for kind, keyword_dict in keyword_on_alias.items():
 
-                if (keyw in keyword_WORKST_on_alias):
-                    howis = keyword_WORKST_on_alias[keyw]
-                    owner = alias.replace(keyw,'').replace('.local','')
-                    owner = owner.replace('s-','').replace('-',' ')
-                    owner = owner.replace('di','').replace('de','').replace('von','')
-                    if(len(owner) < 3):
-                        owner=self.UNKNOWN
-                    self._guess_owner=owner
-                    if(self._rel_lev<5):
-                        self._bestMatches.add(howis)
-                        self._kindPool['WORKSTATION']=5
-                        self._rel_lev=5
+                    for k in keyword_dict: # TODO: Sostituire con keyword_on_alias[WORKSTATION]
+                        if(keyw.count(k)>0):
+                            keyw = k #keyword_on_alias[k]
+                            break
+
+                    if (keyw in keyword_dict):
+                        howis = keyword_dict[keyw]
+                        owner = alias.replace(keyw,'').replace('.local','')
+                        owner = owner.replace('s-','').replace('-',' ')
+                        owner = owner.replace('di','').replace('de','').replace('von','')
+                        if(len(owner) < 3):
+                            owner=self.UNKNOWN
+                        self._guess_owner=owner
+                        if(self._rel_lev<5):
+                            self._bestMatches.add(howis + ' (supposed by  dev`s name)')
+                            self._kindPool[kind]=5
+                            self._rel_lev=5
 
     def check_MDNS_proto(self):
-        # prots:list[str]=protocols[:]
-        # while(self._bestMatches and len(prots)>0):
+        max: int = 0
+        best: str = None
         for p in self._protos:
             for kind, kind_set in zip(self.SPEC, self.SPEC.values()):
                 if p in kind_set:
-                    self._bestMatches.add(kind)
-                    self._rel_lev=9
+                    trust = self.ALL[kind][p][0]
+                    if(self._kindPool[kind]<trust):
+                        self._bestMatches.add(kind)
+                        self._kindPool[kind]=trust
+                        if (trust>max):
+                            max=trust
+                            self._rel_lev=trust
 
-        if (len(self._bestMatches) == 0):
-            max: int = 0
-            best: str = None
+        if (len(self._bestMatches) == 0 or self._rel_lev<=5):
             for p in self._protos:
                 for kind, kind_dict in zip(self.ALL, self.ALL.values()):
                     if p in kind_dict:
                         trust = kind_dict[p][0]
                         if(trust > self._kindPool[kind]):
+                            self._bestMatches.add(kind)
                             self._kindPool[kind]=trust
                             if(trust > max):
                                 max=trust
-                                self._kind=kind_dict[p][1]
-                                best=kind
+                                self._kind=kind
+                                #best=kind
 
-                        #else:
-                        #   self._kindPool[kind] = int( (self._kindPool[kind] + trust) / 2 )
-
-            max: int = 0
-            best: str = None
-            for kind, count in zip(self._kindPool, self._kindPool.values()):
-                if (count > max):
-                    #best = kind
-                    max = count
-                elif (count == max and max>0):
-                    if (best==None): best = ''
-                    #best = best + '/' + kind
-
-            if(best!=None):
-                self._bestMatches.add(best)
-
-        #return list(self._bestMatches)
+    '''
+    
+                #max: int = 0
+                #best: str = None
+                for kind, count in zip(self._kindPool, self._kindPool.values()):
+                    if (count > max):
+                        #best = kind
+                        max = count
+                    elif (count == max and max>0):
+                        if (best==None): best = ''
+                        #best = best + '/' + kind
+                
+                if(best!=None and best!=):
+                    self._bestMatches.add(best)
+    '''
 
     def get_kind(self):
-        if (self._kind==self.UNKNOWN or self._rel_lev>5):
-            self._kind.replace(self.UNKNOWN,'')
+        if ( len(self._bestMatches)>0 and (self._kind==self.UNKNOWN or self._rel_lev>=5) ):
+            self._kind = self._kind.replace(self.UNKNOWN, '')
+
+            if('PRINTER' in self._bestMatches and len(self._bestMatches)>1):
+                self._kind = 'PRINTER or device that share a PRINTER: '
+                self._bestMatches.remove('PRINTER')
+
             for b in self._bestMatches:
-                self._kind = self._kind + ' / ' + b
+                if(self._kind==''):
+                    self._kind = b
+                else:
+                    self._kind = self._kind + ' / ' + b
+
         return self._kind[:]
 
     def reliability(self):
+        '''Reliability about what a Device's kind it is. Range value: 1(Completely Unknown) <---> 9(completely Sure)'''
         return int(self._rel_lev)
 
     def get_bestMatches(self):
