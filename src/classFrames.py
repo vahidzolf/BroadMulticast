@@ -207,7 +207,7 @@ class Device(object):
 
     def update_kind(self):
 ########################### DEBUG ######################
-        if(self._id == '00:d0:b8:22:3b:c4' or self._id=='48:4b:aa:5d:84:65'):
+        if(self._id == '00:25:4b:b4:2b:2c'):
             print('', end='')
 ########################################################
 
@@ -702,7 +702,7 @@ class HowIsWhat:
                             self._kindPool[kind]=trust
                             if(trust > max):
                                 max=trust
-                                self._kind=kind
+                                self._bestMatches.add(kind)
                                 #best=kind
 
     '''

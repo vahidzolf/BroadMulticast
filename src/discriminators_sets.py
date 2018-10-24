@@ -83,14 +83,14 @@ _SPECprot['WORKSTATION'] = {
 }
 
 pNAS: dict = {
-    'smb' : (3, 'NAS Share resouces(files, printers, ...)'),
+    '_smb' : (3, 'NAS Share resouces(files, printers, ...)'),
     '_readynas': (9, 'Netgear`s NAS'),
     '_afpovertcp' : (6, 'Apple Filesharing'),
     '_adisk': (9, 'Time Capsule'),
 }
 _ALLprot['NAS'] = pNAS
 _SPECprot['NAS'] = {
-    'smb'
+    '_smb'
     '_readynas',
     '_adisk',
     '_afpovertcp'
