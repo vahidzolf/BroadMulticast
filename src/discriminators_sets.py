@@ -9,11 +9,13 @@ _ALLprot: dict = {}
 Dictionary where are collected all known protocols, subdivided by kind of device:\n
 ex:\t_ALLprot[PC] = set of all protocols detected on 'PC Devices'\n 
 Fields: PC, SERVER, PRINTER, MEDIA, MOBILE, ACCESSPOINT
+Every dict of kind, contain: key = 'protocol name'; val = tuple that contain <reliability, little description*>
+*not used yet
 '''
 
 _SPECprot: dict = {}
 '''
-Like _ALLprot, but every set of protocols contain only the protocols that can be found exclusively in that kind ov Device
+Like _ALLprot, but every set of protocols contain only the protocols that can be found exclusively(almost) in that kind of Device
 Fields: Same of _ALLprot
 '''
 
