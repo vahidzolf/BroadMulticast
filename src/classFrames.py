@@ -1,10 +1,10 @@
 from pyshark.packet.packet import Packet
 from pyshark.packet.fields import *
-from src.discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_on_alias
+from src.discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_on_alias, common_string, common_string_s
 from DropBox_utils import DBlspDISC
 
 # Print or not info of services
-DEBUG_SRV = False
+DEBUG_SRV = True
 
 
 class Target:
@@ -879,9 +879,10 @@ class WhoIsWhat:
                     # if a keyword was found => cleanup the name/alias, trying to guess the owner of device
                     if (keyw in keyword_dict):
                         howis = keyword_dict[keyw]
+                        #owner = self.purify_str(alias)
                         owner = alias.replace(keyw, '').replace('.local', '')
-                        owner = owner.replace('s-', '').replace('-', ' ')
-                        owner = owner.replace('di', '').replace('de', '').replace('von', '')
+                        owner = owner.replace('s-', '').replace('-di-', '').replace('-de-', '').replace('-von-', '').replace('-', ' ').replace('.', ' ')
+                        #owner = owner.replace('di', '').replace('de', '').replace('von', '')
 
                         # if len < 3 => maybe the remaining chars are number or not relevant
                         if (len(owner) < 3):
@@ -893,6 +894,18 @@ class WhoIsWhat:
                             self._bestMatches.add(howis + ' (supposed by  dev`s name)')
                             self._kindPool[kind] = 5    # indica che il tipo indovinato ha affidabilita' 5
                             self._rel_lev = 5
+
+    def purify_str(self, string:str):
+        clear_str:str = string
+        for s in keyword_on_alias:
+            for k in s:
+                clear_str = clear_str.replace(k,'')
+
+        for k in common_string:
+            clear_str = clear_str.replace(k,'')
+        for k in common_string_s:
+            clear_str = clear_str.replace(k,' ')
+        return clear_str
 
     def check_MDNS_proto(self):
         '''

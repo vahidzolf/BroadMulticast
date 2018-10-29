@@ -18,7 +18,8 @@ files:list=['ArsenaleCapture_filtered.pcapng',
             'golf_filtered.pcapng',
             'mdns_responses_filtered.pcap',
             'unipi-multicast_fitered.pcap',
-            'unipi-multicast_DB.pcap'
+            'unipi-multicast_DB.pcap',
+            'multicast_media_filtered.pcap'
             ]
 net=NetworkLAN()
 

@@ -351,4 +351,26 @@ keyword_on_alias[MOBILE] = {
     'iPhone': iPhone
 }
 
+keyword_on_alias[NAS] = {
+    'AirPort-Time-Capsule' : 'AirPort running Time Capsule',
+    'Time-Capsule' : 'Time Capsule',
+    'TC' : 'Time Capsule'
+}
 
+common_string : list = [
+    '.local',
+    's-',
+    '-di-',
+    '-de-',
+    '-von-',
+    'Pro',
+    'Book',
+    'Mac',
+    'Mini',
+    'mini'
+]
+
+common_string_s : list = [
+    '-',
+    '.',
+]
