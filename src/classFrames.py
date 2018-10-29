@@ -879,9 +879,9 @@ class WhoIsWhat:
                     # if a keyword was found => cleanup the name/alias, trying to guess the owner of device
                     if (keyw in keyword_dict):
                         howis = keyword_dict[keyw]
-                        #owner = self.purify_str(alias)
-                        owner = alias.replace(keyw, '').replace('.local', '')
-                        owner = owner.replace('s-', '').replace('-di-', '').replace('-de-', '').replace('-von-', '').replace('-', ' ').replace('.', ' ')
+                        owner = self.purify_str(alias)
+                        #owner = alias.replace(keyw, '').replace('.local', '')
+                        #owner = owner.replace('s-', '').replace('-di-', '').replace('-de-', '').replace('-von-', '').replace('-', ' ').replace('.', ' ')
                         #owner = owner.replace('di', '').replace('de', '').replace('von', '')
 
                         # if len < 3 => maybe the remaining chars are number or not relevant
@@ -897,7 +897,7 @@ class WhoIsWhat:
 
     def purify_str(self, string:str):
         clear_str:str = string
-        for s in keyword_on_alias:
+        for s in keyword_on_alias.values():
             for k in s:
                 clear_str = clear_str.replace(k,'')
 

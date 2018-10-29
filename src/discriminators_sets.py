@@ -354,6 +354,7 @@ keyword_on_alias[MOBILE] = {
 keyword_on_alias[NAS] = {
     'AirPort-Time-Capsule' : 'AirPort running Time Capsule',
     'Time-Capsule' : 'Time Capsule',
+    'TimeCapsule' : 'Time Capsule',
     'TC' : 'Time Capsule'
 }
 
@@ -367,7 +368,10 @@ common_string : list = [
     'Book',
     'Mac',
     'Mini',
-    'mini'
+    'mini',
+    'Time',
+    'Capsule',
+    '0','1','2','3','4','5','6','7','8','9'
 ]
 
 common_string_s : list = [
