@@ -12,7 +12,8 @@ def dropboxStudy(pkt:Packet):
 
 
 folder:str='/home/edoardo/MEGAsync/Tesi/pcap/'
-files:list=['ArsenaleCapture_filtered.pcapng',
+files:list=['jsonPcap1.pcap',
+            'ArsenaleCapture_filtered.pcapng',
             'casaCapture_filtered.pcapng',
             'catturaArsenale_filtered.pcapng',
             'golf_filtered.pcapng',

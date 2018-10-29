@@ -665,6 +665,7 @@ class NetworkLAN:
             dev = self._devices[name]
         else:
             dev = Device(name)
+            self._devices[name]=dev
 
         if ('ip' in packet):
             dev.update_IPv4(packet.ip.src[:])
