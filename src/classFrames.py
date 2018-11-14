@@ -1,10 +1,10 @@
 from pyshark.packet.packet import Packet
 from pyshark.packet.fields import *
-from src.discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_on_alias, common_string, common_string_s
+from discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_on_alias, common_string, common_string_s
 from DropBox_utils import DBlspDISC
 
 # Print or not info of services
-DEBUG_SRV = True
+DEBUG_SRV = False
 
 
 class Target:
@@ -315,7 +315,7 @@ class NetworkLAN:
             print('')
 
             d.update_kind()
-            print('How I am: ', d.kind())
+            print('Who I am: ', d.kind())
             print('Supposed Owner:', d.owner())
 
             dropbox : DBlspDISC = d.get_DB_info()
@@ -812,6 +812,9 @@ class WhoIsWhat:
         # At the end, if no device-info was found, try to guess basing from mDNS's services detected
         if (self._rel_lev < 9):
             self.check_MDNS_proto()
+
+        if (dev.get_DB_info()!=None):
+            self._bestMatches.add('DropBox Host')
 
     def check_dev_info(self, record: ServiceMDNS):
         '''

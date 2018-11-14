@@ -68,7 +68,7 @@ for file in files:
 net.printAll()
 
 # show linked devices
-net.print_DB()
+#net.print_DB()
 
 #net.all_kind_protocol()
 #net.all_local_alias()
