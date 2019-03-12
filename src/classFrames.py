@@ -164,6 +164,11 @@ class Device(object):
     _services: dict
     _alias: set     # All names that this device have into this LAN
     _db_lsp_disc: DBlspDISC
+    _browser_win_version : str # VZ : browser protocol extracted information about version of windows.
+    _browser_hostname : str    # VZ : comment section extracted from browser host or master announcement
+    _browser_comment : str     # VZ : hostname section extracted from browser host or master announcement
+    _dhcp_fqdn : str           # VZ : name extracted from DHCP request
+
 
     def __init__(self, dev_id: str, ip: str = ''):
         self._id = str(dev_id)
@@ -174,6 +179,10 @@ class Device(object):
         self._kind = ''
         self._owner = '???'
         self._db_lsp_disc = None
+        self._browser_win_version = ''
+        self._browser_hostname = ''
+        self._browser_comment = ''
+        self._dhcp_fqdn = ''
 
     def update_IPv4(self, new_ip: str):
         if new_ip != '' and new_ip != None:
@@ -182,6 +191,18 @@ class Device(object):
     def update_IPv6(self, new_ip: str):
         if new_ip != '' and new_ip != None:
             self._lastIPv6 = str(new_ip)
+
+    def update_browser_info(self, new_hostname : str , new_comment : str , new_win_ver : str):
+        if str(new_hostname) != '':
+            self._browser_hostname = str(new_hostname)
+        if str(new_comment) != '':
+            self._browser_comment = str(new_comment)
+        if str(new_win_ver) != '':
+            self._browser_win_version = str(new_win_ver)
+
+    def update_dhcp_info(self, new_hostname : str ):
+        self._dhcp_fqdn = str(new_hostname)
+
 
     def update_services(self, new_serv: ServiceMDNS):
         '''
@@ -265,6 +286,18 @@ class Device(object):
     def get_DB_info(self):
         return self._db_lsp_disc
 
+    def browser_hostname(self):
+        return self._browser_hostname
+
+    def browser_comment(self):
+        return self._browser_comment
+
+    def browser_win_version(self):
+        return self._browser_win_version
+
+    def dhcp_info(self):
+        return self._dhcp_fqdn
+
     def id(self):
         return self._id[:]
 
@@ -290,6 +323,8 @@ class Device(object):
         return str(self._owner)
 
 
+
+
 class NetworkLAN:
     '''"Main class", that represents the network under analysis'''
     _devices: dict
@@ -302,6 +337,17 @@ class NetworkLAN:
         self._lost_srv_propertyes = dict()
         self._namespaces_in_common = dict()
         self._dropbox_subNET = dict()
+
+    def print_browser_inf(self):
+        for _d in self._devices.values():
+            d: Device = _d
+            print('Device ID: ' +  d.id())
+            if d.browser_hostname() != '':
+                print('Browser Hostname : ' + d.browser_hostname() )
+            if d.browser_comment() != '':
+                print('Browser comment : ' + d.browser_comment())
+            if d.browser_win_version() != '':
+                print('Browser windows version : ' + d.browser_win_version())
 
     def printAll(self):
         ''' Print all infos of the network: devices(MAC addr, aliases, kind, rervices that offer, ...) '''
@@ -318,9 +364,19 @@ class NetworkLAN:
             print('Who I am: ', d.kind())
             print('Supposed Owner:', d.owner())
 
+            if d.dhcp_info() != '':
+                print('DHCP name : ' + d.dhcp_info())
+
             dropbox : DBlspDISC = d.get_DB_info()
             if(dropbox!=None):
                 dropbox.print()
+
+            if d.browser_hostname() != '':
+                print('Browser Hostname : ' + d.browser_hostname() )
+            if d.browser_comment() != '':
+                print('Browser comment : ' + d.browser_comment())
+            if d.browser_win_version() != '':
+                print('Browser windows version : ' + d.browser_win_version())
 
             if(DEBUG_SRV):
                 for _srv in d.get_services().values():
@@ -338,6 +394,8 @@ class NetworkLAN:
                             print(txt_k, '=', txts[txt_k], sep='', end=' , ')
                         print('')
                 print('/----------------------------------/')
+
+
 
     def add_lost_property(self, lost_srv: ServiceMDNS):
         '''
@@ -675,6 +733,109 @@ class NetworkLAN:
 
         dev.update_DB(new_db_lsp_disc)
 
+    def extract_Browser_info(self,packet: Packet):
+        '''
+        Givin a packet, extract Browser information
+        :param packet: ONLY form "pyshark.Filecapture" create with option 'use_json=True'
+        :return:
+        '''
+        name: str
+        if ('eth' in packet and 'browser' in packet):
+            name = packet.eth.src[:]
+        else:
+            return
+
+        dev: Device = None
+        if (name in self._devices):
+            dev = self._devices[name]
+        else:
+            dev = Device(name)
+            self._devices[name]=dev
+
+        if ('ip' in packet):
+            dev.update_IPv4(packet.ip.src[:])
+
+        if ('ipv6' in packet):
+            dev.update_IPv6(packet.ipv6.src[:])
+
+        my_data = packet['BROWSER']
+
+        server = ''
+        comment = ''
+        win_ver = ''
+        if str(packet['BROWSER'].command) == '0x00000001':  # Host Announcement
+            server = my_data.server
+            comment = my_data.comment
+        elif str(packet['BROWSER'].command) == '0x0000000c':
+            server = my_data.mb_server
+        elif str(packet['BROWSER'].command) == '0x00000008':  # bowser election Request
+            server = my_data.server
+        elif str(packet['BROWSER'].command) == '0x00000002':  # Request Announcement
+            try:
+                server = my_data.response_computer_name
+            except AttributeError as e:
+                pass
+        elif str(packet['BROWSER'].command) == '0x00000009':  # Request Announcement
+            pass
+
+        try:
+            win_ver = packet.browser.windows_version
+        except AttributeError as e:
+            pass
+
+
+        dev.update_browser_info(server,comment,win_ver)
+
+
+    def extract_DHCP_info(self,packet: Packet):
+        '''
+        Givin a packet, extract DHCP information
+        :param packet: ONLY form "pyshark.Filecapture" create with option 'use_json=True'
+        :return:
+        '''
+        name: str
+        if ('eth' in packet and ('bootp' in packet or 'dhcpv6' in packet)):
+            name = packet.eth.src[:]
+        else:
+            return
+
+        dev: Device = None
+        if (name in self._devices):
+            dev = self._devices[name]
+        else:
+            dev = Device(name)
+            self._devices[name]=dev
+
+        if ('ip' in packet):
+            dev.update_IPv4(packet.ip.src[:])
+
+        if ('ipv6' in packet):
+            dev.update_IPv6(packet.ipv6.src[:])
+
+        hostname = ''
+        if 'bootp' in packet:
+            my_data = packet['bootp']
+            try:
+                hostname = my_data.option_hostname
+            except AttributeError:
+                try:
+                    hostname = my_data.fqdn_name
+                except AttributeError:
+                    return
+        else:
+            my_data = packet['dhcpv6']
+            try:
+                hostname = my_data.client_fqdn
+            except AttributeError:
+                return
+
+        dev.update_dhcp_info(hostname)
+
+    def extract_unknown(self):
+        for _d in self._devices.values():
+            d: Device = _d
+
+
     def process_packet(self, packet: Packet):
         '''
         Useless, because one function allow paket with 'use_json=False', but the other not ...
@@ -904,7 +1065,6 @@ class WhoIsWhat:
         for s in keyword_on_alias.values():
             for k in s:
                 clear_str = clear_str.replace(k,'')
-
         for k in common_string:
             clear_str = clear_str.replace(k,'')
         for k in common_string_s:

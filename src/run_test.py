@@ -11,17 +11,14 @@ def dropboxStudy(pkt:Packet):
 
 
 
-folder:str='/home/edoardo/MEGAsync/Tesi/pcap/'
-files:list=['jsonPcap1.pcap',
-            'ArsenaleCapture_filtered.pcapng',
-            'casaCapture_filtered.pcapng',
-            'catturaArsenale_filtered.pcapng',
-            'golf_filtered.pcapng',
-            'mdns_responses_filtered.pcap',
-            'unipi-multicast_fitered.pcap',
-            'unipi-multicast_DB.pcap',
-            'multicast_media_filtered.pcap'
-            ]
+folder:str='/root/captures/outdir/'
+files:list=['CNR_chunk_00000_20190222172518.pcap',
+            'CNR_chunk_00002_20190225101908.pcap',
+            'CNR_chunk_00004_20190227235120.pcap',
+            'CNR_chunk_00001_20190224014742.pcap',
+            'CNR_chunk_00003_20190226175640.pcap',
+            'CNR_chunk_00005_20190301070739.pcap',
+]
 net=NetworkLAN()
 
 '''
@@ -36,36 +33,60 @@ for pkt in cap:
     print(d._namespaces)
 '''
 
+
+
 for file in files:
     print('###################### ',file,' #######################')
     # collect mDNS infos
     cap:FileCapture=pyshark.FileCapture(
         input_file=folder+file,
         keep_packets=False,
-        use_json=False
+        use_json=False,
+        display_filter = "not arp"
     )
-    count_pkt:int=0
+    count_pkt: int = 0
+    mdns_pkt: int = 0
+    browser_pkt: int = 0
+    dhcp_pkt: int = 0
+    dropbox_pkt: int = 0
     for pkt in cap:
-        net.extract_mDNS_info(pkt)
+        if 'eth' in pkt:
+            # collect mdns infos
+            if 'mdns' in pkt:
+                net.extract_mDNS_info(pkt)
+                mdns_pkt += 1
+            # collect Browser infos
+            elif 'browser' in pkt:
+                net.extract_Browser_info(pkt)
+                browser_pkt += 1
+            # collect DHCP infos
+            elif 'bootp' in pkt or 'dhcpv6' in pkt:
+                net.extract_DHCP_info(pkt)
+                dhcp_pkt += 1
         count_pkt += 1
-        print('.',end='')
-    print(count_pkt)
+        #if (count_pkt % 1000) == 0:
+        #    print(count_pkt)
 
+    del cap
     # collect Dropbox infos
     cap: FileCapture = pyshark.FileCapture(
         input_file=folder + file,
         keep_packets=False,
-        use_json=True
+        use_json=True,
+        display_filter="db-lsp-disc"
     )
-    count_pkt: int = 0
+
     for pkt in cap:
         net.extract_DB_infos(pkt)
-        count_pkt += 1
-        print('.', end='')
-    print(count_pkt)
+        dropbox_pkt += 1
+
+# At this moment there are some nodes which no name assigned to them, while we can try to resolve the IP address of
+# them using dns or nmlookup
+# net.extract_unknown()
 
 #print snapshot of the network
 net.printAll()
+# net.print_browser_inf()
 
 # show linked devices
 #net.print_DB()
