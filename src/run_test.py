@@ -9,16 +9,20 @@ from DropBox_utils import DBlspDISC
 def dropboxStudy(pkt:Packet):
     pass
 
+# folder:str='/root/captures/outdir/'
+# files:list=['CNR_chunk_00000_20190222172518.pcap',
+#             'CNR_chunk_00002_20190225101908.pcap',
+#             'CNR_chunk_00004_20190227235120.pcap',
+#             'CNR_chunk_00001_20190224014742.pcap',
+#             'CNR_chunk_00003_20190226175640.pcap',
+#             'CNR_chunk_00005_20190301070739.pcap',
+# ]
 
 
-folder:str='/root/captures/outdir/'
-files:list=['CNR_chunk_00000_20190222172518.pcap',
-            'CNR_chunk_00002_20190225101908.pcap',
-            'CNR_chunk_00004_20190227235120.pcap',
-            'CNR_chunk_00001_20190224014742.pcap',
-            'CNR_chunk_00003_20190226175640.pcap',
-            'CNR_chunk_00005_20190301070739.pcap',
-]
+folder:str='/root/captures/'
+# files:list=['cs_general_fixed.pcap']
+files:list=['small.pcap']
+
 net=NetworkLAN()
 
 '''
@@ -44,6 +48,7 @@ for file in files:
         use_json=False,
         display_filter = "not arp"
     )
+    cap.set_debug()
     count_pkt: int = 0
     mdns_pkt: int = 0
     browser_pkt: int = 0
@@ -63,9 +68,11 @@ for file in files:
             elif 'bootp' in pkt or 'dhcpv6' in pkt:
                 net.extract_DHCP_info(pkt)
                 dhcp_pkt += 1
+            #regardless of the protocol of
         count_pkt += 1
-        #if (count_pkt % 1000) == 0:
-        #    print(count_pkt)
+
+        if (count_pkt % 1000) == 0:
+           print(count_pkt)
 
     del cap
     # collect Dropbox infos
@@ -80,9 +87,12 @@ for file in files:
         net.extract_DB_infos(pkt)
         dropbox_pkt += 1
 
+# First we need to identify list of IP addresses of identified nodes
+
+
 # At this moment there are some nodes which no name assigned to them, while we can try to resolve the IP address of
 # them using dns or nmlookup
-# net.extract_unknown()
+    net.extract_unknown(file)
 
 #print snapshot of the network
 net.printAll()

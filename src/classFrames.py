@@ -2,6 +2,10 @@ from pyshark.packet.packet import Packet
 from pyshark.packet.fields import *
 from discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_on_alias, common_string, common_string_s
 from DropBox_utils import DBlspDISC
+import pymysql
+import subprocess
+import socket
+from netaddr import IPAddress
 
 # Print or not info of services
 DEBUG_SRV = False
@@ -168,6 +172,7 @@ class Device(object):
     _browser_hostname : str    # VZ : comment section extracted from browser host or master announcement
     _browser_comment : str     # VZ : hostname section extracted from browser host or master announcement
     _dhcp_fqdn : str           # VZ : name extracted from DHCP request
+    _db_name : str             # VZ : names resolved from our Database
 
 
     def __init__(self, dev_id: str, ip: str = ''):
@@ -183,6 +188,7 @@ class Device(object):
         self._browser_hostname = ''
         self._browser_comment = ''
         self._dhcp_fqdn = ''
+        self._db_name = ''
 
     def update_IPv4(self, new_ip: str):
         if new_ip != '' and new_ip != None:
@@ -203,6 +209,9 @@ class Device(object):
     def update_dhcp_info(self, new_hostname : str ):
         self._dhcp_fqdn = str(new_hostname)
 
+    def update_db_name(self,new_db_name : str):
+        if new_db_name != "":
+            self._db_name = new_db_name
 
     def update_services(self, new_serv: ServiceMDNS):
         '''
@@ -322,6 +331,8 @@ class Device(object):
     def owner(self):
         return str(self._owner)
 
+    def db_name(self):
+        return str(self._db_name)
 
 
 
@@ -377,6 +388,9 @@ class NetworkLAN:
                 print('Browser comment : ' + d.browser_comment())
             if d.browser_win_version() != '':
                 print('Browser windows version : ' + d.browser_win_version())
+
+            if d.db_name() != '':
+                print('Resolved Name : ' + d.db_name())
 
             if(DEBUG_SRV):
                 for _srv in d.get_services().values():
@@ -764,8 +778,11 @@ class NetworkLAN:
         comment = ''
         win_ver = ''
         if str(packet['BROWSER'].command) == '0x00000001':  # Host Announcement
-            server = my_data.server
-            comment = my_data.comment
+            try:
+                server = my_data.server
+                comment = my_data.comment
+            except AttributeError :
+                pass
         elif str(packet['BROWSER'].command) == '0x0000000c':
             server = my_data.mb_server
         elif str(packet['BROWSER'].command) == '0x00000008':  # bowser election Request
@@ -785,6 +802,8 @@ class NetworkLAN:
 
 
         dev.update_browser_info(server,comment,win_ver)
+
+
 
 
     def extract_DHCP_info(self,packet: Packet):
@@ -831,9 +850,84 @@ class NetworkLAN:
 
         dev.update_dhcp_info(hostname)
 
-    def extract_unknown(self):
-        for _d in self._devices.values():
-            d: Device = _d
+    def is_empty(self,any_structure):
+        if any_structure:
+            print('Structure is not empty.')
+            return False
+        else:
+            print('Structure is empty.')
+            return True
+
+    def get_ip_address(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        return s.getsockname()[0]
+
+    def resolve_by_db(self,ip_addr):
+        # Open database connection
+        db = pymysql.connect("localhost", "root", "Vahid737", "lan_hosts")
+
+        try:
+
+            cursor = db.cursor()
+            command = "SELECT ifnull(`Hostname`,`browser_server`) FROM `resolution` WHERE `IP_addr` = '{}';".format(
+                ip_addr)
+            cursor.execute(command)
+            rows = cursor.fetchall()
+        except Exception as e:
+            print("Exception occured:{}".format(e))
+
+        db.commit()
+        db.close()
+        for row in rows:
+            return row[-1]
+
+    def extract_unknown(self,filename):
+        unknowns = []
+        # command = '''tshark -r {} -T fields -e ip.src -e ip.dst | tr "\t" "\n" | sort | uniq '''.format(filename)
+        # local_ip = self.get_ip_address()
+        command = 'ifconfig'
+        result = subprocess.run(command.split(),stdout=subprocess.PIPE,shell=True)
+        output = result.stdout.decode()
+        for line in output.split('\n'):
+            if 'broadcast' in line:
+                local_ip = line.split(' ')[1]
+                netmask = line.split(' ')[3]
+                broadcast_ip = line.split(' ')[-1]
+                command = 'ping -b {}'.format(broadcast_ip)
+                try:
+                    result = subprocess.run(command.split(),stdout=subprocess.PIPE,timeout=8)
+                except subprocess.TimeoutExpired as e:
+                    break
+
+
+        # now the arp cache is filled !! we can search through it to convert mac to IP address
+        #
+
+        #     if d.last_IPv4_know() != '':
+        #         unknowns.append(d)
+        #
+        # dev: Device = None
+
+        command = 'arp -a'
+        arp_result = subprocess.run(command.split(), stdout=subprocess.PIPE)
+        output = arp_result.stdout.decode()
+        lines = output.split('\n')[:-1]
+
+
+        for line in lines:
+            hostname = line.split()[0]
+            line_mac = line.split()[3]
+            line_ip = line.split()[1]
+            if (line_mac in self._devices):
+                dev = self._devices[line_mac]
+            else:
+                dev = Device(line_mac)
+                self._devices[line_mac] = dev
+            if hostname != '?':
+                dev.update_db_name(hostname)
+            dev.update_IPv4(line_ip)
+
 
 
     def process_packet(self, packet: Packet):
