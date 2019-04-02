@@ -20,8 +20,10 @@ def dropboxStudy(pkt:Packet):
 
 
 folder:str='/root/captures/'
-# files:list=['cs_general_fixed.pcap']
-files:list=['small.pcap']
+files:list=['cs_general_fixed.pcap']
+# files:list=['small.pcap']
+#files:list=['CNR_Big_capture.pcap']
+# files:list=['medium.pcap']
 
 net=NetworkLAN()
 
@@ -48,33 +50,27 @@ for file in files:
         use_json=False,
         display_filter = "not arp"
     )
-    cap.set_debug()
-    count_pkt: int = 0
-    mdns_pkt: int = 0
-    browser_pkt: int = 0
-    dhcp_pkt: int = 0
-    dropbox_pkt: int = 0
+    # cap.set_debug()
+
     for pkt in cap:
         if 'eth' in pkt:
             # collect mdns infos
             if 'mdns' in pkt:
                 net.extract_mDNS_info(pkt)
-                mdns_pkt += 1
             # collect Browser infos
             elif 'browser' in pkt:
                 net.extract_Browser_info(pkt)
-                browser_pkt += 1
             # collect DHCP infos
             elif 'bootp' in pkt or 'dhcpv6' in pkt:
                 net.extract_DHCP_info(pkt)
-                dhcp_pkt += 1
             #regardless of the protocol of
-        count_pkt += 1
-
-        if (count_pkt % 1000) == 0:
-           print(count_pkt)
 
     del cap
+
+
+
+
+for file in files:
     # collect Dropbox infos
     cap: FileCapture = pyshark.FileCapture(
         input_file=folder + file,
@@ -85,21 +81,34 @@ for file in files:
 
     for pkt in cap:
         net.extract_DB_infos(pkt)
-        dropbox_pkt += 1
 
-# First we need to identify list of IP addresses of identified nodes
+    del cap
 
+    # collect nbns and llmnr infos
+    cap: FileCapture = pyshark.FileCapture(
+        input_file=folder + file,
+        keep_packets=False,
+        # use_json=True,
+        display_filter="llmnr or nbns"
+    )
 
+    for pkt in cap:
+        if 'llmnr' in pkt:
+            net.extract_llmnr_infos(pkt)
+        elif 'nbns' in pkt:
+            net.extract_nbns_infos(pkt)
 # At this moment there are some nodes which no name assigned to them, while we can try to resolve the IP address of
 # them using dns or nmlookup
-    net.extract_unknown(file)
+# net.extract_unknown(file)
+
+# show linked devices
+net.extract_DB_links()
 
 #print snapshot of the network
 net.printAll()
 # net.print_browser_inf()
 
-# show linked devices
-#net.print_DB()
+
 
 #net.all_kind_protocol()
 #net.all_local_alias()

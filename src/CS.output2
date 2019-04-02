@@ -1,0 +1,3337 @@
+WARNING: pinging broadcast address
+######################  cs_general_fixed.pcap  #######################
+***************************************
+Device ID:  b4:b6:86:2d:80:38
+IPv4 Address: fe80::b6b6:86ff:fe2d:8038
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : multicolor
+***************************************
+Device ID:  00:15:5d:02:84:30
+IPv4 Address: 131.114.3.27
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : COMPASS2
+Browser comment : 00
+Browser windows version : Windows Server 2003 R2 or Windows Server 2003
+***************************************
+Device ID:  00:15:5d:56:2a:09
+IPv4 Address: 131.114.2.64
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : ROTOR
+Browser comment : 00
+Browser windows version : Windows Server 2003 R2 or Windows Server 2003
+***************************************
+Device ID:  00:15:5d:02:86:3f
+IPv4 Address: 131.114.2.94
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : SQLSHARE
+Browser comment : 00
+Browser windows version : Windows Server 2003 R2 or Windows Server 2003
+***************************************
+Device ID:  00:15:5d:56:2a:0c
+IPv4 Address: 131.114.3.113
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : EUROMUSING
+Browser comment : 00
+Browser windows version : Windows Server 2003 R2 or Windows Server 2003
+***************************************
+Device ID:  00:22:57:47:7b:60
+IPv4 Address: 0.0.0.0
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : 3Com Switch
+***************************************
+Device ID:  00:15:5d:56:2a:03
+IPv4 Address: 131.114.3.55
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : FERRAX
+Browser comment : 00
+Browser windows version : Windows Server 2003 R2 or Windows Server 2003
+***************************************
+Device ID:  3c:52:82:c3:cf:77
+IPv4 Address: 131.114.2.121
+IPv4 Address: fe80::3e52:82ff:fec3:cf77
+Aliases: NPIC3CF77.local  || NPIC3CF77  || HP LaserJet Flow MFP M630 [C3CF77]  || 
+Who I am:  PRINTER
+Supposed Owner: ???
+DHCP name : NPIC3CF77.di.unipi.it
+***************************************
+Device ID:  00:15:5d:02:83:46
+IPv4 Address: 131.114.2.232
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : SHAREPOINT
+Browser comment : 00
+Browser windows version : Windows Server 2003 R2 or Windows Server 2003
+***************************************
+Device ID:  a0:1d:48:b1:67:2e
+IPv4 Address: 131.114.3.197
+IPv4 Address: fe80::1540:ba92:c441:27c7
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : kocian-pb
+Browser Hostname : KOCIAN-PB
+Browser comment : kocian-pb
+Browser windows version : 0603
+***************************************
+Device ID:  f0:1e:34:1f:92:b5
+IPv4 Address: 131.114.88.222
+IPv4 Address: fe80::36a0:360:cdf2:9922
+Aliases: blackstar.local  || blackstar  || BLACKSTAR  || 
+Who I am:  WORKSTATION
+Supposed Owner: ???
+Browser Hostname : BLACKSTAR
+Browser comment : blackstar server (Samba, Ubuntu)
+Browser windows version : Windows 7 or Windows Server 2008 R2
+***************************************
+Device ID:  00:1b:21:a7:03:83
+IPv4 Address: 131.114.3.39
+IPv4 Address: fe80::36a0:360:cdf2:9922
+Aliases: blackstar.local  || blackstar  || BLACKSTAR  || 
+Who I am:  WORKSTATION
+Supposed Owner: ???
+Browser Hostname : BLACKSTAR
+Browser comment : blackstar server (Samba, Ubuntu)
+Browser windows version : Windows 7 or Windows Server 2008 R2
+***************************************
+Device ID:  18:31:bf:70:a8:01
+IPv4 Address: 131.114.3.161
+IPv4 Address: fe80::8c6d:e390:8161:dd83
+Aliases: DIP  || DIP.local  || 
+Who I am:  Model #: Xserve
+Supposed Owner: ???
+***************************************
+Device ID:  00:d0:b8:22:3b:c4
+IPv4 Address: 131.114.2.14
+Aliases: px12-400r  || px12-400r.local  || 
+Who I am:  NAS
+Supposed Owner: ???
+Browser Hostname : PX12-400R
+Browser windows version : 0409
+***************************************
+Device ID:  00:24:36:f5:9f:8c
+IPv4 Address: 131.114.2.216
+Aliases: maccone.local  || maccone  || 
+Who I am:  Model #: Xserve3,1
+Supposed Owner: ???
+Browser Hostname : MACCONE
+Browser comment : Mac OS X Server
+Browser windows version : 0409
+***************************************
+Device ID:  b4:b6:86:c2:41:6d
+IPv4 Address: 131.114.3.44
+IPv4 Address: fe80::b6b6:86ff:fec2:416d
+Aliases: HP LaserJet M608 [C2416D]  || NPIC2416D  || NPIC2416D.local  || 
+Who I am:  PRINTER
+Supposed Owner: ???
+DHCP name : NPIC2416D
+***************************************
+Device ID:  b4:b6:86:c2:41:98
+IPv4 Address: 131.114.3.45
+IPv4 Address: fe80::b6b6:86ff:fec2:4198
+Aliases: NPIC24198.local  || NPIC24198  || HP LaserJet M608 [C24198]  || 
+Who I am:  PRINTER
+Supposed Owner: ???
+DHCP name : NPIC24198
+***************************************
+Device ID:  2c:44:fd:02:ff:32
+IPv4 Address: 131.114.2.220
+Aliases: HP LaserJet M1536dnf MFP (02FF32)  || NPI02FF32  || NPI02FF32.local  || 
+Who I am:  PRINTER
+Supposed Owner: ???
+***************************************
+Device ID:  18:a9:9b:6d:00:98
+IPv4 Address: 131.114.2.134
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : HYPERV-H
+Browser comment : 00
+Browser windows version : 0603
+***************************************
+Device ID:  98:90:96:a2:37:c3
+IPv4 Address: 131.114.2.23
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : RP-PRINTER
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  a0:ce:c8:10:7e:db
+IPv4 Address: 131.114.2.72
+IPv4 Address: fe80::d85:faa8:d0a0:aec6
+Aliases: hpspectre.local  || hpspectre  || 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : hpspectre
+######### Dropbox Infos #########
+host_int: 5610108436450789266092294129440892737,  version: 2.0,  displayname: ,  port: 17500
+{'1500338836', '2112976960', '1483791048', '4910020928', '1435866370', '4894058176', '1486744454', '1552255194', '4356314752', '4392829488', '2251253504', '3860631776', '1509139794', '2881790560', '241187001'}
+Browser Hostname : HPSPECTRE
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  18:a9:9b:6d:00:71
+IPv4 Address: 131.114.2.131
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : HYPERV-E
+Browser comment : 00
+Browser windows version : 0603
+***************************************
+Device ID:  38:60:77:e0:46:c6
+IPv4 Address: 131.114.2.112
+IPv4 Address: fe80::b78a:8a79:5527:d12e
+Aliases: HP_LaserJet_600_M602_69F417_ @ msetzu-desktop  || msetzu-desktop.local  || HP_LaserJet_600_M602 @ msetzu-desktop  || msetzu-desktop  || 
+Who I am:  Dvice that Share a Printer
+Supposed Owner: ???
+***************************************
+Device ID:  00:1e:0b:83:53:1e
+IPv4 Address: 131.114.2.237
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : MORDOR
+Browser windows version : Windows Server 2003 R2 or Windows Server 2003
+***************************************
+Device ID:  00:14:22:73:14:61
+IPv4 Address: 131.114.2.126
+Aliases: osiris  || SFTP File Transfer on osiris  || osiris.local  || 
+Who I am:  WORKSTATION
+Supposed Owner: ???
+Browser Hostname : OSIRIS
+Browser comment : Samba Server
+Browser windows version : 0409
+***************************************
+Device ID:  00:25:4b:b4:2b:2c
+IPv4 Address: 131.114.3.67
+IPv4 Address: fe80::225:4bff:feb4:2b2c
+Aliases: marco-daneluttos-mac-mini.local  || Marco Danelutto\342\200\231s Mac mini  || marco-daneluttos-mac-mini  || 50-33-73-74 Marco Danelutto\342\200\231s Mac mini  || 
+Who I am:  Mac mini "Core 2 Duo" 2.53 (Server)
+Supposed Owner: marco danelutto
+***************************************
+Device ID:  00:15:5d:56:2a:1b
+IPv4 Address: 131.114.2.242
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : VENERE
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  18:a9:9b:6d:00:7e
+IPv4 Address: 131.114.2.132
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : HYPERV-F
+Browser comment : 00
+Browser windows version : 0603
+***************************************
+Device ID:  00:15:5d:02:83:4b
+IPv4 Address: 131.114.2.35
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : STATINI2
+Browser comment : 00
+Browser windows version : Windows 7 or Windows Server 2008 R2
+***************************************
+Device ID:  00:15:5d:01:85:03
+IPv4 Address: fe80::604b:c326:f7fe:ea31
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : inside-PC
+***************************************
+Device ID:  00:24:1d:1e:28:c8
+IPv4 Address: 131.114.3.229
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : MAREA
+Browser comment : marea server (Samba, Ubuntu)
+Browser windows version : Windows 7 or Windows Server 2008 R2
+***************************************
+Device ID:  98:90:96:e4:a1:3d
+IPv4 Address: 131.114.2.44
+IPv4 Address: fe80::e061:89b:c8f1:e119
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : Pedro-PC
+######### Dropbox Infos #########
+host_int: 285512920904278556406480533731068830632,  version: 2.0,  displayname: ,  port: 17500
+{'1376303604', '1160632995', '1980190544', '711331015', '1368626567', '1418112319', '1303362242', '1144247729', '1572654684', '1868066160', '74008692', '83506582', '1130582974', '1228390713', '1466308388', '69334216', '1554985121', '3118776656', '308470429'}
+Browser Hostname : PEDRO-PC
+Browser comment : 00
+Browser windows version : Windows 7 or Windows Server 2008 R2
+***************************************
+Device ID:  2c:56:dc:dc:16:b0
+IPv4 Address: 131.114.2.243
+IPv4 Address: fe80::4d21:619f:3c46:475a
+Aliases: Simona-pc.local  || Simona-pc  || 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : Simona-pc
+***************************************
+Device ID:  00:15:5d:02:6c:05
+IPv4 Address: 131.114.2.123
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : ECNLOCALSERVER
+Browser windows version : Windows Server 2003 R2 or Windows Server 2003
+***************************************
+Device ID:  38:c9:86:38:51:38
+IPv4 Address: 131.114.2.183
+IPv4 Address: fe80::1c10:36c2:1c2d:41e9
+Aliases: romani8  || romani8.local  || 
+Who I am:  iMac "Core i7" 3.3 21.5-Inch (4K, Late 2015) with OS X 10.13 (High Sierra) / DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 173986118437649209576471083486371216484,  version: 2.0,  displayname: ,  port: 17500
+{'4654223696', '10799528', '1098950700', '2536682032'}
+***************************************
+Device ID:  00:15:5d:02:86:47
+IPv4 Address: 131.114.2.125
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : EXBOX
+Browser comment : 00
+Browser windows version : 0603
+***************************************
+Device ID:  d8:cb:8a:ec:44:07
+IPv4 Address: 131.114.2.104
+Aliases: andromeda  || andromeda.local  || 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : ANDROMEDA
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  00:15:5d:02:86:46
+IPv4 Address: 131.114.3.17
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : AD1
+Browser comment : 00
+Browser windows version : 0603
+***************************************
+Device ID:  d8:9e:f3:26:1f:f5
+IPv4 Address: 131.114.3.122
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 2328988650310994778291993904333294189,  version: 2.0,  displayname: ,  port: 17500
+{'23590959', '140532919'}
+Browser Hostname : DESKTOP-JSJM762
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  8c:ec:4b:60:98:a4
+IPv4 Address: 131.114.2.153
+IPv4 Address: fe80::8485:d08c:ba5e:a60f
+Aliases: DESKTOP-OD9Q32E.local  || DESKTOP-OD9Q32E  || 
+Who I am:  DropBox Host / Windows Desktop (supposed by  dev`s name)
+Supposed Owner:  ODQE
+DHCP name : DESKTOP-OD9Q32E
+######### Dropbox Infos #########
+host_int: 54729574504716887655772929870849236085,  version: 2.0,  displayname: ,  port: 17500
+{'1571520101', '4945105936', '1536034166', '1806364000', '1209613560', '622947007', '2918786432', '665997550', '1368626567', '428701583', '284546448', '670180855', '717108022', '464984638', '1074080554', '842418422', '4679400720', '825537306', '3466525776', '1365752473', '1249603341', '693172149', '912188428', '363117577', '1229023491', '428767388', '1197777052', '2438287152', '472264639', '721029200', '671232551', '356547153', '1442109121', '1037022335'}
+***************************************
+Device ID:  00:15:5d:56:2a:04
+IPv4 Address: 131.114.3.98
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : FERRAX2
+Browser comment : ferrax2 server (Samba, Ubuntu)
+Browser windows version : 0409
+***************************************
+Device ID:  00:e0:4c:a2:4c:a8
+IPv4 Address: 131.114.2.84
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : Alis-MBP
+Browser Hostname : MACBOOKPRO-1393
+***************************************
+Device ID:  00:30:48:8a:62:d0
+IPv4 Address: 131.114.2.209
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : EDY
+Browser comment : Samba Server Version 3.0.33-3.29.el5_6.2
+Browser windows version : 0409
+***************************************
+Device ID:  50:9a:4c:2e:1f:a9
+IPv4 Address: 131.114.2.11
+IPv4 Address: fe80::950c:e958:83cc:3ae2
+Aliases: DESKTOP-U9PDKGK.local  || DESKTOP-U9PDKGK  || 
+Who I am:  Windows Desktop (supposed by  dev`s name)
+Supposed Owner:  UPDKGK
+DHCP name : DESKTOP-U9PDKGK
+Browser Hostname : DESKTOP-U9PDKGK
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  08:60:6e:e5:8e:31
+IPv4 Address: 131.114.2.9
+IPv4 Address: fe80::9105:a5f2:7462:b784
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : DESKTOP-R1UV7D2
+######### Dropbox Infos #########
+host_int: 1112583288971017456694495267875667233,  version: 2.0,  displayname: ,  port: 17500
+{'70085238', '171776022', '829823549', '70083550', '330031684', '1149599617', '304465338', '738699290'}
+Browser Hostname : DESKTOP-R1UV7D2
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  00:1f:d0:23:97:96
+IPv4 Address: fe80::c00a:dc22:ed06:ae18
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : minint-vp4qd6e
+***************************************
+Device ID:  00:15:5d:80:2d:29
+IPv4 Address: 131.114.3.24
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : WWW
+Browser comment : www Samba server
+Browser windows version : 0409
+***************************************
+Device ID:  00:15:60:96:01:69
+IPv4 Address: 131.114.3.8
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : NEURON
+Browser comment : Samba Server
+Browser windows version : 0409
+***************************************
+Device ID:  00:15:5d:02:43:0e
+IPv4 Address: 131.114.2.168
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : WWWTEST
+Browser windows version : 0409
+***************************************
+Device ID:  00:15:5d:02:85:30
+IPv4 Address: 131.114.3.106
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : FUTURSHARE
+Browser comment : 00
+Browser windows version : Windows 7 or Windows Server 2008 R2
+***************************************
+Device ID:  00:15:5d:02:83:44
+IPv4 Address: 131.114.3.81
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : PRINTERS
+Browser comment : 00
+Browser windows version : Windows Vista or Windows Server 2008
+***************************************
+Device ID:  30:f9:ed:ce:e6:f5
+IPv4 Address: 131.114.2.8
+IPv4 Address: fe80::885e:ea1b:c6e:3d5b
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : claudio
+Browser Hostname : CLAUDIO
+Browser comment : gallicios_remote
+Browser windows version : 0a00
+***************************************
+Device ID:  40:6c:8f:2e:a5:37
+IPv4 Address: 131.114.3.80
+IPv4 Address: fe80::86b:d849:adeb:2fe
+Aliases: Dinos-iMac  || Dinos-iMac.local  || Dino\342\200\231s iMac  || 
+Who I am:  iMac "Core i7" 3.4 27-Inch (Mid-2011) with OS X 10.13 (High Sierra) / DropBox Host
+Supposed Owner: Dino
+######### Dropbox Infos #########
+host_int: 118236205079338089763936463047796486590,  version: 2.0,  displayname: ,  port: 17500
+{'343899954', '355125705', '469692013', '601274225', '273358369', '614649806', '1817522400', '644738600', '144846796', '623080841', '169027285', '168998534', '28168906', '176083157', '780116334', '56000943', '577760454', '224479961', '553952111', '213396264', '510625526', '557277838', '833068607', '753665661', '304465338', '1548485461', '44356033', '848036163', '25042553', '499171300', '257045959', '214842561', '85772488', '289879001', '1547346210', '352843309', '57322667', '209036631', '728289660', '615791618', '1546887811', '1403578263', '1143542697', '829823549', '36433115', '247230674', '1440024160', '91233323', '586508608', '1409866685'}
+***************************************
+Device ID:  00:14:22:72:75:d0
+IPv4 Address: 131.114.3.155
+IPv4 Address: fe80::214:22ff:fe72:75d0
+Aliases: paleo.local  || paleo  || 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : PALEO
+Browser comment : paleo server (Samba, Ubuntu)
+Browser windows version : Windows 7 or Windows Server 2008 R2
+***************************************
+Device ID:  44:a8:42:39:e4:8c
+IPv4 Address: 131.114.2.176
+IPv4 Address: fe80::46a8:42ff:fe39:e48c
+Aliases: carpa.local  || carpa  || 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : CARPA
+Browser comment : carpa server (Samba, Ubuntu)
+Browser windows version : Windows 7 or Windows Server 2008 R2
+***************************************
+Device ID:  00:15:5d:02:84:24
+IPv4 Address: 131.114.2.58
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : ROSIE
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  14:18:77:4d:5b:af
+IPv4 Address: 131.114.3.20
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : NEURON16
+Browser comment : 00
+Browser windows version : 0603
+***************************************
+Device ID:  48:4d:7e:e4:5e:1e
+IPv4 Address: 131.114.2.190
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 159037137759068197787409514033063237469,  version: 2.0,  displayname: ,  port: 17500
+{'4770506640', '4791457040', '3760638896', '4140749248', '2054113072', '125293605', '3905186800'}
+Browser Hostname : MICOL
+Browser comment : micol
+Browser windows version : 0a00
+***************************************
+Device ID:  90:e6:ba:11:f9:58
+IPv4 Address: 131.114.3.104
+Aliases: DESKTOP-DDMNG1Q.local  || DESKTOP-DDMNG1Q  || 
+Who I am:  Windows Desktop (supposed by  dev`s name)
+Supposed Owner:  DDMNGQ
+DHCP name : DESKTOP-DDMNG1Q
+Browser Hostname : DESKTOP-DDMNG1Q
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  00:15:5d:02:86:3b
+IPv4 Address: 131.114.2.38
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : SEGRETERIA
+Browser comment : 00
+Browser windows version : Windows 7 or Windows Server 2008 R2
+***************************************
+Device ID:  00:24:1d:1e:28:e7
+IPv4 Address: 131.114.2.68
+IPv4 Address: fe80::ec4f:a3fc:232b:8587
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : virtual.polo2.sid.unipi.it
+Browser Hostname : VIRTUAL
+Browser comment : 00
+Browser windows version : 0603
+***************************************
+Device ID:  00:21:5a:76:00:5b
+IPv4 Address: 131.114.2.59
+IPv4 Address: fe80::90f4:7609:b499:bc5e
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : PCLUIGI.di.unipi.it
+***************************************
+Device ID:  00:15:5d:e1:9a:2c
+IPv4 Address: 131.114.2.142
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : ELEARNING
+Browser comment : Samba 4.2.14-Debian
+Browser windows version : Windows 7 or Windows Server 2008 R2
+***************************************
+Device ID:  00:15:5d:02:83:4a
+IPv4 Address: 131.114.3.48
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : AD2
+Browser comment : 00
+Browser windows version : 0603
+***************************************
+Device ID:  70:8b:cd:0d:75:d9
+IPv4 Address: 131.114.3.47
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : DESKTOP-36J2UH4
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  e4:b9:7a:3c:5d:1e
+IPv4 Address: 131.114.2.67
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : Vahid-CS-laptop
+Browser Hostname : VAHID-CS-LAPTOP
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  a8:60:b6:07:44:62
+IPv4 Address: 131.114.2.88
+IPv4 Address: fe80::1c90:4e59:a9da:398d
+Aliases: GDC  || GDC.local  || 
+Who I am:  iMac "Core i7" 3.3 21.5-Inch (4K, Late 2015), OsX: 18 / DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 30757716000482655954059258122491794999,  version: 2.0,  displayname: ,  port: 17500
+{'13461287', '4654223696', '1321543273', '913956504', '1555964615', '1422531227', '4179277488', '11601918', '11379330', '8335493', '346524830', '1030740839', '722785120', '4547676704', '1454143230', '180657717', '68789862', '9067599'}
+***************************************
+Device ID:  00:15:5d:02:85:2f
+IPv4 Address: 131.114.2.145
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : PC-GIOVANNA
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  f0:18:98:eb:70:78
+IPv4 Address: 131.114.3.109
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 103576002992732002662839880619904965353,  version: 2.0,  displayname: ,  port: 17500
+{'4945105936', '1144941233', '1235828224', '271473523', '1326883921', '1098950700', '1393759342', '276812379', '1377149925', '297214621', '911840654', '1494958582', '1511401206', '28890926', '1068444966', '1480330268', '1994286048', '1368624530', '257638418', '1441433791', '1093038812', '2438287152', '650757610', '619367021'}
+***************************************
+Device ID:  9c:eb:e8:04:1b:1b
+IPv4 Address: 131.114.2.24
+IPv4 Address: fe80::39c5:2603:27d:8638
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : zenith
+######### Dropbox Infos #########
+host_int: 251964798051101798923075479362399341125,  version: 2.0,  displayname: ,  port: 17500
+{'848140062', '1405111045', '280415363', '821810440', '2437123760', '173529598', '9738977', '9805912', '275635985', '7951480', '10823947'}
+Browser Hostname : ZENITH
+Browser windows version : 0a00
+***************************************
+Device ID:  3c:8a:b0:6d:37:f0
+IPv4 Address: 131.114.33.22
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+***************************************
+Device ID:  18:a9:9b:6d:00:8b
+IPv4 Address: 131.114.2.133
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : HYPERV-G
+Browser comment : 00
+Browser windows version : 0603
+***************************************
+Device ID:  18:66:da:05:6a:dd
+IPv4 Address: 131.114.3.62
+IPv4 Address: fe80::b8a8:1a4c:58ba:f6a4
+Aliases: Mannaioni  || Mannaioni.local  || 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : Mannaioni.di.unipi.it
+Browser Hostname : MANNAIONI
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  78:7b:8a:c6:d7:59
+IPv4 Address: 131.114.2.60
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : Gians-iMac
+######### Dropbox Infos #########
+host_int: 153089632381432648752672744793754899777,  version: 2.0,  displayname: ,  port: 17500
+{'47090465', '461475206', '305822607', '35011427', '98715075', '886688868', '1554490218', '437112703', '475743327', '4872656848', '837565423', '1554443306', '1874372848', '1190583775', '558501862', '1328286074', '468378429', '525071076', '47065701', '127709894', '337012770', '1394022921', '420465776', '293082859', '4932483376', '1131540884', '2126536896', '1021794999', '722742525', '525801641'}
+***************************************
+Device ID:  00:15:5d:00:01:1d
+IPv4 Address: 131.114.2.4
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : ORACLE2
+Browser comment : 00
+Browser windows version : 0603
+***************************************
+Device ID:  38:60:77:e0:45:2d
+IPv4 Address: 131.114.2.122
+IPv4 Address: fe80::65bc:9dc6:c664:94a5
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : DESKTOP-5PGUE7O
+######### Dropbox Infos #########
+host_int: 12322140860033579500181602066812095477,  version: 2.0,  displayname: ,  port: 17500
+{'1574772573', '1262103455', '1760043072', '566799455', '1552245876', '1347279273'}
+Browser Hostname : DESKTOP-5PGUE7O
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  00:15:5d:02:6c:16
+IPv4 Address: 131.114.3.252
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : BOERGER-PC
+Browser comment : 00
+Browser windows version : Windows 7 or Windows Server 2008 R2
+***************************************
+Device ID:  00:13:72:3f:f1:d2
+IPv4 Address: 131.114.3.89
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : GATE
+Browser comment : 00
+Browser windows version : Windows 7 or Windows Server 2008 R2
+***************************************
+Device ID:  00:15:5d:02:83:49
+IPv4 Address: 131.114.2.128
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : SQLDIPARTIMENTO
+Browser comment : 00
+Browser windows version : 0603
+***************************************
+Device ID:  48:4d:7e:f1:50:a9
+IPv4 Address: 131.114.2.182
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 49306222309246494314290674571421830669,  version: 2.0,  displayname: ,  port: 17500
+{'3124872432', '1143505862', '1143542697'}
+Browser Hostname : LETY2
+Browser comment : lety2
+Browser windows version : 0a00
+***************************************
+Device ID:  38:c9:86:02:62:4e
+IPv4 Address: 131.114.2.83
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : MBPdiGidomenico
+######### Dropbox Infos #########
+host_int: 118984292056817073540676738458910505113,  version: 2.0,  displayname: ,  port: 17500
+{'2213551632', '610567810', '877420687', '227743143', '3009929632', '228032436'}
+Browser Hostname : MACBOOKPRO-A45D
+***************************************
+Device ID:  78:7b:8a:bb:4e:cd
+IPv4 Address: 131.114.3.226
+Aliases: Roberta-Gori-new-iMac  || Roberta Gori new iMac  || Roberta-Gori-new-iMac.local  || 
+Who I am:  iMac "Core i7" 3.6 21.5-Inch (4K, Mid-2017-18) with OS X 10.13 (High Sierra) / DropBox Host
+Supposed Owner: Roberta Gori new 
+######### Dropbox Infos #########
+host_int: 318885916999399592963508979516239692520,  version: 2.0,  displayname: ,  port: 17500
+{'3256944384', '722531707', '726740919', '1340921057', '109624762', '1504013298', '4673849984', '1316840999', '3491050208', '2421912976', '749803015', '1037022335'}
+Browser Hostname : EX-XOS6
+***************************************
+Device ID:  14:da:e9:ef:85:9b
+IPv4 Address: 131.114.2.230
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 141279533613589800008976838405981203789,  version: 2.0,  displayname: ,  port: 17500
+{'1344992852', '496041064', '247177700', '2706427776', '1441531096', '53720403', '1440071633', '295356501', '1446944572', '1440024160', '1439905567', '1439906963', '780116334'}
+Browser Hostname : PATTERNS
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  a8:20:66:45:df:e1
+IPv4 Address: 131.114.3.63
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 141410624520482920293405616666324228470,  version: 2.0,  displayname: ,  port: 17500
+{'3116420416', '4728086944', '4870962848', '4862821968', '2424831536', '3274999088', '4830645776', '1565221903', '37606471', '519647979', '1577571544', '1435866370', '2357074512', '873991234', '2256767936', '1422626236', '806368240', '2063996240', '1562856649', '4831028224', '4791492224'}
+***************************************
+Device ID:  00:1e:0b:83:96:14
+IPv4 Address: 131.114.3.201
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : ARAGORN
+Browser comment : 00
+Browser windows version : Windows Server 2003 R2 or Windows Server 2003
+***************************************
+Device ID:  4c:e1:73:47:cf:7d
+IPv4 Address: 131.114.3.192
+IPv4 Address: fe80::a422:9439:232a:9251
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : DESKTOP-8LGBTVR
+######### Dropbox Infos #########
+host_int: 334263201950073607398089601822962780038,  version: 2.0,  displayname: ,  port: 17500
+{'3915528576', '4816564016', '11622459', '1577683383', '1207225194', '1541359997', '519756060', '4910020928', '1186829438', '4894058176', '1427937848', '1548116184', '1044094578', '652665971', '4392829488', '2165828048', '942842151', '829017510', '254413993', '1444587178', '4399809856', '3845330880', '1435866370', '346293540', '1296828325', '3183566432', '4490018048', '1209557363'}
+Browser Hostname : DESKTOP-8LGBTVR
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  9c:eb:e8:23:23:52
+IPv4 Address: 131.114.3.16
+IPv4 Address: fe80::4cce:1a9b:8bc5:fa9b
+Aliases: DESKTOP-OU5CQCG.local  || XPSDB  || NEURODB  || XPSDB.local  || 9CEBE8232352@NEURODB  || DESKTOP-OU5CQCG  || 
+Who I am:  DropBox Host / MEDIA / Windows Desktop (supposed by  dev`s name)
+Supposed Owner:  OUCQCG
+DHCP name : XPSDB
+######### Dropbox Infos #########
+host_int: 198138690516494014624049908765367977130,  version: 2.0,  displayname: ,  port: 17500
+{'4522549936', '781313326', '464011372', '320211642', '499985127', '1144247729', '220270093', '17627880', '3244869648', '870602463', '892003803', '1070754005', '1096042246', '1577571544', '668451751', '668461787', '702922196', '280559040', '172585391', '1037022335'}
+Browser Hostname : XPSDB
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  00:22:4d:4f:cd:2b
+IPv4 Address: 131.114.3.94
+IPv4 Address: fe80::252e:33f5:cafc:88be
+Aliases: DESKTOP-PP6T2PT  || DESKTOP-PP6T2PT.local  || 
+Who I am:  DropBox Host / Windows Desktop (supposed by  dev`s name)
+Supposed Owner:  PPTPT
+DHCP name : DESKTOP-PP6T2PT.di.unipi.it
+######### Dropbox Infos #########
+host_int: 200094885794042618998887199890966634563,  version: 2.0,  displayname: ,  port: 17500
+{'1327462635', '80753534', '577760454', '213396264', '214842561', '1440024160', '606021346', '289879001', '80674877'}
+Browser Hostname : DESKTOP-PP6T2PT
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  20:47:47:f7:2b:1b
+IPv4 Address: 131.114.2.75
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 262893690381162854392218612713626868648,  version: 2.0,  displayname: ,  port: 17500
+{'1577683383', '2386649616', '1496453660', '1207225194', '1346284024', '519756060', '4021139232', '4910020928', '1449593477', '1186829438', '1048216224', '4894058176', '1047566815', '87226827', '1563570923', '1347126185', '462636135', '2804072272', '3084882032', '1122531328', '2204782544', '1435775948', '1353606437', '1578303720', '639364592', '1410383241', '757702028', '1444587178', '1572095601', '1550755045', '1487354968', '1089896956', '87933947', '1435866370', '1483791048', '1158833976', '1486744454', '3192910320', '609582646', '1485832367', '3075624400', '449915516', '1365361025', '3546413248', '754458697', '1209557363'}
+Browser Hostname : BROGI
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  00:25:90:22:56:72
+IPv4 Address: 131.114.2.106
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Browser Hostname : HYPERV-D
+Browser comment : 00
+Browser windows version : 0603
+***************************************
+Device ID:  38:c9:86:3e:5e:c7
+IPv4 Address: 131.114.3.4
+IPv4 Address: fe80::c54:d61c:fbf6:b80c
+Aliases: iMac di Paolo Ferragina  || iMac-di-Paolo-Ferragina  || iMac-di-Paolo-Ferragina.local  || 
+Who I am:  iMac "Core i7" 4.0 27-Inch (5K, Late 2015), OsX: 18 / DropBox Host
+Supposed Owner: Paolo Ferragina
+DHCP name : iMacdiPerragina
+######### Dropbox Infos #########
+host_int: 15149036025134094466005283589903295569,  version: 2.0,  displayname: ,  port: 17500
+{'1093038812', '327545165', '12475251', '1045025974', '1370773745', '638511715', '1177595590', '1440827903'}
+***************************************
+Device ID:  a8:60:b6:36:3f:28
+IPv4 Address: 131.114.2.20
+IPv4 Address: fe80::409:f9ae:1a89:4b5a
+Aliases: Marias-iMac.local  || Maria\342\200\231s iMac  || Marias-iMac  || 
+Who I am:  iMac "Core i7" 3.3 21.5-Inch (4K, Late 2015), OsX: 18 / DropBox Host
+Supposed Owner: Maria
+######### Dropbox Infos #########
+host_int: 326166675076491108760264088145394082753,  version: 2.0,  displayname: ,  port: 17500
+{'68982477', '151394695', '848140062', '666267541', '392477234', '1190583775', '537105655', '38978533', '56000943', '213396264', '209473296', '736620098', '3468975088', '591605661', '1477867509', '3032105936', '1497267720', '119500043', '1344992852', '7940869', '81749081', '486077280', '1029774318', '1405111045', '245086278', '821810440', '1130476216', '197825054', '1294752006', '80557799', '3563770544', '335265305', '9805912', '564879161'}
+Browser Hostname : MARIAS-IMAC
+***************************************
+Device ID:  00:23:df:7f:36:a0
+IPv4 Address: 131.114.3.218
+IPv4 Address: fe80::223:dfff:fe7f:36a0
+Aliases: macbook-pro-di-maria-grazia-scutella  || macbook-pro-di-maria-grazia-scutella.local  || 
+Who I am:  ???
+Supposed Owner: ???
+***************************************
+Device ID:  a0:ce:c8:0c:6c:b8
+IPv4 Address: 131.114.2.161
+IPv4 Address: fe80::8d5:add2:d3fe:c774
+Aliases: AFMBP  || AFMBP.local  || MacBook Pro (2)  || 
+Who I am:  MacBook Pro "Core i7" 3.1 15" Touch/Mid-2017-18 with OS X 10.13 (High Sierra) = 157,157,16 / DropBox Host
+Supposed Owner: ???
+DHCP name : AFMBP
+######### Dropbox Infos #########
+host_int: 272571487101209657937357306486599951120,  version: 2.0,  displayname: ,  port: 17500
+{'1398997102', '1523222306', '496041064', '222907320', '1822126960', '101109873', '2376697520', '1524803307', '3363366848'}
+Browser Hostname : MBP17 AF
+***************************************
+Device ID:  78:7b:8a:c9:26:5d
+IPv4 Address: 131.114.3.191
+Aliases: iMacMarco.local  || iMacMarco  || 
+Who I am:  iMac "Core i7" 4.2 27-Inch (5K, Mid-2017-18), OsX: 18 / DropBox Host
+Supposed Owner: Marco
+######### Dropbox Infos #########
+host_int: 299312366424463886336842972814374352545,  version: 2.0,  displayname: ,  port: 17500
+{'82992240', '1420522424'}
+***************************************
+Device ID:  40:6c:8f:32:4e:a7
+IPv4 Address: 131.114.2.217
+IPv4 Address: fe80::1408:9d20:ec1a:98e1
+Aliases: weall.local  || weall  || Tre  || 
+Who I am:  MacBook Pro "Core i7" 2.7 15" Mid-2012 with OS X 10.13 (High Sierra) / DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 268915014885109294351193131653429709794,  version: 2.0,  displayname: ,  port: 17500
+{'11339203', '92221792', '7408306', '1248773961', '31991157', '40355228', '3620355456', '26905311', '96301551', '1172792041', '31479692', '72095393', '299479657', '28922718', '4673849984', '15772188', '311350337', '10859973', '2421912976', '721029200', '1441531096', '47090465', '9651294', '946742253', '26928061', '646197272', '727712175', '9706958', '1316840999', '1500361488', '213396264', '1465724875', '43975214', '49237747', '284546448', '4737891536', '4224405152', '114362414', '1581655375', '3614453168', '248777688', '1038184770', '297201096', '29962250', '99055926', '11028895', '33851658', '304404459', '223374207', '948570350', '3773997232'}
+***************************************
+Device ID:  a8:60:b6:25:52:3c
+IPv4 Address: 131.114.2.30
+IPv4 Address: fe80::818:eafd:ff7c:885
+Aliases: Anna-Bernasconis-iMac.local  || Anna-Bernasconis-iMac  || Anna Bernasconi\342\200\231s iMac  || 
+Who I am:  iMac "Core i7" 3.3 21.5-Inch (4K, Late 2015) with OS X 10.13 (High Sierra) / DropBox Host
+Supposed Owner: Anna Bernasconi
+######### Dropbox Infos #########
+host_int: 306386594057309724035458134226273336757,  version: 2.0,  displayname: ,  port: 17500
+{'4945105936', '12087141', '4792560576', '2857472176', '944199344', '2777836096', '1318896890', '1158985323', '96779574', '655421277', '7319063', '776011110', '209255330', '3090020832', '133665378', '3491050208', '2438287152', '12174966', '1083603832', '721029200'}
+***************************************
+Device ID:  50:9a:4c:25:ff:46
+IPv4 Address: 0.0.0.0
+IPv4 Address: fe80::3544:6364:8744:aa25
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : serafini.di.unipi.it
+***************************************
+Device ID:  78:7b:8a:c5:35:51
+IPv4 Address: 131.114.2.212
+IPv4 Address: fe80::1c31:6475:925d:e1ec
+Aliases: prova\342\200\231s iMac  || provas-iMac  || 823626461  || provas-iMac.local  || 
+Who I am:  iMac "Core i7" 4.2 27-Inch (5K, Mid-2017-18) with OS X 10.13 (High Sierra) / DropBox Host
+Supposed Owner: prova
+DHCP name : provas-iMac
+######### Dropbox Infos #########
+host_int: 122089066488859690504986475840196103421,  version: 2.0,  displayname: ,  port: 17500
+{'936315358', '198729309', '140000539', '181272250', '79669892', '92221792', '1465724875', '4737891536', '4224405152', '96301551', '1581655375', '31479692', '111895633', '28922718', '15772188', '67639007', '57322667', '311350337', '99055926', '33851658', '31876813', '600767553', '29769896', '1012525748', '948570350'}
+***************************************
+Device ID:  34:17:eb:b0:67:96
+IPv4 Address: 131.114.2.120
+IPv4 Address: fe80::3de0:5d52:eca3:1e68
+Aliases: DESKTOP-PN2FS4V.local  || DESKTOP-PN2FS4V  || 
+Who I am:  Windows Desktop (supposed by  dev`s name)
+Supposed Owner:  PNFSV
+DHCP name : DESKTOP-PN2FS4V
+***************************************
+Device ID:  4c:e1:73:46:1e:3e
+IPv4 Address: 131.114.2.225
+IPv4 Address: fe80::82e:532c:ddea:48eb
+Aliases: nb-dds  || nb-dds.local  || 
+Who I am:  MacBook Pro "Core i7" 3.3 13" Touch/Late 2016, OsX: 18 = 225,225,22 / DropBox Host
+Supposed Owner: ???
+DHCP name : nb-dds
+######### Dropbox Infos #########
+host_int: 306430454773774094619489467440084504874,  version: 2.0,  displayname: ,  port: 17500
+{'737945953', '42137431', '758197786', '4138317792', '659989742', '650031395', '4437603616', '273388297', '42133865', '660004592', '663363908', '260315451', '42135500', '626996003', '1432346738'}
+Browser Hostname : NB-DDS
+***************************************
+Device ID:  34:17:eb:af:02:94
+IPv4 Address: 131.114.3.213
+IPv4 Address: fe80::3617:ebff:feaf:294
+Aliases: margot  || margot.local  || 
+Who I am:  ???
+Supposed Owner: ???
+***************************************
+Device ID:  68:5b:35:a3:8f:29
+IPv4 Address: 131.114.3.60
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 250777146712300599778604296825603824293,  version: 2.0,  displayname: ,  port: 17500
+{'1270116818', '1365752473', '1314294545', '8410791', '10859973', '1139540889', '3702372336', '2165828048', '839536252', '837538821', '140550605', '1037022335'}
+Browser Hostname : EX-OR67INF
+***************************************
+Device ID:  50:9a:4c:25:e2:8a
+IPv4 Address: 131.114.3.139
+IPv4 Address: fe80::c54e:332:1efe:e14e
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : DESKTOP-PKC51HJ
+######### Dropbox Infos #########
+host_int: 298918568729108525055033723259074542202,  version: 2.0,  displayname: ,  port: 17500
+{'235054653', '1496470595', '4199308688', '85335891', '1082997804', '4667028176', '1100100599'}
+***************************************
+Device ID:  00:15:5d:02:85:31
+IPv4 Address: fe80::6c15:6fd0:277e:a550
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : MV-Osiris.di.unipi.it
+***************************************
+Device ID:  50:9a:4c:25:df:ef
+IPv4 Address: 131.114.3.19
+IPv4 Address: fe80::b56d:9813:e83e:9d95
+Aliases: Enrico  || Enrico.local  || 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : Enrico.di.unipi.it
+***************************************
+Device ID:  d4:3d:7e:2d:a4:3c
+IPv4 Address: 131.114.3.70
+IPv4 Address: fe80::e58e:19b1:1da0:799b
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : DESKTOP-5RN815K
+######### Dropbox Infos #########
+host_int: 4639312072717695691525489609531187609,  version: 2.0,  displayname: ,  port: 17500
+{'3', '4', '5', '1', '7', '8', '2'}
+***************************************
+Device ID:  3c:97:0e:8c:44:75
+IPv4 Address: 131.114.2.211
+IPv4 Address: fe80::3e97:eff:fe8c:4475
+Aliases: lenovob590.local  || lenovob590  || 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : lenovob590
+######### Dropbox Infos #########
+host_int: 53237464710274761857567976999996474043,  version: 2.0,  displayname: ,  port: 17500
+{'21990367', '2963179696', '3564936160'}
+***************************************
+Device ID:  38:60:77:f0:92:ee
+IPv4 Address: 131.114.3.171
+IPv4 Address: fe80::f062:4906:6dfc:9cfa
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : neurale2.di.unipi.it
+######### Dropbox Infos #########
+host_int: 317443124093161700066672150581421123116,  version: 2.0,  displayname: ,  port: 17500
+{'1339024863', '1475594208', '1098950700', '1980190544', '3225651040', '3184155248', '50279733', '280559040', '1523349062', '1451042608', '1267762652', '1144247729', '1068835292', '1137420310', '3426851840', '2682440400', '1497267720', '1413583938', '2891143872', '1423322158', '2805502016', '234415111', '1365752473', '1130582974', '3117289008', '1228390713', '1467811175', '230317789', '1562549888', '1381841485', '4302496368', '1487850465', '1542178186', '1815897680'}
+***************************************
+Device ID:  48:4d:7e:9a:3b:83
+IPv4 Address: 131.114.2.62
+IPv4 Address: fe80::9c70:9e23:440c:c976
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : DESKTOP-MCOIMB6
+######### Dropbox Infos #########
+host_int: 62819826212014991356025843293755180529,  version: 2.0,  displayname: ,  port: 17500
+{'1577683383', '2937119760', '1930712848', '1496453660', '1948816096', '1541359997', '4384922560', '1563570923', '1445424480', '1465610486', '1391001113', '2804072272', '3033444912', '2204782544', '3057484720', '1578303720', '1572095601', '2259619312', '2112976960', '1809540048', '2909171568', '4356314752', '3032254944', '3192910320', '1500119435', '3546413248', '124613071'}
+***************************************
+Device ID:  38:c9:86:40:dc:bb
+IPv4 Address: 131.114.2.129
+IPv4 Address: fe80::1c17:1a77:ffa3:10c
+Aliases: Enricos-MacBook-Pro.local  || Enricos-MacBook-Pro  || Enrico\342\200\231s MacBook Pro  || 
+Who I am:  MacBook Pro "Core i7" 2.8 15" Mid-2015 (IG), OsX: 18 / DropBox Host
+Supposed Owner: Enrico 
+DHCP name : Enricos-MBP
+######### Dropbox Infos #########
+host_int: 326897328502859104196795765370725616025,  version: 2.0,  displayname: ,  port: 17500
+{'1386021995', '577506447', '730372924', '1993824608', '492316509', '188026455', '1182382308', '268120816', '222907320', '311390760', '1478570291'}
+Browser Hostname : MACBOOKPRO-D94B
+***************************************
+Device ID:  00:e0:4c:11:55:21
+IPv4 Address: 131.114.3.99
+IPv4 Address: fe80::fdd3:65f4:464:5a64
+Aliases: Floydino  || Floydino.local  || 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : Floydino
+######### Dropbox Infos #########
+host_int: 302698113540610674908397054198064142974,  version: 2.0,  displayname: ,  port: 17500
+{'903319825', '642327655', '253824942', '1147756596', '170124150', '210145537', '53975866', '45234861', '747329035', '151402645', '194923071', '352753537', '725758987', '1744095712', '524412245', '856691', '430285990', '534697866', '913642580', '1137846365', '139973989', '1081944754', '351871356', '1133099360', '320335814', '328964295', '58234439', '350431423', '224296516', '299997618', '276418188', '1083821995', '250858752', '732180581', '53973793', '475788467'}
+Browser Hostname : FLOYDINO
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  a8:20:66:24:62:99
+IPv4 Address: 131.114.3.26
+IPv4 Address: fe80::aa20:66ff:fe24:6299
+Aliases: Andreas-MacBook-Pro.local  || Andreas-MacBook-Pro  || Andrea\342\200\231s MacBook Pro  || 
+Who I am:  MacBook Pro "Core i7" 3.0 13" Early 2013 with OS X 10.9 (Mavericks) / DropBox Host
+Supposed Owner: Andrea 
+DHCP name : Andreas-MBP
+######### Dropbox Infos #########
+host_int: 280464775479234178599809387381897113392,  version: 2.0,  displayname: ,  port: 17500
+{'429253120', '96301551', '721029200', '72095393', '14726578', '309652053', '1559793375', '757981904', '284546448', '1304242442', '1431258890', '40355228', '721353649', '716884126'}
+Browser Hostname : EX-XEN-DESKTOP
+***************************************
+Device ID:  50:46:5d:8a:17:b5
+IPv4 Address: 131.114.3.11
+IPv4 Address: fe80::2042:42b5:e73e:a2eb
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : parvinpc
+######### Dropbox Infos #########
+host_int: 88774667398343721619024154429637519138,  version: 2.0,  displayname: ,  port: 17500
+{'577853702', '627637611', '4744633936', '1045862173'}
+***************************************
+Device ID:  2c:4d:54:9d:c4:49
+IPv4 Address: fe80::f018:a584:1beb:dc3c
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+DHCP name : KDD.di.unipi.it
+***************************************
+Device ID:  f0:76:1c:69:2c:4c
+IPv4 Address: 131.114.3.228
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+DHCP name : susanna-PC
+######### Dropbox Infos #########
+host_int: 112360135617073686165623149675716236232,  version: 2.0,  displayname: ,  port: 17500
+{'1349911230', '2283433984', '822817062', '429222938', '1581655981', '1257318117', '3879049408', '36530818', '1178098106', '1327479665', '1026581939'}
+Browser Hostname : SUSANNA-PC
+Browser comment : 00
+Browser windows version : 0a00
+***************************************
+Device ID:  54:04:a6:b5:5d:f9
+IPv4 Address: 131.114.3.146
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 221885676982385992929846572372242778120,  version: 2.0,  displayname: ,  port: 17500
+{'82153425', '221369298', '1084568493', '130089799', '246858691', '1404229748'}
+***************************************
+Device ID:  00:1f:c6:6d:7b:93
+IPv4 Address: 131.114.2.210
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 83047840202587457108548783683706484524,  version: 2.0,  displayname: ,  port: 17500
+{'1581655981', '1349911230', '3879049408', '2283433984', '36530818', '822817062', '1178098106', '429222938', '1026581939'}
+***************************************
+Device ID:  30:9c:23:15:84:87
+IPv4 Address: 131.114.3.76
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 265141771444381402266186655132511636607,  version: 2.0,  displayname: ,  port: 17500
+{'416820341', '3183071808'}
+***************************************
+Device ID:  8c:ec:4b:7d:b1:9e
+IPv4 Address: 131.114.2.163
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 331173112877247177483984781570973311389,  version: 2.0,  displayname: ,  port: 17500
+{'216898767', '1427963839', '1407050143', '2453309280', '313744913', '204458521', '721658223', '3707000640'}
+***************************************
+Device ID:  50:9a:4c:25:db:f5
+IPv4 Address: 131.114.3.189
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 308576021921957464683133294928164448720,  version: 2.0,  displayname: ,  port: 17500
+{'1401342619', '3176278384', '1581655981', '1563497868', '853011086', '2481033648', '3024206656', '851228197', '3970550528', '1569386737', '1428931389'}
+***************************************
+Device ID:  38:2c:4a:ba:72:e4
+IPv4 Address: 131.114.3.162
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 5816714304924342898835488483517198570,  version: 2.0,  displayname: ,  port: 17500
+{'1024001956', '239570274', '817889812', '59442597', '201861109', '3256944384', '388770932', '289686831', '1409043291', '783656616', '66460586', '1079459730', '610835178', '111492478', '4776898944', '310277820', '910390639', '87877162', '890598403', '4068287072', '722531707', '59442039', '1445356970', '1340921057', '638647518', '1504013298', '1874112992', '3491050208', '2490144816', '2156019168'}
+***************************************
+Device ID:  98:90:96:a0:d3:f7
+IPv4 Address: 131.114.2.73
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 160319094823850121710339233244284188624,  version: 2.0,  displayname: ,  port: 17500
+{'4945105936', '3209382944', '2438287152', '3116420416', '12358627', '1138044367', '1037022335'}
+***************************************
+Device ID:  00:50:b6:54:50:a7
+IPv4 Address: 131.114.2.119
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 133808876194613106708406225211523909231,  version: 2.0,  displayname: ,  port: 17500
+{'4', '2', '7', '8', '0'}
+***************************************
+Device ID:  50:46:5d:35:01:e6
+IPv4 Address: 131.114.2.181
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 216795934499666574157427431849997030807,  version: 2.0,  displayname: ,  port: 17500
+{'7', '9', '0'}
+***************************************
+Device ID:  00:22:15:d9:d6:52
+IPv4 Address: 131.114.2.18
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 247351977353182672287165046066142130679,  version: 2.0,  displayname: ,  port: 17500
+{'822817062', '4728086944', '3695576512', '4862821968', '1158860322', '3274999088', '1178098106', '1416788003', '1500338836', '112417397', '2520105568', '1555568566', '27310071', '2256767936', '1422626236', '2063996240'}
+***************************************
+Device ID:  50:9a:4c:26:03:1c
+IPv4 Address: 131.114.3.53
+Aliases: 
+Who I am:  DropBox Host
+Supposed Owner: ???
+######### Dropbox Infos #########
+host_int: 34028887570180790501606722618399241581,  version: 2.0,  displayname: ,  port: 17500
+{'26992812', '25822154', '1413583938', '1143542697'}
+***************************************
+Device ID:  00:00:5E:00:01:60
+IPv4 Address: 146.48.96.1
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : iit-gw.iit.cnr.it
+***************************************
+Device ID:  52:54:00:34:BD:EB
+IPv4 Address: 146.48.96.2
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dns2.iit.cnr.it
+***************************************
+Device ID:  52:54:00:C4:9A:15
+IPv4 Address: 146.48.96.3
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dns.iit.cnr.it
+***************************************
+Device ID:  14:18:77:53:49:98
+IPv4 Address: 146.48.98.155
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mail.iit.cnr.it
+***************************************
+Device ID:  14:18:77:4B:05:FE
+IPv4 Address: 146.48.96.5
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mx2.iit.cnr.it
+***************************************
+Device ID:  00:19:B9:E3:9C:F9
+IPv4 Address: 146.48.98.154
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : smtp.iit.cnr.it
+***************************************
+Device ID:  90:1B:0E:A5:A0:16
+IPv4 Address: 146.48.96.8
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc7.iit.cnr.it
+***************************************
+Device ID:  9C:E3:74:42:61:F5
+IPv4 Address: 146.48.96.9
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : stella.iit.cnr.it
+***************************************
+Device ID:  52:54:00:9E:7D:25
+IPv4 Address: 146.48.96.12
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vitanova1.iit.cnr.it
+***************************************
+Device ID:  52:54:00:00:1C:A6
+IPv4 Address: 146.48.96.13
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vitanova2.iit.cnr.it
+***************************************
+Device ID:  F4:CE:46:42:EF:1F
+IPv4 Address: 146.48.96.18
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : HP-P1606-b76.iit.cnr.it
+***************************************
+Device ID:  52:54:00:30:EF:0D
+IPv4 Address: 146.48.96.21
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : clg1.iit.cnr.it
+***************************************
+Device ID:  52:54:00:1A:4E:8E
+IPv4 Address: 146.48.96.23
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : clg2.iit.cnr.it
+***************************************
+Device ID:  52:54:00:97:30:54
+IPv4 Address: 146.48.96.27
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : stellatest.iit.cnr.it
+***************************************
+Device ID:  52:54:00:B2:78:D1
+IPv4 Address: 146.48.96.30
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : 5b87fad9-29b9-5d36-fecb-7f22bca85d1f-d2a2cda3-e839-655c.iit.cnr.it
+***************************************
+Device ID:  52:54:00:DB:20:B5
+IPv4 Address: 146.48.96.31
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : gitwau.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:0E:CC:20
+IPv4 Address: 146.48.96.32
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : svn-security-fi.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:AF:CA:8D
+IPv4 Address: 146.48.96.33
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : lunardelli.iit.cnr.it
+***************************************
+Device ID:  52:54:00:B8:B0:2E
+IPv4 Address: 146.48.96.34
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : ns-rtrt-centos7.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:29:07:D2
+IPv4 Address: 146.48.96.42
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : devc3isp.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:9E:D4:01
+IPv4 Address: 146.48.96.43
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : isic3isp.iit.cnr.it
+***************************************
+Device ID:  52:54:00:B0:BB:7A
+IPv4 Address: 146.48.96.44
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : stagewau.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:60:74:90
+IPv4 Address: 146.48.99.245
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : www.sobigdata.it
+***************************************
+Device ID:  54:52:00:64:51:25
+IPv4 Address: 146.48.96.50
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : orologio-history.iit.cnr.it
+***************************************
+Device ID:  06:E1:DD:39:DD:D1
+IPv4 Address: 146.48.96.51
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : kalliope.iit.cnr.it
+***************************************
+Device ID:  D0:94:66:06:95:AF
+IPv4 Address: 146.48.96.58
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafivm8.iit.cnr.it
+***************************************
+Device ID:  D0:94:66:06:95:B3
+IPv4 Address: 146.48.96.59
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc8.iit.cnr.it
+***************************************
+Device ID:  AC:1F:6B:02:C8:14
+IPv4 Address: 146.48.96.61
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : shannon.iit.cnr.it
+***************************************
+Device ID:  00:23:8B:42:86:AE
+IPv4 Address: 146.48.96.63
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : container11.iit.cnr.it
+***************************************
+Device ID:  00:1E:68:37:9F:64
+IPv4 Address: 146.48.96.64
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : container12.iit.cnr.it
+***************************************
+Device ID:  1C:B7:2C:EF:D3:2E
+IPv4 Address: 146.48.96.66
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mcampana.iit.cnr.it
+***************************************
+Device ID:  E8:39:35:45:BF:EF
+IPv4 Address: 146.48.96.72
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : saracino-virtualmachine.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:77:13:B7
+IPv4 Address: 146.48.96.76
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : gridnode2.iit.cnr.it
+***************************************
+Device ID:  18:60:24:8D:02:0C
+IPv4 Address: 146.48.96.78
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : sannicandro.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:CF:5D:1C
+IPv4 Address: 146.48.96.81
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : frameworks-security.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:C7:CF:82
+IPv4 Address: 146.48.96.85
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dsamgrc3isp.iit.cnr.it
+***************************************
+Device ID:  00:12:79:E0:7A:7B
+IPv4 Address: 146.48.96.97
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : hp2420-trumpy.iit.cnr.it
+***************************************
+Device ID:  DC:A4:CA:EA:83:0E
+IPv4 Address: 146.48.96.100
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : time-capsule-laforenza.iit.cnr.it
+***************************************
+Device ID:  44:A8:42:29:43:1B
+IPv4 Address: 146.48.96.102
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafivm6.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:F0:A1:67
+IPv4 Address: 146.48.96.107
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : auditmgrc3isp.iit.cnr.it
+***************************************
+Device ID:  EC:9A:74:30:59:5A
+IPv4 Address: 146.48.96.109
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : HP-M551-color-B11.iit.cnr.it
+***************************************
+Device ID:  52:54:00:50:36:80
+IPv4 Address: 146.48.96.112
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : cittaeducante.iit.cnr.it
+***************************************
+Device ID:  F0:1F:AF:CF:A4:8D
+IPv4 Address: 146.48.96.115
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : reti.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:EB:52:6E
+IPv4 Address: 146.48.96.117
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : kec3isp.iit.cnr.it
+***************************************
+Device ID:  54:04:A6:70:46:94
+IPv4 Address: 146.48.96.130
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mimonetNode3.iit.cnr.it
+***************************************
+Device ID:  E4:11:5B:E4:AD:00
+IPv4 Address: 146.48.96.136
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : container7.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:F6:DB:1F
+IPv4 Address: 146.48.96.139
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : cveocs.iit.cnr.it
+***************************************
+Device ID:  52:54:00:F0:0A:8F
+IPv4 Address: 146.48.96.141
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : miodentista.iit.cnr.it
+***************************************
+Device ID:  44:A8:42:29:43:1F
+IPv4 Address: 146.48.96.143
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc6.iit.cnr.it
+***************************************
+Device ID:  00:90:5E:12:DB:73
+IPv4 Address: 146.48.96.147
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : matrix.iit.cnr.it
+***************************************
+Device ID:  08:00:23:94:9C:A2
+IPv4 Address: 146.48.96.148
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : telecamera.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:1B:E9:34
+IPv4 Address: 146.48.96.150
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : voipgw1.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:D2:55:D1
+IPv4 Address: 146.48.96.153
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : analiticheocs.iit.cnr.it
+***************************************
+Device ID:  52:54:00:7F:72:83
+IPv4 Address: 146.48.96.155
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : matcomp.iit.cnr.it
+***************************************
+Device ID:  52:54:00:43:2F:FD
+IPv4 Address: 146.48.96.157
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : propause.iit.cnr.it
+***************************************
+Device ID:  20:C9:D0:0F:8E:8C
+IPv4 Address: 146.48.96.158
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : tc-bruno.iit.cnr.it
+***************************************
+Device ID:  52:54:00:06:3C:B6
+IPv4 Address: 146.48.96.161
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : ldap-r1.iit.cnr.it
+***************************************
+Device ID:  52:54:00:2A:CE:A7
+IPv4 Address: 146.48.96.163
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : propause-stage.iit.cnr.it
+***************************************
+Device ID:  52:54:00:4B:FD:09
+IPv4 Address: 146.48.96.165
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : ldap-r2.iit.cnr.it
+***************************************
+Device ID:  00:D0:4B:93:12:AF
+IPv4 Address: 146.48.96.166
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafi-2big.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:07:82:BB
+IPv4 Address: 146.48.96.168
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : kaliocs.iit.cnr.it
+***************************************
+Device ID:  98:F2:B3:0A:4A:9F
+IPv4 Address: 146.48.96.169
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : lipari.iit.cnr.it
+***************************************
+Device ID:  00:23:8B:65:2A:F6
+IPv4 Address: 146.48.96.174
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : container10.iit.cnr.it
+***************************************
+Device ID:  E4:11:5B:E4:7E:18
+IPv4 Address: 146.48.96.176
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : container14.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:32:8E:72
+IPv4 Address: 146.48.96.177
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : certc3isp.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:A8:8F:AC
+IPv4 Address: 146.48.96.178
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : smec3isp.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:4E:88:8F
+IPv4 Address: 146.48.96.183
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : gk.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:23:13:0E
+IPv4 Address: 146.48.96.185
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : sowhat.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:D2:04:BE
+IPv4 Address: 146.48.96.188
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mano.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:6C:F9:66
+IPv4 Address: 146.48.96.189
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : ucservice.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:87:69:B9
+IPv4 Address: 146.48.96.192
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : nrenum.iit.cnr.it
+***************************************
+Device ID:  64:00:6A:97:10:EF
+IPv4 Address: 146.48.96.195
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : lucchesi.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:74:E2:A8
+IPv4 Address: 146.48.96.197
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : svn-security.iit.cnr.it
+***************************************
+Device ID:  D8:9E:F3:42:5F:09
+IPv4 Address: 146.48.96.198
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : murgia.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:81:43:E1
+IPv4 Address: 146.48.96.204
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : reti1.iit.cnr.it
+***************************************
+Device ID:  A2:37:B9:7E:EA:F7
+IPv4 Address: 146.48.96.205
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : reti2.iit.cnr.it
+***************************************
+Device ID:  9A:09:C7:4F:A0:CA
+IPv4 Address: 146.48.96.206
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : reti3.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:54:CE:CD
+IPv4 Address: 146.48.96.208
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : reti5.iit.cnr.it
+***************************************
+Device ID:  00:50:56:B6:DB:E3
+IPv4 Address: 146.48.96.210
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : reti7.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:04:BB:99
+IPv4 Address: 146.48.96.213
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : reti10.iit.cnr.it
+***************************************
+Device ID:  66:34:62:31:66:66
+IPv4 Address: 146.48.96.214
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : reti11.iit.cnr.it
+***************************************
+Device ID:  D8:8F:76:7A:19:12
+IPv4 Address: 146.48.96.216
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : tc-baesso.iit.cnr.it
+***************************************
+Device ID:  C4:54:44:23:E4:2B
+IPv4 Address: 146.48.96.218
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafivm5.iit.cnr.it
+***************************************
+Device ID:  C4:54:44:23:E4:2D
+IPv4 Address: 146.48.96.219
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc5.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:0F:A4:F6
+IPv4 Address: 146.48.96.223
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : iaic3isp.iit.cnr.it
+***************************************
+Device ID:  40:A8:F0:22:A0:60
+IPv4 Address: 146.48.96.227
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : openstackfull.iit.cnr.it
+***************************************
+Device ID:  00:D0:4B:95:F1:11
+IPv4 Address: 146.48.96.229
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : backup-security.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:DC:EE:D9
+IPv4 Address: 146.48.96.230
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : secure.iit.cnr.it
+***************************************
+Device ID:  D8:9E:F3:42:5B:1F
+IPv4 Address: 146.48.96.231
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : pc-tagliaferri.iit.cnr.it
+***************************************
+Device ID:  52:54:00:BC:D5:08
+IPv4 Address: 146.48.96.232
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : people.iit.cnr.it
+***************************************
+Device ID:  00:10:F3:2D:16:99
+IPv4 Address: 146.48.96.233
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : totem1.iit.cnr.it
+***************************************
+Device ID:  00:10:F3:2D:16:A5
+IPv4 Address: 146.48.96.234
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : totem2.iit.cnr.it
+***************************************
+Device ID:  00:10:F3:2D:16:8D
+IPv4 Address: 146.48.96.235
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : totem3.iit.cnr.it
+***************************************
+Device ID:  E0:CB:4E:83:90:A9
+IPv4 Address: 146.48.96.247
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : luconi.iit.cnr.it
+***************************************
+Device ID:  52:54:00:4F:5B:7A
+IPv4 Address: 146.48.97.1
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : c3isp.projects.iit.cnr.it
+***************************************
+Device ID:  52:54:00:66:ED:12
+IPv4 Address: 146.48.97.2
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : webhost.services.iit.cnr.it
+***************************************
+Device ID:  52:54:00:F9:7E:1A
+IPv4 Address: 146.48.97.3
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : oo.tools.iit.cnr.it
+***************************************
+Device ID:  52:54:00:90:D9:B3
+IPv4 Address: 146.48.97.4
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : fs.cybersecuritymaster.it
+***************************************
+Device ID:  52:54:00:62:8A:3B
+IPv4 Address: 146.48.97.10
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : hosting.services.iit.cnr.it
+***************************************
+Device ID:  10:DD:B1:CB:C6:19
+IPv4 Address: 146.48.97.21
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : acacia.iit.cnr.it
+***************************************
+Device ID:  AC:16:2D:02:C6:D0
+IPv4 Address: 146.48.97.26
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : malva.iit.cnr.it
+***************************************
+Device ID:  A8:20:66:4A:D7:BC
+IPv4 Address: 146.48.97.27
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : viola.iit.cnr.it
+***************************************
+Device ID:  00:1F:C6:66:9A:52
+IPv4 Address: 146.48.97.31
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : pc-pellegrini.iit.cnr.it
+***************************************
+Device ID:  20:CF:30:30:45:CB
+IPv4 Address: 146.48.97.33
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : iris.iit.cnr.it
+***************************************
+Device ID:  00:22:15:03:C2:F4
+IPv4 Address: 146.48.97.35
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : yucca.iit.cnr.it
+***************************************
+Device ID:  10:C3:7B:6C:B7:EB
+IPv4 Address: 146.48.97.36
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : zea.iit.cnr.it
+***************************************
+Device ID:  50:46:5D:74:1F:B0
+IPv4 Address: 146.48.97.37
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : poa.iit.cnr.it
+***************************************
+Device ID:  00:50:04:C2:DB:97
+IPv4 Address: 146.48.97.39
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : pegaso.iit.cnr.it
+***************************************
+Device ID:  52:54:00:C8:1B:9F
+IPv4 Address: 146.48.97.48
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : fs.area.pi.cnr.it
+***************************************
+Device ID:  52:54:00:27:22:E9
+IPv4 Address: 146.48.97.51
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : epas-r1.tools.iit.cnr.it
+***************************************
+Device ID:  52:54:00:4D:CC:A3
+IPv4 Address: 146.48.97.52
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : epas-r2.tools.iit.cnr.it
+***************************************
+Device ID:  52:54:00:5E:BB:6E
+IPv4 Address: 146.48.97.53
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : www.isoc.it
+***************************************
+Device ID:  52:54:00:BD:BF:E4
+IPv4 Address: 146.48.97.54
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : cms.services.iit.cnr.it
+***************************************
+Device ID:  52:54:00:75:37:A7
+IPv4 Address: 146.48.97.55
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : idea.devel.iit.cnr.it
+***************************************
+Device ID:  BA:DC:0D:E0:00:96
+IPv4 Address: 146.48.97.65
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  F4:6D:04:E4:58:96
+IPv4 Address: 146.48.97.94
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : protea.iit.cnr.it
+***************************************
+Device ID:  52:54:00:B2:46:AE
+IPv4 Address: 146.48.97.130
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : otrs.tools.iit.cnr.it
+***************************************
+Device ID:  52:54:00:AA:F4:05
+IPv4 Address: 146.48.97.131
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : isolario.projects.iit.cnr.it
+***************************************
+Device ID:  52:54:00:83:0D:52
+IPv4 Address: 146.48.97.134
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : idp.devel.iit.cnr.it
+***************************************
+Device ID:  52:54:00:87:70:F1
+IPv4 Address: 146.48.97.135
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : orologio.devel.iit.cnr.it
+***************************************
+Device ID:  52:54:00:5B:10:C3
+IPv4 Address: 146.48.97.137
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : iithub.tools.iit.cnr.it
+***************************************
+Device ID:  52:54:00:44:B5:F0
+IPv4 Address: 146.48.97.138
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : cnrwebtv.services.iit.cnr.it
+***************************************
+Device ID:  52:54:00:7F:E5:0E
+IPv4 Address: 146.48.97.140
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : afs.tools.iit.cnr.it
+***************************************
+Device ID:  52:54:00:C5:06:00
+IPv4 Address: 146.48.97.145
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : ct-cnr.devel.iit.cnr.it
+***************************************
+Device ID:  52:54:00:DA:E7:E6
+IPv4 Address: 146.48.97.151
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : totem.services.iit.cnr.it
+***************************************
+Device ID:  52:54:00:06:2A:70
+IPv4 Address: 146.48.97.153
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : backup.services.iit.cnr.it
+***************************************
+Device ID:  52:54:00:E0:A5:11
+IPv4 Address: 146.48.97.154
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : repo.services.iit.cnr.it
+***************************************
+Device ID:  52:54:00:82:63:CD
+IPv4 Address: 146.48.97.155
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : docker.devel.iit.cnr.it
+***************************************
+Device ID:  52:54:00:46:2A:2B
+IPv4 Address: 146.48.97.156
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : smartbuilding.projects.iit.cnr.it
+***************************************
+Device ID:  52:54:00:48:86:38
+IPv4 Address: 146.48.97.157
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : docker-registry.services.iit.cnr.it
+***************************************
+Device ID:  52:54:00:E2:0B:45
+IPv4 Address: 146.48.97.159
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : ovpn.services.iit.cnr.it
+***************************************
+Device ID:  52:54:00:42:42:5C
+IPv4 Address: 146.48.97.162
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : area.services.iit.cnr.it
+***************************************
+Device ID:  52:54:00:A0:E1:44
+IPv4 Address: 146.48.97.164
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : graylog.tools.iit.cnr.it
+***************************************
+Device ID:  52:54:00:73:52:3F
+IPv4 Address: 146.48.97.165
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : cloud-services.devel.iit.cnr.it
+***************************************
+Device ID:  52:54:00:8D:12:C0
+IPv4 Address: 146.48.97.231
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mm.services.iit.cnr.it
+***************************************
+Device ID:  00:21:28:75:B5:BA
+IPv4 Address: 146.48.97.232
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : k8s1.services.iit.cnr.it
+***************************************
+Device ID:  00:21:28:83:C3:44
+IPv4 Address: 146.48.97.233
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : k8s2.services.iit.cnr.it
+***************************************
+Device ID:  00:1E:68:2F:14:A2
+IPv4 Address: 146.48.97.234
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : k8s3.services.iit.cnr.it
+***************************************
+Device ID:  D8:9D:67:25:40:1C
+IPv4 Address: 146.48.97.235
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : k8s-n1.services.iit.cnr.it
+***************************************
+Device ID:  58:B0:35:FF:D1:23
+IPv4 Address: 146.48.98.6
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : turi1.iit.cnr.it
+***************************************
+Device ID:  52:54:00:9D:54:D1
+IPv4 Address: 146.48.98.13
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : sistorg.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:3F:ED:BF
+IPv4 Address: 146.48.98.30
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : crsv1.iit.cnr.it
+***************************************
+Device ID:  2C:59:E5:76:02:DC
+IPv4 Address: 146.48.98.36
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : prt-st4.iit.cnr.it
+***************************************
+Device ID:  52:54:00:37:E8:72
+IPv4 Address: 146.48.98.40
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : listserv.iit.cnr.it
+***************************************
+Device ID:  52:54:00:E9:A0:B0
+IPv4 Address: 146.48.98.50
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : amministrazione.iit.cnr.it
+***************************************
+Device ID:  1C:6F:65:D2:EA:25
+IPv4 Address: 146.48.98.68
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : devita.iit.cnr.it
+***************************************
+Device ID:  00:25:90:59:81:56
+IPv4 Address: 146.48.98.70
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : turig.iit.cnr.it
+***************************************
+Device ID:  08:00:27:5A:54:E5
+IPv4 Address: 146.48.98.81
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : bettarini.iit.cnr.it
+***************************************
+Device ID:  A4:BA:DB:41:A6:C5
+IPv4 Address: 146.48.98.83
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafivm4.iit.cnr.it
+***************************************
+Device ID:  00:1E:68:9A:CA:B2
+IPv4 Address: 146.48.98.96
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : container9.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:49:88:14
+IPv4 Address: 146.48.98.111
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : bh2.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:C8:41:1D
+IPv4 Address: 146.48.98.112
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : bh3.iit.cnr.it
+***************************************
+Device ID:  E8:39:35:20:D0:24
+IPv4 Address: 146.48.98.119
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : ibiza.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:1D:56:B4
+IPv4 Address: 146.48.98.122
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : eduroam.iit.cnr.it
+***************************************
+Device ID:  44:A8:42:4C:33:0E
+IPv4 Address: 146.48.98.135
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : portolanproject.iit.cnr.it
+***************************************
+Device ID:  C8:1F:66:BE:33:F4
+IPv4 Address: 146.48.98.147
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : confmaster.iit.cnr.it
+***************************************
+Device ID:  00:19:B9:E3:9E:66
+IPv4 Address: 146.48.98.149
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mxsv1.iit.cnr.it
+***************************************
+Device ID:  E4:11:5B:DA:65:F0
+IPv4 Address: 146.48.98.150
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mx3.iit.cnr.it
+***************************************
+Device ID:  E4:11:5B:DA:C2:20
+IPv4 Address: 146.48.98.151
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mx4.iit.cnr.it
+***************************************
+Device ID:  E4:11:5B:DA:92:BC
+IPv4 Address: 146.48.98.152
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mx5.iit.cnr.it
+***************************************
+Device ID:  E4:11:5B:DA:C2:0C
+IPv4 Address: 146.48.98.153
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mx6.iit.cnr.it
+***************************************
+Device ID:  00:23:8B:42:87:06
+IPv4 Address: 146.48.98.156
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : container1.iit.cnr.it
+***************************************
+Device ID:  52:54:00:54:E0:BB
+IPv4 Address: 146.48.98.159
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mxbk.iit.cnr.it
+***************************************
+Device ID:  52:54:00:07:91:DE
+IPv4 Address: 146.48.98.166
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : idp.iit.cnr.it
+***************************************
+Device ID:  2C:41:38:9F:BC:7D
+IPv4 Address: 146.48.98.168
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : complexnet.iit.cnr.it
+***************************************
+Device ID:  52:54:00:DF:37:41
+IPv4 Address: 146.48.98.170
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : ns-rtrt.iit.cnr.it
+***************************************
+Device ID:  00:10:5A:37:39:7F
+IPv4 Address: 146.48.98.175
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : bck-server.iit.cnr.it
+***************************************
+Device ID:  90:1B:0E:99:23:94
+IPv4 Address: 146.48.98.180
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafivm7.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:27:7B:D5
+IPv4 Address: 146.48.98.208
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : pis.iit.cnr.it
+***************************************
+Device ID:  78:E7:D1:AB:26:81
+IPv4 Address: 146.48.98.195
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : HP-CP6015dn.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:B4:B2:08
+IPv4 Address: 146.48.98.196
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : reti8.iit.cnr.it
+***************************************
+Device ID:  00:24:81:DF:80:B4
+IPv4 Address: 146.48.98.212
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc3.iit.cnr.it
+***************************************
+Device ID:  AC:9E:17:81:A1:92
+IPv4 Address: 146.48.98.219
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : improta.iit.cnr.it
+***************************************
+Device ID:  52:54:00:CF:C0:7B
+IPv4 Address: 146.48.98.220
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wiki.iit.cnr.it
+***************************************
+Device ID:  D8:9D:67:25:30:00
+IPv4 Address: 146.48.98.223
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : container8.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:B4:F2:5A
+IPv4 Address: 146.48.98.225
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : phook.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:13:4C:E8
+IPv4 Address: 146.48.98.226
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : entc3isp.iit.cnr.it
+***************************************
+Device ID:  52:54:00:EF:41:BA
+IPv4 Address: 146.48.98.228
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : snm2.iit.cnr.it
+***************************************
+Device ID:  E8:9A:8F:84:22:21
+IPv4 Address: 146.48.98.229
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc1.iit.cnr.it
+***************************************
+Device ID:  E8:9A:8F:84:1F:F0
+IPv4 Address: 146.48.98.230
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc2.iit.cnr.it
+***************************************
+Device ID:  E8:9A:8F:84:22:1F
+IPv4 Address: 146.48.98.231
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafivm1.iit.cnr.it
+***************************************
+Device ID:  E8:9A:8F:84:1F:EE
+IPv4 Address: 146.48.98.232
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafivm2.iit.cnr.it
+***************************************
+Device ID:  3C:D9:2B:5D:36:FC
+IPv4 Address: 146.48.98.237
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : carloventurini.iit.cnr.it
+***************************************
+Device ID:  B8:C7:5D:CE:25:52
+IPv4 Address: 146.48.98.240
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : tc-marcoconti.iit.cnr.it
+***************************************
+Device ID:  52:54:00:BC:11:7B
+IPv4 Address: 146.48.98.241
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : monitor-2.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:AA:1A:E7
+IPv4 Address: 146.48.99.141
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn14.iit.cnr.it
+***************************************
+Device ID:  D8:9E:F3:45:85:F0
+IPv4 Address: 146.48.98.243
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : irina.iit.cnr.it
+***************************************
+Device ID:  00:1E:68:37:97:C0
+IPv4 Address: 146.48.98.245
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : container3.iit.cnr.it
+***************************************
+Device ID:  D0:94:66:3F:AB:1A
+IPv4 Address: 146.48.98.246
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafivm9.iit.cnr.it
+***************************************
+Device ID:  00:1E:68:2F:11:5C
+IPv4 Address: 146.48.98.247
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : container4.iit.cnr.it
+***************************************
+Device ID:  A4:BA:DB:41:A6:C7
+IPv4 Address: 146.48.98.249
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc4.iit.cnr.it
+***************************************
+Device ID:  00:10:E0:0D:76:44
+IPv4 Address: 146.48.98.252
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : container5.iit.cnr.it
+***************************************
+Device ID:  D0:94:66:3F:AB:1E
+IPv4 Address: 146.48.98.253
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc9.iit.cnr.it
+***************************************
+Device ID:  00:1E:68:2F:13:00
+IPv4 Address: 146.48.98.254
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : container6.iit.cnr.it
+***************************************
+Device ID:  16:FA:02:D6:08:74
+IPv4 Address: 146.48.99.3
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  00:00:00:1A:AA:BB
+IPv4 Address: 146.48.99.6
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  00:16:D3:58:90:C1
+IPv4 Address: 146.48.99.7
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  D8:9E:F3:45:44:19
+IPv4 Address: 146.48.99.10
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  10:65:30:42:75:A1
+IPv4 Address: 146.48.99.12
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  B8:85:84:AE:FA:E8
+IPv4 Address: 146.48.99.13
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  00:0C:29:DD:D8:66
+IPv4 Address: 146.48.99.16
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  00:21:5A:C5:A0:0A
+IPv4 Address: 146.48.99.19
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  00:3E:E1:C9:6D:F5
+IPv4 Address: 146.48.99.25
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  20:C9:D0:17:08:92
+IPv4 Address: 146.48.99.27
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  00:0C:29:0F:41:7F
+IPv4 Address: 146.48.99.31
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  00:1D:0F:BE:57:BF
+IPv4 Address: 146.48.99.36
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp69.iit.cnr.it
+***************************************
+Device ID:  00:10:75:4D:A6:24
+IPv4 Address: 146.48.99.40
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp73.iit.cnr.it
+***************************************
+Device ID:  70:56:81:C7:52:E8
+IPv4 Address: 146.48.99.42
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp75.iit.cnr.it
+***************************************
+Device ID:  E0:3F:49:13:51:4D
+IPv4 Address: 146.48.99.46
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp79.iit.cnr.it
+***************************************
+Device ID:  30:5A:3A:0A:29:B6
+IPv4 Address: 146.48.99.48
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp81.iit.cnr.it
+***************************************
+Device ID:  00:19:BB:46:60:DF
+IPv4 Address: 146.48.99.51
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp84.iit.cnr.it
+***************************************
+Device ID:  90:1B:0E:BA:42:A4
+IPv4 Address: 146.48.99.60
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp93.iit.cnr.it
+***************************************
+Device ID:  20:CF:30:3E:E6:6C
+IPv4 Address: 146.48.99.62
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp95.iit.cnr.it
+***************************************
+Device ID:  D8:8F:76:7A:1B:29
+IPv4 Address: 146.48.99.64
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp1.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:D1:1A:E9
+IPv4 Address: 146.48.99.73
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp10.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:35:6E:65
+IPv4 Address: 146.48.99.80
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp17.iit.cnr.it
+***************************************
+Device ID:  2C:4D:54:99:FD:91
+IPv4 Address: 146.48.99.81
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp18.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:80:6C:CD
+IPv4 Address: 146.48.99.89
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp26.iit.cnr.it
+***************************************
+Device ID:  82:04:49:E0:A9:69
+IPv4 Address: 146.48.99.90
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp27.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:1B:F7:97
+IPv4 Address: 146.48.99.93
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp30.iit.cnr.it
+***************************************
+Device ID:  90:1B:0E:BC:90:6B
+IPv4 Address: 146.48.99.98
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp35.iit.cnr.it
+***************************************
+Device ID:  20:CF:30:08:50:CE
+IPv4 Address: 146.48.99.107
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp44.iit.cnr.it
+***************************************
+Device ID:  D8:9E:F3:45:85:D3
+IPv4 Address: 146.48.99.123
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp60.iit.cnr.it
+***************************************
+Device ID:  08:00:27:BA:BB:52
+IPv4 Address: 146.48.99.125
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp62.iit.cnr.it
+***************************************
+Device ID:  D4:C9:EF:ED:1D:77
+IPv4 Address: 146.48.99.133
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn6.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:0B:87:92
+IPv4 Address: 146.48.99.134
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn7.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:46:6E:33
+IPv4 Address: 146.48.99.138
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn11.iit.cnr.it
+***************************************
+Device ID:  00:10:18:CB:F1:9F
+IPv4 Address: 146.48.99.139
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn12.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:9C:40:A1
+IPv4 Address: 146.48.99.140
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn13.iit.cnr.it
+***************************************
+Device ID:  4C:32:75:C3:17:27
+IPv4 Address: 146.48.99.147
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn20.iit.cnr.it
+***************************************
+Device ID:  B8:85:84:AE:FC:1F
+IPv4 Address: 146.48.99.148
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn21.iit.cnr.it
+***************************************
+Device ID:  74:44:01:9E:7B:55
+IPv4 Address: 146.48.99.150
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn23.iit.cnr.it
+***************************************
+Device ID:  A8:20:66:52:D0:26
+IPv4 Address: 146.48.99.151
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn24.iit.cnr.it
+***************************************
+Device ID:  00:50:56:AF:80:87
+IPv4 Address: 146.48.99.158
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn31.iit.cnr.it
+***************************************
+Device ID:  D8:9E:F3:42:5D:D2
+IPv4 Address: 146.48.99.164
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn37.iit.cnr.it
+***************************************
+Device ID:  40:B0:34:1F:A8:7B
+IPv4 Address: 146.48.99.166
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn39.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:27:54:2B
+IPv4 Address: 146.48.99.169
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn42.iit.cnr.it
+***************************************
+Device ID:  BC:AE:C5:27:90:12
+IPv4 Address: 146.48.99.172
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn45.iit.cnr.it
+***************************************
+Device ID:  00:0C:29:32:3B:2D
+IPv4 Address: 146.48.99.173
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn46.iit.cnr.it
+***************************************
+Device ID:  2C:4D:54:42:F8:4D
+IPv4 Address: 146.48.99.195
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : ip-phone4.iit.cnr.it
+***************************************
+Device ID:  52:54:00:6B:AA:F4
+IPv4 Address: 146.48.99.236
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : www.nessos-project.eu
+***************************************
+Device ID:  00:0C:29:5B:2E:12
+IPv4 Address: 146.48.99.238
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : www.ipv6italia.it
+***************************************
+Device ID:  52:54:00:C3:FE:A9
+IPv4 Address: 146.48.99.239
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : www.ispf.cnr.it
+***************************************
+Device ID:  4C:5E:0C:E8:7E:3A
+IPv4 Address: 146.48.99.243
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : radius4.pi.cnr.it
+***************************************
+Device ID:  D8:18:D3:78:CB:2F
+IPv4 Address: 146.48.99.254
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : for
+***************************************
+Device ID:  0c:4d:e9:d0:4b:ab
+IPv4 Address: (146.48.99.154)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn27.iit.cnr.it
+***************************************
+Device ID:  d4:9a:20:d6:e4:c6
+IPv4 Address: (146.48.98.85)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mainetto.iit.cnr.it
+***************************************
+Device ID:  00:01:e6:a1:49:fc
+IPv4 Address: (146.48.96.73)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : hp1055-sm.iit.cnr.it
+***************************************
+Device ID:  78:e7:d1:ab:26:81
+IPv4 Address: (146.48.98.195)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : HP-CP6015dn.iit.cnr.it
+***************************************
+Device ID:  a8:20:66:4a:c7:ee
+IPv4 Address: (146.48.99.86)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp23.iit.cnr.it
+***************************************
+Device ID:  b4:b6:86:13:8d:c7
+IPv4 Address: (146.48.99.96)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp33.iit.cnr.it
+***************************************
+Device ID:  00:12:79:e0:7a:7b
+IPv4 Address: (146.48.96.97)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : hp2420-trumpy.iit.cnr.it
+***************************************
+Device ID:  00:17:08:82:ca:f9
+IPv4 Address: (192.168.96.187)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+***************************************
+Device ID:  a8:20:66:52:d0:26
+IPv4 Address: (146.48.99.151)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn24.iit.cnr.it
+***************************************
+Device ID:  00:24:81:df:80:b4
+IPv4 Address: (146.48.98.212)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc3.iit.cnr.it
+***************************************
+Device ID:  d0:94:66:3f:ab:1e
+IPv4 Address: (146.48.98.253)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc9.iit.cnr.it
+***************************************
+Device ID:  52:54:00:c4:9a:15
+IPv4 Address: (146.48.96.3)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dns.iit.cnr.it
+***************************************
+Device ID:  d8:8f:76:7a:1b:29
+IPv4 Address: (146.48.99.64)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp1.iit.cnr.it
+***************************************
+Device ID:  d8:18:d3:78:cb:2f
+IPv4 Address: (146.48.99.254)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+***************************************
+Device ID:  38:c9:86:40:d5:36
+IPv4 Address: (146.48.99.49)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp82.iit.cnr.it
+***************************************
+Device ID:  a8:20:66:4a:d7:bc
+IPv4 Address: (146.48.97.27)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : viola.iit.cnr.it
+***************************************
+Device ID:  00:90:5e:12:db:73
+IPv4 Address: (146.48.96.147)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : matrix.iit.cnr.it
+***************************************
+Device ID:  90:1b:0e:ba:42:a4
+IPv4 Address: (146.48.99.60)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp93.iit.cnr.it
+***************************************
+Device ID:  20:c9:d0:0f:8e:8c
+IPv4 Address: (146.48.96.158)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : tc-bruno.iit.cnr.it
+***************************************
+Device ID:  a0:ce:c8:11:3a:32
+IPv4 Address: (146.48.99.32)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp65.iit.cnr.it
+***************************************
+Device ID:  14:b3:1f:16:d5:36
+IPv4 Address: (146.48.99.35)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp68.iit.cnr.it
+***************************************
+Device ID:  00:17:a4:95:15:3c
+IPv4 Address: (192.168.96.31)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+***************************************
+Device ID:  10:dd:b1:cb:c6:19
+IPv4 Address: (146.48.97.21)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : acacia.iit.cnr.it
+***************************************
+Device ID:  dc:a4:ca:ea:83:0e
+IPv4 Address: (146.48.96.100)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : time-capsule-laforenza.iit.cnr.it
+***************************************
+Device ID:  e0:3f:49:13:51:4d
+IPv4 Address: (146.48.99.46)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp79.iit.cnr.it
+***************************************
+Device ID:  18:60:24:7b:eb:39
+IPv4 Address: (146.48.99.87)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp24.iit.cnr.it
+***************************************
+Device ID:  d0:94:66:06:95:b3
+IPv4 Address: (146.48.96.59)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc8.iit.cnr.it
+***************************************
+Device ID:  00:0e:c6:c7:d8:46
+IPv4 Address: (146.48.99.97)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp34.iit.cnr.it
+***************************************
+Device ID:  00:21:b7:44:f7:ce
+IPv4 Address: (146.48.98.207)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : lexmark-ex-marconi.iit.cnr.it
+***************************************
+Device ID:  b8:c7:5d:ce:25:52
+IPv4 Address: (146.48.98.240)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : tc-marcoconti.iit.cnr.it
+***************************************
+Device ID:  00:0c:6c:07:ed:4b
+IPv4 Address: (146.48.99.82)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp19.iit.cnr.it
+***************************************
+Device ID:  00:00:5e:00:01:60
+IPv4 Address: (146.48.96.1)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : iit-gw.iit.cnr.it
+***************************************
+Device ID:  ec:9a:74:30:59:5a
+IPv4 Address: (146.48.96.109)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : HP-M551-color-B11.iit.cnr.it
+***************************************
+Device ID:  4c:32:75:c3:17:27
+IPv4 Address: (146.48.99.147)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn20.iit.cnr.it
+***************************************
+Device ID:  a4:ba:db:41:a6:c7
+IPv4 Address: (146.48.98.249)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : wafidc4.iit.cnr.it
+***************************************
+Device ID:  00:1e:c2:ff:8f:2e
+IPv4 Address: (146.48.96.186)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : passarella.iit.cnr.it
+***************************************
+Device ID:  00:0e:c6:c7:f5:ad
+IPv4 Address: (146.48.99.135)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn8.iit.cnr.it
+***************************************
+Device ID:  58:ef:68:14:38:72
+IPv4 Address: (146.48.99.79)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp16.iit.cnr.it
+***************************************
+Device ID:  a0:ce:c8:11:3a:6c
+IPv4 Address: (146.48.99.115)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp52.iit.cnr.it
+***************************************
+Device ID:  e8:39:35:45:bf:ef
+IPv4 Address: (146.48.96.72)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : saracino-virtualmachine.iit.cnr.it
+***************************************
+Device ID:  00:3e:e1:ce:65:b8
+IPv4 Address: (146.48.99.177)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn50.iit.cnr.it
+***************************************
+Device ID:  00:0c:29:4e:88:8f
+IPv4 Address: (146.48.96.183)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : gk.iit.cnr.it
+***************************************
+Device ID:  d8:8f:76:7a:19:12
+IPv4 Address: (146.48.96.216)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : tc-baesso.iit.cnr.it
+***************************************
+Device ID:  70:56:81:c7:52:e8
+IPv4 Address: (146.48.99.42)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp75.iit.cnr.it
+***************************************
+Device ID:  00:24:9b:37:ec:b6
+IPv4 Address: (146.48.99.83)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp20.iit.cnr.it
+***************************************
+Device ID:  10:dd:b1:dd:cc:c0
+IPv4 Address: (146.48.96.99)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : mac-baesso.iit.cnr.it
+***************************************
+Device ID:  50:3f:56:00:6b:78
+IPv4 Address: (146.48.97.97)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+***************************************
+Device ID:  20:c9:d0:17:08:92
+IPv4 Address: (146.48.99.27)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+***************************************
+Device ID:  38:d5:47:32:2d:fe
+IPv4 Address: (146.48.99.53)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dhcp86.iit.cnr.it
+***************************************
+Device ID:  52:54:00:34:bd:eb
+IPv4 Address: (146.48.96.2)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : dns.pi.cnr.it
+***************************************
+Device ID:  58:ef:68:14:10:c7
+IPv4 Address: (146.48.99.145)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn18.iit.cnr.it
+***************************************
+Device ID:  d8:18:d3:78:c6:2f
+IPv4 Address: (146.48.99.253)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+***************************************
+Device ID:  a0:ce:c8:11:3a:6a
+IPv4 Address: (146.48.99.15)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+***************************************
+Device ID:  a8:60:b6:2c:5e:87
+IPv4 Address: (146.48.99.156)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : vpn29.iit.cnr.it
+***************************************
+Device ID:  58:ef:68:e5:e0:34
+IPv4 Address: (146.48.98.79)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Resolved Name : bruno.iit.cnr.it
+***************************************
+Device ID:  00:00:00:1a:1b:aa
+IPv4 Address: (146.48.99.21)
+Aliases: 
+Who I am:  ???
+Supposed Owner: ???
+Node identification Statistics: 
+	Total number of Node Identified : 428
+	Number of MDNS nodes            : 43
+	Number of Browser nodes         : 77
+	Number of DHCP nodes            : 47
+	Number of nodes updated by nmap : 15
+	Number of new nodes by nmap     : 245
+	Number of nodes updated by cache: 0
+	Number of new nodes by arp cache: 56
+	Number of unknown nodes         : 9
+End
+2265.98user 44.87system 27:33.53elapsed 139%CPU (0avgtext+0avgdata 713676maxresident)k
+741096inputs+208outputs (115major+727277minor)pagefaults 0swaps

@@ -6,6 +6,7 @@ import pymysql
 import subprocess
 import socket
 from netaddr import IPAddress
+from nested_dict import nested_dict
 
 # Print or not info of services
 DEBUG_SRV = False
@@ -156,6 +157,7 @@ class ServiceMDNS:
         '''
         for txt_k in dict_txts:
             self._txts[txt_k] = dict_txts[txt_k]
+
 
 
 class Device(object):
@@ -335,19 +337,89 @@ class Device(object):
         return str(self._db_name)
 
 
+class Link(object):
+    ''' Main class represent the connection between two devices'''
+    _id : str
+    _device_from : Device
+    _device_to : Device
+    _namespaces_in_common : dict
+    _nbns_frequency : int
+    _llmnr_frequency : int
+    _arp_frequency : int
+
+
+    def __init__(self, dev_frm : Device , dev_to : Device):
+        self.id = dev_frm + '-' + dev_to
+        self._device_from = dev_frm
+        self._device_to = dev_to
+        self._namespaces_in_common = list()
+        self._nbns_frequency = 0
+        self._llmnr_frequency = 0
+        self._arp_frequency = 0
+
+    # getters
+
+    def id(self):
+        return self._id
+
+    def from_node(self):
+        return self._device_from
+
+    def to_node(self):
+        return self._device_to
+
+    def nbns_frequency(self):
+        return self._nbns_frequency
+
+    def llmnr_frequency(self):
+        return self._llmnr_frequency
+
+    def arp_frequency(self):
+        return self._arp_frequency
+    def get_common_ns(self):
+        return self._namespaces_in_common
+    # setters
+    def set_common_ns(self,ns_commons : list):
+        self._namespaces_in_common = ns_commons
+
+    def inc_llmnr_frequency(self):
+        self._llmnr_frequency += 1
+
+    def inc_nbns_frequency(self):
+        self._nbns_frequency += 1
 
 class NetworkLAN:
     '''"Main class", that represents the network under analysis'''
     _devices: dict
+    _links : dict
     _lost_srv_propertyes: dict
     _namespaces_in_common:dict
     _dropbox_subNET:dict
+    _count_pkt: int
+    _mdns_pkt: int
+    _browser_pkt: int
+    _dhcp_pkt: int
+    _dropbox_pkt: int
+    _nmap_pkt_update : int
+    _nmap_pkt_new : int
+    _arp_cache_update_pkt : int
+    _arp_cache_new_pkt : int
 
     def __init__(self):
         self._devices = dict()
+        self._links = dict()
         self._lost_srv_propertyes = dict()
         self._namespaces_in_common = dict()
         self._dropbox_subNET = dict()
+        self._count_pkt = 0
+        self._mdns_pkt = 0
+        self._browser_pkt = 0
+        self._dhcp_pkt = 0
+        self._dropbox_pkt = 0
+        self._nmap_pkt_update = 0
+        self._nmap_pkt_new = 0
+        self._arp_cache_update_pkt = 0
+        self._arp_cache_new_pkt = 0
 
     def print_browser_inf(self):
         for _d in self._devices.values():
@@ -362,36 +434,62 @@ class NetworkLAN:
 
     def printAll(self):
         ''' Print all infos of the network: devices(MAC addr, aliases, kind, rervices that offer, ...) '''
+        counter = 0
+        unknown_counter = 0
         for _d in self._devices.values():
             d: Device = _d
+            flag = False
+            counter +=1
             print('***************************************')
             print('Device ID: ', d.id())
+            if d.last_IPv4_know() != '':
+                print("IPv4 Address: " + d.last_IPv4_know())
+            if d.last_IPv6_know() != '':
+                print("IPv4 Address: " + d.last_IPv6_know())
+
             print('Aliases: ', end='')
             for al in d.aliases():
+                flag= True
                 print(al, end='  || ')
             print('')
 
+            if flag:
+                self._mdns_pkt += 1
             d.update_kind()
             print('Who I am: ', d.kind())
             print('Supposed Owner:', d.owner())
 
             if d.dhcp_info() != '':
+                flag=True
                 print('DHCP name : ' + d.dhcp_info())
+                self._dhcp_pkt += 1
 
             dropbox : DBlspDISC = d.get_DB_info()
             if(dropbox!=None):
                 dropbox.print()
+                flag = True
+            browser_flag = False
 
             if d.browser_hostname() != '':
                 print('Browser Hostname : ' + d.browser_hostname() )
+                browser_flag = True
+                flag = True
             if d.browser_comment() != '':
+                browser_flag = True
                 print('Browser comment : ' + d.browser_comment())
+                flag = True
             if d.browser_win_version() != '':
+                browser_flag = True
                 print('Browser windows version : ' + d.browser_win_version())
-
+                flag = True
+            if browser_flag:
+                self._browser_pkt += 1
             if d.db_name() != '':
+                flag = True
                 print('Resolved Name : ' + d.db_name())
 
+            if not flag:
+                unknown_counter +=1
             if(DEBUG_SRV):
                 for _srv in d.get_services().values():
                     srv: ServiceMDNS = _srv
@@ -408,7 +506,42 @@ class NetworkLAN:
                             print(txt_k, '=', txts[txt_k], sep='', end=' , ')
                         print('')
                 print('/----------------------------------/')
-
+        print("Links between nodes")
+        for li in self._links:
+            if len(self._links[li].get_common_ns()) > 0:
+                print("\tDropBox :" +
+                      str(self._links[li].from_node()) +
+                      "-->" +
+                      str(self._links[li].to_node()) +
+                      " : " +
+                      str(len(self._links[li].get_common_ns())))
+            elif self._links[li].llmnr_frequency() > 0:
+                print("\tLLMNR : " +
+                      str(self._links[li].from_node()) +
+                      "-->" +
+                      str(self._links[li].to_node()) +
+                      " : " +
+                      str(self._links[li].llmnr_frequency())
+                      )
+            elif self._links[li].nbns_frequency() > 0:
+                print("\tNBNS : " +
+                      str(self._links[li].from_node()) +
+                      "-->" +
+                      str(self._links[li].to_node()) +
+                      " : " +
+                      str(self._links[li].nbns_frequency())
+                      )
+        print("")
+        print("Node identification Statistics: ")
+        print("\tTotal number of Node Identified : " + str(counter))
+        print("\tNumber of MDNS nodes            : " + str(self._mdns_pkt))
+        print("\tNumber of Browser nodes         : " + str(self._browser_pkt))
+        print("\tNumber of DHCP nodes            : " + str(self._dhcp_pkt))
+        print("\tNumber of nodes updated by nmap : " + str(self._nmap_pkt_update))
+        print("\tNumber of new nodes by nmap     : " + str(self._nmap_pkt_new))
+        print("\tNumber of nodes updated by cache: " + str(self._arp_cache_update_pkt))
+        print("\tNumber of new nodes by arp cache: " + str(self._arp_cache_new_pkt))
+        print("\tNumber of unknown nodes         : " + str(unknown_counter))
 
 
     def add_lost_property(self, lost_srv: ServiceMDNS):
@@ -533,6 +666,8 @@ class NetworkLAN:
             dev = self._devices[name]
         else:
             dev = Device(name)
+
+        # self._mdns_pkt += 1
 
         def update(disp: Device, srv_record: ServiceMDNS):
             '''
@@ -739,6 +874,8 @@ class NetworkLAN:
             dev = Device(name)
             self._devices[name]=dev
 
+        self._dropbox_pkt +=1
+
         if ('ip' in packet):
             dev.update_IPv4(packet.ip.src[:])
 
@@ -765,6 +902,8 @@ class NetworkLAN:
         else:
             dev = Device(name)
             self._devices[name]=dev
+
+
 
         if ('ip' in packet):
             dev.update_IPv4(packet.ip.src[:])
@@ -803,7 +942,120 @@ class NetworkLAN:
 
         dev.update_browser_info(server,comment,win_ver)
 
+    def extract_nbns_infos(self,packet: Packet):
+        '''
+                Givin a packet, extract DHCP information
+                :param packet: ONLY form "pyshark.Filecapture" create with option 'use_json=True'
+                :return:
+        '''
+        name: str
+        if ('eth' in packet and 'nbns' in packet):
+            name = packet.eth.src[:]
+        else:
+            return
 
+        dev: Device = None
+        if (name in self._devices):
+            dev = self._devices[name]
+        else:
+            dev = Device(name)
+            self._devices[name] = dev
+
+        if ('ip' in packet):
+            dev.update_IPv4(packet.ip.src[:])
+
+        if ('ipv6' in packet):
+            dev.update_IPv6(packet.ipv6.src[:])
+
+        try:
+            dest_hostname = packet.nbns.name
+            dest_hostname = dest_hostname.replace('<00>','')
+        except AttributeError as e:
+            pass
+
+        if dest_hostname == 'wpad':
+            pass
+            #analyze wpad
+        else:
+            dest_id = self.find_equivalent_node(dest_hostname)
+            if dest_id != None:
+                llink: Link = None
+                link_id = dev.id() + '-' + dest_id.id()
+                if (link_id in self._links):
+                    llink = self._links[link_id]
+                else:
+                    llink = Link(dev.id(), dest_id.id())
+                    self._links[link_id] = llink
+
+                llink.inc_nbns_frequency()
+
+
+    def find_equivalent_node(self,hostname : str):
+        hostname = hostname.lower()
+
+        for _d in self._devices.values():
+            d: Device = _d
+            for al in d.aliases():
+                if al.lower() == hostname:
+                    return d
+
+            if d.dhcp_info() != '':
+                if hostname == d.dhcp_info().lower():
+                    return d
+
+            if d.browser_hostname().lower() == hostname:
+                return d
+
+            if d.browser_comment().lower() == hostname:
+                return d
+
+            if d.db_name().lower() == hostname:
+                return d
+        return None
+
+    def extract_llmnr_infos(self,packet: Packet):
+        '''
+        Givin a packet, extract DHCP information
+        :param packet: ONLY form "pyshark.Filecapture" create with option 'use_json=True'
+        :return:
+        '''
+        name: str
+        if ('eth' in packet and 'llmnr' in packet):
+            name = packet.eth.src[:]
+        else:
+            return
+
+        dev: Device = None
+        if (name in self._devices):
+            dev = self._devices[name]
+        else:
+            dev = Device(name)
+            self._devices[name] = dev
+
+        if ('ip' in packet):
+            dev.update_IPv4(packet.ip.src[:])
+
+        if ('ipv6' in packet):
+            dev.update_IPv6(packet.ipv6.src[:])
+        try:
+            dest_hostname = packet.llmnr.dns_qry_name
+        except AttributeError as e:
+            pass
+
+        if dest_hostname == 'wpad':
+            pass
+            #analyze wpad
+        else:
+            dest_id = self.find_equivalent_node(dest_hostname)
+            if dest_id != None:
+                llink: Link = None
+                link_id = dev.id() + '-' + dest_id.id()
+                if (link_id in self._links):
+                    llink = self._links[link_id]
+                else:
+                    llink = Link(dev.id(), dest_id.id())
+                    self._links[link_id] = llink
+                llink.inc_llmnr_frequency()
 
 
     def extract_DHCP_info(self,packet: Packet):
@@ -824,6 +1076,7 @@ class NetworkLAN:
         else:
             dev = Device(name)
             self._devices[name]=dev
+
 
         if ('ip' in packet):
             dev.update_IPv4(packet.ip.src[:])
@@ -885,30 +1138,48 @@ class NetworkLAN:
     def extract_unknown(self,filename):
         unknowns = []
         # command = '''tshark -r {} -T fields -e ip.src -e ip.dst | tr "\t" "\n" | sort | uniq '''.format(filename)
-        # local_ip = self.get_ip_address()
+
         command = 'ifconfig'
         result = subprocess.run(command.split(),stdout=subprocess.PIPE,shell=True)
         output = result.stdout.decode()
         for line in output.split('\n'):
             if 'broadcast' in line:
-                local_ip = line.split(' ')[1]
-                netmask = line.split(' ')[3]
-                broadcast_ip = line.split(' ')[-1]
-                command = 'ping -b {}'.format(broadcast_ip)
-                try:
-                    result = subprocess.run(command.split(),stdout=subprocess.PIPE,timeout=8)
-                except subprocess.TimeoutExpired as e:
-                    break
+                local_ip = line.split()[1]
+                netmask = line.split()[3]
+                broadcast_ip = line.split()[-1]
+                break
+
+        cidr = IPAddress(netmask).netmask_bits()
+        command = 'nmap -sP {}/{}'.format(local_ip,cidr)
+        result = subprocess.run(command.split(),stdout=subprocess.PIPE)
+        output = result.stdout.decode()
+        hostname = ''
+        for line in output.split('\n'):
+            if "Nmap scan report" in line:
+                if hostname != '':
+                    if (Mac_addr in self._devices):
+                        self._nmap_pkt_update +=1
+                        dev = self._devices[Mac_addr]
+                    else:
+                        self._nmap_pkt_new += 1
+                        dev = Device(Mac_addr)
+                        self._devices[Mac_addr] = dev
+                    dev.update_db_name(hostname)
+                    dev.update_IPv4(ip_addr)
+                ip_addr = line.split()[-1].replace('(', '').replace(')', '')
+                hostname = line.split()[-2]
+            elif "MAC Address" in line:
+                Mac_addr = line.split()[2]
 
 
         # now the arp cache is filled !! we can search through it to convert mac to IP address
         #
 
-        #     if d.last_IPv4_know() != '':
-        #         unknowns.append(d)
-        #
-        # dev: Device = None
-
+        command = 'ping -b {}'.format(broadcast_ip)
+        try:
+            subprocess.run(command.split(), stdout=subprocess.PIPE,timeout=15)
+        except subprocess.TimeoutExpired:
+            pass
         command = 'arp -a'
         arp_result = subprocess.run(command.split(), stdout=subprocess.PIPE)
         output = arp_result.stdout.decode()
@@ -920,8 +1191,10 @@ class NetworkLAN:
             line_mac = line.split()[3]
             line_ip = line.split()[1]
             if (line_mac in self._devices):
+                self._arp_cache_update_pkt += 1
                 dev = self._devices[line_mac]
             else:
+                self._arp_cache_new_pkt += 1
                 dev = Device(line_mac)
                 self._devices[line_mac] = dev
             if hostname != '?':
@@ -938,6 +1211,22 @@ class NetworkLAN:
         '''
         self.extract_mDNS_info(packet)
         self.extract_DB_infos(packet)
+
+    def find_dropbox_relations(self):
+        db_nodes = []
+        for d in self._devices.values():
+            d:Device
+            db_lsp: DBlspDISC = d.get_DB_info()
+            if(db_lsp!=None): # this device have Dropbox infos?
+                db_nodes.append((db_lsp,d))
+        nd = nested_dict(2, list)
+        for i in range(0,len(db_nodes)):
+            for j in range(0,len(db_nodes)):
+                if i < j :
+                    common = [value for value in db_nodes[i][0].namespaces() if value in db_nodes[j][0].namespaces()]
+                    if common!= []:
+                        nd.setdefault(db_nodes[i][1].id(),{}).setdefault(db_nodes[j][1].id(),common)
+        return nd
 
     def get_dropbox_subNET(self):
         '''
@@ -977,15 +1266,27 @@ class NetworkLAN:
 
         return self._dropbox_subNET
 
-    def print_DB(self):
-        print('')
-        print('###########################################################')
-        print('####################### DropBox Net #######################')
-        print('###########################################################')
+    def extract_DB_links(self):
+        # print('')
+        # print('###########################################################')
+        # print('####################### DropBox Net #######################')
+        # print('###########################################################')
 
-        dbNet = self.get_dropbox_subNET()
-        for dev_MAC, dev_linked in dbNet.items():
-            print(dev_MAC, '<--->', dev_linked)
+        dbNet = self.find_dropbox_relations()
+        for dev_MAC in dbNet:
+            for dev_linked in dbNet[dev_MAC]:
+
+                llink: Link = None
+                link_id = dev_MAC + '-' + dev_linked
+                if ( link_id in self._links):
+                    llink = self._links[link_id]
+                else:
+                    llink = Link(dev_MAC, dev_linked)
+                    self._links[link_id] = llink
+
+                llink.set_common_ns(dbNet[dev_MAC][dev_linked])
+
+
 
 
     def all_kind_protocol(self):
@@ -994,7 +1295,7 @@ class NetworkLAN:
             d: Device = _d
             srvs: dict = d.get_services()
             for _s in srvs.values():
-                s: ServiceMDNS = _s
+                s: Service
                 all_Prot.add(s.protocol())
                 if s.protocol() == '':
                     print('', end='')
