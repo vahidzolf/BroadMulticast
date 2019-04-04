@@ -20,9 +20,9 @@ def dropboxStudy(pkt:Packet):
 
 
 folder:str='/root/captures/'
-files:list=['cs_general_fixed.pcap']
+# files:list=['cs_general_fixed.pcap']
 # files:list=['small.pcap']
-#files:list=['CNR_Big_capture.pcap']
+files:list=['CNR_Big_capture.pcap']
 # files:list=['medium.pcap']
 
 net=NetworkLAN()
@@ -89,7 +89,7 @@ for file in files:
         input_file=folder + file,
         keep_packets=False,
         # use_json=True,
-        display_filter="llmnr or nbns"
+        display_filter="llmnr or nbns or arp"
     )
 
     for pkt in cap:
@@ -97,6 +97,9 @@ for file in files:
             net.extract_llmnr_infos(pkt)
         elif 'nbns' in pkt:
             net.extract_nbns_infos(pkt)
+        elif 'arp' in pkt:
+        #Analyze ARP packets to infer connections
+            net.extract_ARP_Links(pkt)
 # At this moment there are some nodes which no name assigned to them, while we can try to resolve the IP address of
 # them using dns or nmlookup
 # net.extract_unknown(file)

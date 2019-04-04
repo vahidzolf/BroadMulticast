@@ -376,6 +376,7 @@ class Link(object):
 
     def arp_frequency(self):
         return self._arp_frequency
+
     def get_common_ns(self):
         return self._namespaces_in_common
     # setters
@@ -387,6 +388,8 @@ class Link(object):
 
     def inc_nbns_frequency(self):
         self._nbns_frequency += 1
+    def inc_arp_frequency(self):
+        self._arp_frequency += 1
 
 class NetworkLAN:
     '''"Main class", that represents the network under analysis'''
@@ -531,6 +534,15 @@ class NetworkLAN:
                       " : " +
                       str(self._links[li].nbns_frequency())
                       )
+            elif self._links[li].arp_frequency() > 0:
+                print("\tARP : " +
+                      str(self._links[li].from_node()) +
+                      "-->" +
+                      str(self._links[li].to_node()) +
+                      " : " +
+                      str(self._links[li].arp_frequency())
+                      )
+
         print("")
         print("Node identification Statistics: ")
         print("\tTotal number of Node Identified : " + str(counter))
@@ -977,7 +989,7 @@ class NetworkLAN:
             pass
             #analyze wpad
         else:
-            dest_id = self.find_equivalent_node(dest_hostname)
+            dest_id = self.find_equivalent_node_hostname(dest_hostname)
             if dest_id != None:
                 llink: Link = None
                 link_id = dev.id() + '-' + dest_id.id()
@@ -989,8 +1001,16 @@ class NetworkLAN:
 
                 llink.inc_nbns_frequency()
 
+    def find_equivalent_node_ip(self, ip : str):
+        for _d in self._devices.values():
+            d: Device = _d
+            if d.last_IPv4_know() == str(ip) :
+                return d
 
-    def find_equivalent_node(self,hostname : str):
+        return None
+
+
+    def find_equivalent_node_hostname(self,hostname : str):
         hostname = hostname.lower()
 
         for _d in self._devices.values():
@@ -1046,7 +1066,7 @@ class NetworkLAN:
             pass
             #analyze wpad
         else:
-            dest_id = self.find_equivalent_node(dest_hostname)
+            dest_id = self.find_equivalent_node_hostname(dest_hostname)
             if dest_id != None:
                 llink: Link = None
                 link_id = dev.id() + '-' + dest_id.id()
@@ -1057,6 +1077,46 @@ class NetworkLAN:
                     self._links[link_id] = llink
                 llink.inc_llmnr_frequency()
 
+    def extract_ARP_Links(self, packet : Packet):
+        name: str
+        if ('eth' in packet and 'arp' in packet ):
+            name = packet.eth.src[:]
+        else:
+            return
+
+        my_data = packet['ARP']
+        src_ip = my_data.src_proto_ipv4
+        dst_ip = my_data.dst_proto_ipv4
+        # IP addresses which are related to sysadmin : '146.48.96.3','146.48.96.1','146.48.96.2','146.48.98.155' ,'192.168.100.1'
+        if src_ip == '0.0.0.0' or src_ip.startswith('169.254'):
+            return
+        if dst_ip == '0.0.0.0' or dst_ip.startswith('169.254'):
+            return
+        if src_ip == dst_ip:
+            return
+        dev: Device = None
+        if (name in self._devices):
+            dev = self._devices[name]
+        else:
+            dev = Device(name)
+            self._devices[name] = dev
+
+        if ('ip' in packet):
+            dev.update_IPv4(packet.ip.src[:])
+
+        if ('ipv6' in packet):
+            dev.update_IPv6(packet.ipv6.src[:])
+
+        dst_node = self.find_equivalent_node_ip(dst_ip)
+        if dst_node != None:
+            llink: Link = None
+            link_id = dev.id() + '-' + dst_node.id()
+            if (link_id in self._links):
+                llink = self._links[link_id]
+            else:
+                llink = Link(dev.id(), dst_node.id())
+                self._links[link_id] = llink
+            llink.inc_arp_frequency()
 
     def extract_DHCP_info(self,packet: Packet):
         '''
