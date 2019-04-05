@@ -1,7 +1,7 @@
 import pyshark
 from pyshark import *
 from pyshark.packet.packet import Packet
-
+import sys
 from classFrames import NetworkLAN
 from DropBox_utils import DBlspDISC
 
@@ -18,11 +18,17 @@ def dropboxStudy(pkt:Packet):
 #             'CNR_chunk_00005_20190301070739.pcap',
 # ]
 
+if len(sys.argv) < 3:
+    print("invalid usage")
+    print("\tUsage: python3 run_test.py <Folder_path> <filename_1> <filename_2> ... ")
+    print("\tNote that filenames are the name of files resided in Folder_path")
+    exit(1)
 
-folder:str='/root/captures/'
+
+folder:str= sys.argv[1]
 # files:list=['cs_general_fixed.pcap']
-# files:list=['small.pcap']
-files:list=['CNR_Big_capture.pcap']
+files = sys.argv[2:]
+# files:list=['CNR_Big_capture.pcap']
 # files:list=['medium.pcap']
 
 net=NetworkLAN()

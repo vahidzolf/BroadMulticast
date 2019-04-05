@@ -38,7 +38,10 @@ class DBlspDISC:
                 elif(key=='displayname'):
                     self._displayname = j[self.json_value_string]
                 elif (key == 'namespaces'):
-                    self._namespaces = set(j[self.json_array][self.json_value_number]) #j[self.json_array][self.json_value_number]
+                    if type(j[self.json_array][self.json_value_number]) != type('str'):
+                        self._namespaces = set(j[self.json_array][self.json_value_number]) #j[self.json_array][self.json_value_number]
+                    else:
+                        self._namespaces = set({j[self.json_array][self.json_value_number]}) #j[self.json_array][self.json_value_number]
                 elif (key == 'version'):
                     l:list= j[self.json_array][self.json_value_number]
                     self._version=str(l.pop(0))

@@ -1,7 +1,0 @@
-to run the code you should perform as follow : 
-1- you should specify the folder in which your pcap files resided. to do this you should change these two variables in the file 
-   run_test.py 
-   folder:str='/root/captures/'
-   files:list=['cs_general_fixed.pcap']
-2- then run the code with this command: 
-   python3 run_test.py  
