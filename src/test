@@ -1,2 +1,0 @@
-#!/bin/sh
-sed '/begin/,/end/ { /begin/n /end/ !{ s/old/new/ } }' 
