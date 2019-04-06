@@ -11,6 +11,11 @@ This tool is a forked version of this github repository:
 
 https://github.com/emaione2/BroadMulticast
 
+## Required Packages
+
+  -- Pyshark https://github.com/KimiNewt/pyshark
+  -- netaddr https://github.com/drkjam/netaddr/
+  -- nested_dict https://github.com/bunbun/nested-dict
 
 ## Usage
 
