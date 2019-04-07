@@ -30,6 +30,7 @@ folder:str= sys.argv[1]
 files = sys.argv[2:]
 # files:list=['CNR_Big_capture.pcap']
 # files:list=['medium.pcap']
+files:list=['small.pcap']
 
 net=NetworkLAN()
 
@@ -112,6 +113,10 @@ for file in files:
 
 # show linked devices
 net.extract_DB_links()
+
+# Online network probing
+
+net.extract_snmp_info()
 
 #print snapshot of the network
 net.printAll()

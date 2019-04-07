@@ -2,7 +2,7 @@ from pyshark.packet.packet import Packet
 from pyshark.packet.fields import *
 from discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_on_alias, common_string, common_string_s
 from DropBox_utils import DBlspDISC
-import pymysql
+import snmp_utils
 import subprocess
 import socket
 from netaddr import IPAddress
@@ -346,7 +346,7 @@ class Link(object):
     _nbns_frequency : int
     _llmnr_frequency : int
     _arp_frequency : int
-
+    _print_frequency : int
 
     def __init__(self, dev_frm : Device , dev_to : Device):
         self.id = dev_frm + '-' + dev_to
@@ -356,7 +356,7 @@ class Link(object):
         self._nbns_frequency = 0
         self._llmnr_frequency = 0
         self._arp_frequency = 0
-
+        self._print_frequency = 0
     # getters
 
     def id(self):
@@ -379,7 +379,12 @@ class Link(object):
 
     def get_common_ns(self):
         return self._namespaces_in_common
+
+    def print_frequency(self):
+        return self._print_frequency
+
     # setters
+
     def set_common_ns(self,ns_commons : list):
         self._namespaces_in_common = ns_commons
 
@@ -388,8 +393,13 @@ class Link(object):
 
     def inc_nbns_frequency(self):
         self._nbns_frequency += 1
+
     def inc_arp_frequency(self):
         self._arp_frequency += 1
+
+    def inc_print_frequency(self):
+        self._print_frequency += 1
+
 
 class NetworkLAN:
     '''"Main class", that represents the network under analysis'''
@@ -1171,29 +1181,6 @@ class NetworkLAN:
             print('Structure is empty.')
             return True
 
-    def get_ip_address(self):
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        return s.getsockname()[0]
-
-    def resolve_by_db(self,ip_addr):
-        # Open database connection
-        db = pymysql.connect("localhost", "root", "Vahid737", "lan_hosts")
-
-        try:
-
-            cursor = db.cursor()
-            command = "SELECT ifnull(`Hostname`,`browser_server`) FROM `resolution` WHERE `IP_addr` = '{}';".format(
-                ip_addr)
-            cursor.execute(command)
-            rows = cursor.fetchall()
-        except Exception as e:
-            print("Exception occured:{}".format(e))
-
-        db.commit()
-        db.close()
-        for row in rows:
-            return row[-1]
 
     def extract_unknown(self,filename):
         unknowns = []
@@ -1325,6 +1312,34 @@ class NetworkLAN:
                                 all_connections.add(dev_MAC)
 
         return self._dropbox_subNET
+
+    def find_printers(self):
+        printers = []
+        for d in self._devices.values():
+            d:Device
+            d.update_kind()
+            if 'PRINTER' in d.kind():
+                printers.append(d)
+
+        return printers
+
+    def extract_snmp_info(self):
+        printers = self.find_printers()
+        for printer in printers :
+            output = snmp_utils.walk(printer.last_IPv4_know(), 'iso.3.6.1.2.1.6.13.1.2')
+            relations = snmp_utils.extract_relations(output,False)
+            for item in relations:
+                src_node = self.find_equivalent_node_ip(item[0])
+                dst_node = self.find_equivalent_node_ip(item[1])
+                if dst_node != None and src_node != None:
+                    llink: Link = None
+                    link_id = src_node.id() + '-' + dst_node.id()
+                    if (link_id in self._links):
+                        llink = self._links[link_id]
+                    else:
+                        llink = Link(src_node.id(), dst_node.id())
+                        self._links[link_id] = llink
+                    llink.inc_print_frequency()
 
     def extract_DB_links(self):
         # print('')
