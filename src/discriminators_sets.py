@@ -351,11 +351,14 @@ keyword_on_alias[MOBILE] = {
     'iPhone': iPhone
 }
 
+
 keyword_on_alias[NAS] = {
     'AirPort-Time-Capsule' : 'AirPort running Time Capsule',
     'Time-Capsule' : 'Time Capsule',
     'TimeCapsule' : 'Time Capsule',
-    'TC' : 'Time Capsule'
+    'TimeCapule' : 'Time Capsule',
+    'TC' : 'Time Capsule',
+    'TIME CAPS' : 'Time Capsule'
 }
 
 common_string : list = [
@@ -370,11 +373,13 @@ common_string : list = [
     'Mini',
     'mini',
     'Time',
-    'Capsule',
-    '0','1','2','3','4','5','6','7','8','9'
+    'Capsule'
+    # ,'0','1','2','3','4','5','6','7','8','9'
 ]
 
 common_string_s : list = [
     '-',
     '.',
 ]
+
+printer_keywords = ["laserjet",'hp','canon','Lexmark']

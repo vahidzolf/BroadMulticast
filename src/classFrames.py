@@ -1,12 +1,14 @@
 from pyshark.packet.packet import Packet
 from pyshark.packet.fields import *
-from discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_on_alias, common_string, common_string_s
+from discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _ALLprot, keyword_on_alias, common_string, common_string_s, printer_keywords
 from DropBox_utils import DBlspDISC
 import snmp_utils
 import subprocess
 import socket
 from netaddr import IPAddress
 from nested_dict import nested_dict
+# from spacy.en import English
+# nlp = English(entity=True)
 
 # Print or not info of services
 DEBUG_SRV = False
@@ -165,6 +167,7 @@ class Device(object):
     _id: str
     _kind: str      # What kind of device is: Workstation, Printer, ...
     _owner: str
+    _label : str    #VZ specifies the label of that node on the graph
     _lastIPv4: str
     _lastIPv6: str
     _services: dict
@@ -280,6 +283,51 @@ class Device(object):
         checker: WhoIsWhat = WhoIsWhat(self)
         self._kind = checker.get_kind()
         self._owner = checker.get_owner()
+        if not self.isunknown(self._kind) :
+            if not self.isunknown(self._owner):
+                self.set_label(self._owner)
+            else:
+                self.extract_label(checker)
+        else:
+            #first check DHCP then browser then Resolved address
+            if not self.isunknown(self.dhcp_info()):
+                self.set_label(checker.purify_str(self.dhcp_info()))
+            elif not self.isunknown(self.browser_hostname()):
+                self.set_label(checker.purify_str(self.browser_hostname()))
+            elif not self.isunknown(self.browser_comment()):
+                self.set_label(checker.purify_str(self.browser_comment()))
+            elif not self.isunknown(self.db_name()):
+                self.set_label(checker.purify_str(self.db_name()))
+            else:
+                self.set_label(self.id())
+    def isunknown(self,variable : str):
+        if variable in ['','???']:
+            return True
+        else:
+            return False
+
+    def extract_label(self,checker):
+        if self.kind() == 'PRINTER':
+            for alias in self.aliases():
+                alias: str
+                keyw: str = alias.replace('.local', '').lower()
+                if any(x in keyw for x in printer_keywords ):
+                    self.set_label(alias)
+                    return
+            if len(self.aliases()) == 0 :
+                self.set_label(str(self.id()) + ' (PRINTER)')
+            else:
+                self.set_label(list(self.aliases())[0])
+        elif self.kind() == 'NAS':
+            for alias in self.aliases():
+                keyw : str = alias.replace('.local', '').lower()
+                if any(x in keyw for x in keyword_on_alias['NAS']):
+                    keyw = checker.purify_str(alias)
+                    self.set_label(keyw)
+
+
+        else:
+            pass
 
     def update_DB(self, new_db: DBlspDISC):
         '''
@@ -318,6 +366,9 @@ class Device(object):
     def last_IPv6_know(self):
         return self._lastIPv6[:]
 
+    def label(self):
+        return self._label
+
     def get_services(self):
         '''
         :return: Copy of dict containing record ServiceSRV: " MAC_addr_key:ServiceSRV "
@@ -336,6 +387,8 @@ class Device(object):
     def db_name(self):
         return str(self._db_name)
 
+    def set_label(self,newlabel : str):
+        self._label = newlabel
 
 class Link(object):
     ''' Main class represent the connection between two devices'''
@@ -448,6 +501,7 @@ class NetworkLAN:
     def printAll(self):
         ''' Print all infos of the network: devices(MAC addr, aliases, kind, rervices that offer, ...) '''
         counter = 0
+        allnames = []
         unknown_counter = 0
         for _d in self._devices.values():
             d: Device = _d
@@ -463,6 +517,7 @@ class NetworkLAN:
             print('Aliases: ', end='')
             for al in d.aliases():
                 flag= True
+                allnames.append(al)
                 print(al, end='  || ')
             print('')
 
@@ -476,9 +531,11 @@ class NetworkLAN:
                 flag=True
                 print('DHCP name : ' + d.dhcp_info())
                 self._dhcp_pkt += 1
+                allnames.append(d.dhcp_info())
 
             dropbox : DBlspDISC = d.get_DB_info()
             if(dropbox!=None):
+                self._dropbox_pkt += 1
                 dropbox.print()
                 flag = True
             browser_flag = False
@@ -487,10 +544,12 @@ class NetworkLAN:
                 print('Browser Hostname : ' + d.browser_hostname() )
                 browser_flag = True
                 flag = True
+                allnames.append(d.browser_hostname())
             if d.browser_comment() != '':
                 browser_flag = True
                 print('Browser comment : ' + d.browser_comment())
                 flag = True
+                allnames.append(d.browser_comment())
             if d.browser_win_version() != '':
                 browser_flag = True
                 print('Browser windows version : ' + d.browser_win_version())
@@ -500,6 +559,7 @@ class NetworkLAN:
             if d.db_name() != '':
                 flag = True
                 print('Resolved Name : ' + d.db_name())
+                allnames.append(d.db_name())
 
             if not flag:
                 unknown_counter +=1
@@ -552,11 +612,27 @@ class NetworkLAN:
                       " : " +
                       str(self._links[li].arp_frequency())
                       )
+            elif self._links[li].print_frequency() > 0:
+                print("\tPRINTER : " +
+                      str(self._links[li].from_node()) +
+                      "-->" +
+                      str(self._links[li].to_node()) +
+                      " : " +
+                      str(self._links[li].print_frequency())
+                      )
+
+
+        with open('allname_files','w') as f:
+            for item in allnames:
+                f.write("%s\n" % item)
+
+        f.close()
 
         print("")
         print("Node identification Statistics: ")
         print("\tTotal number of Node Identified : " + str(counter))
         print("\tNumber of MDNS nodes            : " + str(self._mdns_pkt))
+        print("\tNumber of Dropbox nodes         : " + str(self._dropbox_pkt))
         print("\tNumber of Browser nodes         : " + str(self._browser_pkt))
         print("\tNumber of DHCP nodes            : " + str(self._dhcp_pkt))
         print("\tNumber of nodes updated by nmap : " + str(self._nmap_pkt_update))
@@ -896,7 +972,6 @@ class NetworkLAN:
             dev = Device(name)
             self._devices[name]=dev
 
-        self._dropbox_pkt +=1
 
         if ('ip' in packet):
             dev.update_IPv4(packet.ip.src[:])
@@ -1340,6 +1415,7 @@ class NetworkLAN:
                         llink = Link(src_node.id(), dst_node.id())
                         self._links[link_id] = llink
                     llink.inc_print_frequency()
+
 
     def extract_DB_links(self):
         # print('')
