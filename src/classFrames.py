@@ -194,6 +194,7 @@ class Device(object):
         self._browser_comment = ''
         self._dhcp_fqdn = ''
         self._db_name = ''
+        self._label = ''
 
     def update_IPv4(self, new_ip: str):
         if new_ip != '' and new_ip != None:
@@ -283,23 +284,13 @@ class Device(object):
         checker: WhoIsWhat = WhoIsWhat(self)
         self._kind = checker.get_kind()
         self._owner = checker.get_owner()
-        if not self.isunknown(self._kind) :
-            if not self.isunknown(self._owner):
-                self.set_label(self._owner)
-            else:
-                self.extract_label(checker)
+
+
+        if not self.isunknown(self._owner):
+            self.set_label(self._owner)
         else:
-            #first check DHCP then browser then Resolved address
-            if not self.isunknown(self.dhcp_info()):
-                self.set_label(checker.purify_str(self.dhcp_info()))
-            elif not self.isunknown(self.browser_hostname()):
-                self.set_label(checker.purify_str(self.browser_hostname()))
-            elif not self.isunknown(self.browser_comment()):
-                self.set_label(checker.purify_str(self.browser_comment()))
-            elif not self.isunknown(self.db_name()):
-                self.set_label(checker.purify_str(self.db_name()))
-            else:
-                self.set_label(self.id())
+            self.extract_label(checker)
+
     def isunknown(self,variable : str):
         if variable in ['','???']:
             return True
@@ -307,7 +298,7 @@ class Device(object):
             return False
 
     def extract_label(self,checker):
-        if self.kind() == 'PRINTER':
+        if 'PRINTER' in self.kind() :
             for alias in self.aliases():
                 alias: str
                 keyw: str = alias.replace('.local', '').lower()
@@ -318,16 +309,36 @@ class Device(object):
                 self.set_label(str(self.id()) + ' (PRINTER)')
             else:
                 self.set_label(list(self.aliases())[0])
-        elif self.kind() == 'NAS':
+        elif 'NAS' in self.kind():
             for alias in self.aliases():
                 keyw : str = alias.replace('.local', '').lower()
+                keyw = checker.purify_str(keyw)
                 if any(x in keyw for x in keyword_on_alias['NAS']):
-                    keyw = checker.purify_str(alias)
                     self.set_label(keyw)
-
-
+            if self.label() == '':
+                self.set_label(keyw)
+        elif 'WORKSTATION' in self.kind() :
+            for alias in self.aliases():
+                keyw : str = alias.replace('.local', '').lower()
+                keyw = checker.purify_str(keyw)
+                if any(x in keyw for x in keyword_on_alias['WORKSTATION']):
+                    self.set_label(keyw)
+            if self.label() == '':
+                self.set_label(keyw)
+        elif self.kind() == 'DropBox Host':
+            self.set_label(self.id() + "(dropbox)")
         else:
-            pass
+            # first check DHCP then browser then Resolved address
+            if not self.isunknown(self.dhcp_info()):
+                self.set_label(checker.purify_str(self.dhcp_info()))
+            elif not self.isunknown(self.browser_hostname()):
+                self.set_label(checker.purify_str(self.browser_hostname()))
+            elif not self.isunknown(self.browser_comment()):
+                self.set_label(checker.purify_str(self.browser_comment()))
+            elif not self.isunknown(self.db_name()):
+                self.set_label(checker.purify_str(self.db_name()))
+            else:
+                self.set_label(self.id())
 
     def update_DB(self, new_db: DBlspDISC):
         '''
@@ -560,6 +571,8 @@ class NetworkLAN:
                 flag = True
                 print('Resolved Name : ' + d.db_name())
                 allnames.append(d.db_name())
+            if d.label() != '':
+                print("label : " + str(d.label()))
 
             if not flag:
                 unknown_counter +=1
@@ -1615,6 +1628,9 @@ class WhoIsWhat:
             clear_str = clear_str.replace(k,'')
         for k in common_string_s:
             clear_str = clear_str.replace(k,' ')
+
+        if clear_str in ['','.','-','_',' ']:
+            clear_str = string
         return clear_str
 
     def check_MDNS_proto(self):

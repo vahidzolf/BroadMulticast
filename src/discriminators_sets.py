@@ -374,7 +374,7 @@ common_string : list = [
     'mini',
     'Time',
     'Capsule'
-    # ,'0','1','2','3','4','5','6','7','8','9'
+    # ,'0',keyword_on_alias'1','2','3','4','5','6','7','8','9'
 ]
 
 common_string_s : list = [
