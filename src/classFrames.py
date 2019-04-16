@@ -328,8 +328,12 @@ class Device(object):
         elif self.kind() == 'DropBox Host':
             self.set_label(self.id() + "(dropbox)")
         else:
-            # first check DHCP then browser then Resolved address
-            if not self.isunknown(self.dhcp_info()):
+            # first check aliases and then DHCP then browser then Resolved address
+            if len(self.aliases()) > 0 :
+                keyw: str = list(self.aliases())[0].replace('.local', '').lower()
+                keyw = checker.purify_str(keyw)
+                self.set_label(keyw)
+            elif not self.isunknown(self.dhcp_info()):
                 self.set_label(checker.purify_str(self.dhcp_info()))
             elif not self.isunknown(self.browser_hostname()):
                 self.set_label(checker.purify_str(self.browser_hostname()))
@@ -411,6 +415,7 @@ class Link(object):
     _llmnr_frequency : int
     _arp_frequency : int
     _print_frequency : int
+    _weight : int
 
     def __init__(self, dev_frm : Device , dev_to : Device):
         self.id = dev_frm + '-' + dev_to
@@ -421,6 +426,7 @@ class Link(object):
         self._llmnr_frequency = 0
         self._arp_frequency = 0
         self._print_frequency = 0
+        self._weight = 0
     # getters
 
     def id(self):
@@ -447,7 +453,12 @@ class Link(object):
     def print_frequency(self):
         return self._print_frequency
 
+    def weight(self):
+        return self._weight
     # setters
+
+    def set_weight(self,new_weight : int):
+        self._weight = new_weight
 
     def set_common_ns(self,ns_commons : list):
         self._namespaces_in_common = ns_commons
@@ -463,6 +474,22 @@ class Link(object):
 
     def inc_print_frequency(self):
         self._print_frequency += 1
+
+    def calculate_weight(self):
+        Dropbox_factor = 6
+        Print_factor   = 4
+        LLMNR_factor   = 2
+        NBNS_factor    = 2
+        ARP_factor     = 1
+
+        weight = (len(self._namespaces_in_common)*Dropbox_factor) + \
+                 (self.print_frequency() * Print_factor) + \
+                 (self.llmnr_frequency() * LLMNR_factor) + \
+                 (self.nbns_frequency()  *  NBNS_factor) + \
+                 (self.arp_frequency()   *  ARP_factor)
+
+
+        self._weight = weight
 
 
 class NetworkLAN:
@@ -594,45 +621,13 @@ class NetworkLAN:
                 print('/----------------------------------/')
         print("Links between nodes")
         for li in self._links:
-            if len(self._links[li].get_common_ns()) > 0:
-                print("\tDropBox :" +
-                      str(self._links[li].from_node()) +
-                      "-->" +
-                      str(self._links[li].to_node()) +
-                      " : " +
-                      str(len(self._links[li].get_common_ns())))
-            elif self._links[li].llmnr_frequency() > 0:
-                print("\tLLMNR : " +
-                      str(self._links[li].from_node()) +
-                      "-->" +
-                      str(self._links[li].to_node()) +
-                      " : " +
-                      str(self._links[li].llmnr_frequency())
-                      )
-            elif self._links[li].nbns_frequency() > 0:
-                print("\tNBNS : " +
-                      str(self._links[li].from_node()) +
-                      "-->" +
-                      str(self._links[li].to_node()) +
-                      " : " +
-                      str(self._links[li].nbns_frequency())
-                      )
-            elif self._links[li].arp_frequency() > 0:
-                print("\tARP : " +
-                      str(self._links[li].from_node()) +
-                      "-->" +
-                      str(self._links[li].to_node()) +
-                      " : " +
-                      str(self._links[li].arp_frequency())
-                      )
-            elif self._links[li].print_frequency() > 0:
-                print("\tPRINTER : " +
-                      str(self._links[li].from_node()) +
-                      "-->" +
-                      str(self._links[li].to_node()) +
-                      " : " +
-                      str(self._links[li].print_frequency())
-                      )
+            print(str(self._links[li].id) +
+                  " : " + str(self._links[li].weight()) +
+                  "  [DropBox : " + str(len(self._links[li].get_common_ns())) +
+                     " ,LLMNR : "  + str(self._links[li].llmnr_frequency()) +
+                     " ,NBNS : "   + str(self._links[li].nbns_frequency()) +
+                     " ,ARP : "    + str(self._links[li].arp_frequency()) +
+                     " ,Printer : "+ str(self._links[li].print_frequency()) + "]" )
 
 
         with open('allname_files','w') as f:
@@ -654,6 +649,9 @@ class NetworkLAN:
         print("\tNumber of new nodes by arp cache: " + str(self._arp_cache_new_pkt))
         print("\tNumber of unknown nodes         : " + str(unknown_counter))
 
+    def aggregate_links(self):
+        for li in self._links:
+            self._links[li].calculate_weight()
 
     def add_lost_property(self, lost_srv: ServiceMDNS):
         '''

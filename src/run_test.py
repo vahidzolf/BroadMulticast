@@ -9,14 +9,6 @@ from DropBox_utils import DBlspDISC
 def dropboxStudy(pkt:Packet):
     pass
 
-# folder:str='/root/captures/outdir/'
-# files:list=['CNR_chunk_00000_20190222172518.pcap',
-#             'CNR_chunk_00002_20190225101908.pcap',
-#             'CNR_chunk_00004_20190227235120.pcap',
-#             'CNR_chunk_00001_20190224014742.pcap',
-#             'CNR_chunk_00003_20190226175640.pcap',
-#             'CNR_chunk_00005_20190301070739.pcap',
-# ]
 
 if len(sys.argv) < 3:
     print("invalid usage")
@@ -29,8 +21,18 @@ folder:str= sys.argv[1]
 # files:list=['cs_general_fixed.pcap']
 files = sys.argv[2:]
 # files:list=['CNR_Big_capture.pcap']
-# files:list=['medium.pcap']
-files:list=['small.pcap']
+files:list=['medium.pcap']
+# files:list=['small.pcap']
+
+# folder:str='/root/captures/outdir/'
+# files:list=['CNR_chunk_00000_20190222172518.pcap',
+#             'CNR_chunk_00002_20190225101908.pcap',
+#             'CNR_chunk_00004_20190227235120.pcap',
+#             'CNR_chunk_00001_20190224014742.pcap',
+#             'CNR_chunk_00003_20190226175640.pcap',
+#             'CNR_chunk_00005_20190301070739.pcap',
+# ]
+
 
 net=NetworkLAN()
 
@@ -116,7 +118,10 @@ net.extract_DB_links()
 
 # Online network probing
 
-net.extract_snmp_info()
+# net.extract_snmp_info()
+
+#calculating link weights
+net.aggregate_links()
 
 #print snapshot of the network
 net.printAll()
