@@ -4,14 +4,16 @@ from discriminators_sets import apple_osx_versions, apple_products, _SPECprot, _
 from DropBox_utils import DBlspDISC
 import snmp_utils
 import subprocess
-import socket
+import re
 from netaddr import IPAddress
 from nested_dict import nested_dict
+from collections import deque
 # from spacy.en import English
 # nlp = English(entity=True)
 
 # Print or not info of services
 DEBUG_SRV = False
+domain_name = ''
 
 
 class Target:
@@ -178,7 +180,7 @@ class Device(object):
     _browser_comment : str     # VZ : hostname section extracted from browser host or master announcement
     _dhcp_fqdn : str           # VZ : name extracted from DHCP request
     _db_name : str             # VZ : names resolved from our Database
-
+    _last_DB_timestmp : str    # VZ : The timestamp of the last Dropbox packet seen in the capture
 
     def __init__(self, dev_id: str, ip: str = ''):
         self._id = str(dev_id)
@@ -195,10 +197,64 @@ class Device(object):
         self._dhcp_fqdn = ''
         self._db_name = ''
         self._label = ''
+        self._last_DB_timestmp = ''
+
+
+    def get_DB_info(self):
+        return self._db_lsp_disc
+
+    def browser_hostname(self):
+        return self._browser_hostname
+
+    def browser_comment(self):
+        return self._browser_comment
+
+    def browser_win_version(self):
+        return self._browser_win_version
+
+    def dhcp_info(self):
+        return self._dhcp_fqdn
+
+    def id(self):
+        return self._id[:]
+
+    def last_IPv4_know(self):
+        return self._lastIPv4[:]
+
+    def last_IPv6_know(self):
+        return self._lastIPv6[:]
+
+    def label(self):
+        return self._label
+
+    def last_DB_timestamp(self):
+        return self._last_DB_timestmp
+
+    def set_last_DB_time(self, newtime : str):
+        self._last_DB_timestmp = newtime
+
+    def get_services(self):
+        '''
+        :return: Copy of dict containing record ServiceSRV: " MAC_addr_key:ServiceSRV "
+        '''
+        return dict(self._services)
+
+    def aliases(self):
+        return set(self._alias)
+
+    def kind(self):
+        return str(self._kind)
+
+    def owner(self):
+        return str(self._owner)
+
+    def db_name(self):
+        return str(self._db_name)
 
     def update_IPv4(self, new_ip: str):
         if new_ip != '' and new_ip != None:
-            self._lastIPv4 = str(new_ip)
+            temp = str(new_ip).replace('(','').replace(')','')
+            self._lastIPv4 = temp
 
     def update_IPv6(self, new_ip: str):
         if new_ip != '' and new_ip != None:
@@ -218,6 +274,16 @@ class Device(object):
     def update_db_name(self,new_db_name : str):
         if new_db_name != "":
             self._db_name = new_db_name
+
+
+    def set_label(self,newlabel : str):
+        if newlabel.startswith(' '):
+            newlabel = newlabel[1:]
+        if newlabel.endswith(' '):
+            newlabel = newlabel[:-1]
+        newlabel = re.sub(r'\([^)]*\)', '', newlabel)
+        newlabel = newlabel.replace(' ','-')
+        self._label = newlabel
 
     def update_services(self, new_serv: ServiceMDNS):
         '''
@@ -285,11 +351,8 @@ class Device(object):
         self._kind = checker.get_kind()
         self._owner = checker.get_owner()
 
+        self.extract_label(checker)
 
-        if not self.isunknown(self._owner):
-            self.set_label(self._owner)
-        else:
-            self.extract_label(checker)
 
     def isunknown(self,variable : str):
         if variable in ['','???']:
@@ -298,51 +361,52 @@ class Device(object):
             return False
 
     def extract_label(self,checker):
-        if 'PRINTER' in self.kind() :
+        keyw = ''
+        if not self.isunknown(self._owner):
+            self._label = self._owner
+            return
+        else:
             for alias in self.aliases():
                 alias: str
                 keyw: str = alias.replace('.local', '').lower()
-                if any(x in keyw for x in printer_keywords ):
-                    self.set_label(alias)
-                    return
-            if len(self.aliases()) == 0 :
-                self.set_label(str(self.id()) + ' (PRINTER)')
-            else:
-                self.set_label(list(self.aliases())[0])
-        elif 'NAS' in self.kind():
-            for alias in self.aliases():
-                keyw : str = alias.replace('.local', '').lower()
-                keyw = checker.purify_str(keyw)
-                if any(x in keyw for x in keyword_on_alias['NAS']):
+                if 'PRINTER' in self.kind():
+                    if any(x in keyw for x in printer_keywords):
+                        self.set_label(keyw)
+                        return
+                    else:
+                        self.set_label(list(self.aliases())[0])
+                elif 'NAS' in self.kind():
+                    keyw = checker.purify_str(keyw)
+                    if any(x in keyw for x in keyword_on_alias['NAS']):
+                        self.set_label(keyw)
+                if self._label == '':
                     self.set_label(keyw)
-            if self.label() == '':
-                self.set_label(keyw)
-        elif 'WORKSTATION' in self.kind() :
-            for alias in self.aliases():
-                keyw : str = alias.replace('.local', '').lower()
-                keyw = checker.purify_str(keyw)
-                if any(x in keyw for x in keyword_on_alias['WORKSTATION']):
-                    self.set_label(keyw)
-            if self.label() == '':
-                self.set_label(keyw)
-        elif self.kind() == 'DropBox Host':
-            self.set_label(self.id() + "(dropbox)")
-        else:
-            # first check aliases and then DHCP then browser then Resolved address
-            if len(self.aliases()) > 0 :
-                keyw: str = list(self.aliases())[0].replace('.local', '').lower()
-                keyw = checker.purify_str(keyw)
-                self.set_label(keyw)
-            elif not self.isunknown(self.dhcp_info()):
-                self.set_label(checker.purify_str(self.dhcp_info()))
-            elif not self.isunknown(self.browser_hostname()):
-                self.set_label(checker.purify_str(self.browser_hostname()))
-            elif not self.isunknown(self.browser_comment()):
-                self.set_label(checker.purify_str(self.browser_comment()))
-            elif not self.isunknown(self.db_name()):
-                self.set_label(checker.purify_str(self.db_name()))
-            else:
-                self.set_label(self.id())
+                elif 'WORKSTATION' in self.kind():
+                    keyw: str = alias.replace('.local', '').lower()
+                    keyw = checker.purify_str(keyw)
+                    if any(x in keyw for x in keyword_on_alias['WORKSTATION']):
+                        self.set_label(keyw)
+                    if self._label == '':
+                        self.set_label(keyw)
+                elif self.kind() == 'DropBox Host':
+                    self.set_label(self.id() + "[dropbox]")
+                else:
+                    # first check aliases and then DHCP then browser then Resolved address
+                    if len(self.aliases()) > 0:
+                        keyw: str = list(self.aliases())[0].replace('.local', '').lower()
+                        keyw = checker.purify_str(keyw)
+                        self.set_label(keyw)
+                    elif not self.isunknown(self.dhcp_info()):
+                        self.set_label(checker.purify_str(self.dhcp_info()))
+                    elif not self.isunknown(self.browser_hostname()):
+                        self.set_label(checker.purify_str(self.browser_hostname()))
+                    elif not self.isunknown(self.browser_comment()):
+                        self.set_label(checker.purify_str(self.browser_comment()))
+                    elif not self.isunknown(self.db_name()):
+                        self.set_label(checker.purify_str(self.db_name()))
+                    else:
+                        self.set_label(self.id())
+
 
     def update_DB(self, new_db: DBlspDISC):
         '''
@@ -357,53 +421,6 @@ class Device(object):
                 print('',end='')
             self._db_lsp_disc.update_ns(new_db.namespaces())
 
-    def get_DB_info(self):
-        return self._db_lsp_disc
-
-    def browser_hostname(self):
-        return self._browser_hostname
-
-    def browser_comment(self):
-        return self._browser_comment
-
-    def browser_win_version(self):
-        return self._browser_win_version
-
-    def dhcp_info(self):
-        return self._dhcp_fqdn
-
-    def id(self):
-        return self._id[:]
-
-    def last_IPv4_know(self):
-        return self._lastIPv4[:]
-
-    def last_IPv6_know(self):
-        return self._lastIPv6[:]
-
-    def label(self):
-        return self._label
-
-    def get_services(self):
-        '''
-        :return: Copy of dict containing record ServiceSRV: " MAC_addr_key:ServiceSRV "
-        '''
-        return dict(self._services)
-
-    def aliases(self):
-        return set(self._alias)
-
-    def kind(self):
-        return str(self._kind)
-
-    def owner(self):
-        return str(self._owner)
-
-    def db_name(self):
-        return str(self._db_name)
-
-    def set_label(self,newlabel : str):
-        self._label = newlabel
 
 class Link(object):
     ''' Main class represent the connection between two devices'''
@@ -411,6 +428,7 @@ class Link(object):
     _device_from : Device
     _device_to : Device
     _namespaces_in_common : dict
+    _DB_weight : int
     _nbns_frequency : int
     _llmnr_frequency : int
     _arp_frequency : int
@@ -422,6 +440,7 @@ class Link(object):
         self._device_from = dev_frm
         self._device_to = dev_to
         self._namespaces_in_common = list()
+        self._DB_weight = 0
         self._nbns_frequency = 0
         self._llmnr_frequency = 0
         self._arp_frequency = 0
@@ -455,7 +474,14 @@ class Link(object):
 
     def weight(self):
         return self._weight
+
+    def DB_weight(self):
+        return self._DB_weight
+
     # setters
+
+    def set_DB_weight(self,new_weight : int):
+        self._DB_weight += new_weight
 
     def set_weight(self,new_weight : int):
         self._weight = new_weight
@@ -476,17 +502,17 @@ class Link(object):
         self._print_frequency += 1
 
     def calculate_weight(self):
-        Dropbox_factor = 6
+        Dropbox_factor = 1
         Print_factor   = 4
         LLMNR_factor   = 2
         NBNS_factor    = 2
         ARP_factor     = 1
 
-        weight = (len(self._namespaces_in_common)*Dropbox_factor) + \
+        weight = (self.DB_weight()       * Dropbox_factor) + \
                  (self.print_frequency() * Print_factor) + \
                  (self.llmnr_frequency() * LLMNR_factor) + \
-                 (self.nbns_frequency()  *  NBNS_factor) + \
-                 (self.arp_frequency()   *  ARP_factor)
+                 (self.nbns_frequency()  * NBNS_factor) + \
+                 (self.arp_frequency()   * ARP_factor)
 
 
         self._weight = weight
@@ -508,6 +534,8 @@ class NetworkLAN:
     _nmap_pkt_new : int
     _arp_cache_update_pkt : int
     _arp_cache_new_pkt : int
+    _last_30_sec_DB : deque
+
 
     def __init__(self):
         self._devices = dict()
@@ -524,6 +552,7 @@ class NetworkLAN:
         self._nmap_pkt_new = 0
         self._arp_cache_update_pkt = 0
         self._arp_cache_new_pkt = 0
+        self._last_30_sec_DB = deque()
 
     def print_browser_inf(self):
         for _d in self._devices.values():
@@ -540,11 +569,14 @@ class NetworkLAN:
         ''' Print all infos of the network: devices(MAC addr, aliases, kind, rervices that offer, ...) '''
         counter = 0
         allnames = []
+        graph_file = open('lan_graph_cs.txt','w')
         unknown_counter = 0
+
         for _d in self._devices.values():
             d: Device = _d
             flag = False
             counter +=1
+
             print('***************************************')
             print('Device ID: ', d.id())
             if d.last_IPv4_know() != '':
@@ -623,18 +655,17 @@ class NetworkLAN:
         for li in self._links:
             print(str(self._links[li].id) +
                   " : " + str(self._links[li].weight()) +
-                  "  [DropBox : " + str(len(self._links[li].get_common_ns())) +
+                  "  [DropBox : " + str(self._links[li].DB_weight()) +
                      " ,LLMNR : "  + str(self._links[li].llmnr_frequency()) +
                      " ,NBNS : "   + str(self._links[li].nbns_frequency()) +
                      " ,ARP : "    + str(self._links[li].arp_frequency()) +
                      " ,Printer : "+ str(self._links[li].print_frequency()) + "]" )
+            dev_from = self._devices[self._links[li]._device_from].label()
+            dev_to = self._devices[self._links[li]._device_to].label()
+            weight = str(self._links[li].weight())
+            graph_file.write(dev_from + " " + dev_to + " " + weight + '\n')
 
-
-        with open('allname_files','w') as f:
-            for item in allnames:
-                f.write("%s\n" % item)
-
-        f.close()
+        graph_file.close()
 
         print("")
         print("Node identification Statistics: ")
@@ -991,6 +1022,40 @@ class NetworkLAN:
             dev.update_IPv6(packet.ipv6.src[:])
 
         dev.update_DB(new_db_lsp_disc)
+        pkt_time = str(packet.frame_info.time_epoch)
+        dev.set_last_DB_time(pkt_time)
+        self.identify_DB_Links(dev)
+
+    def identify_DB_Links(self, dev : Device):
+        self._last_30_sec_DB.append((dev,dev.last_DB_timestamp()))
+        self.update_queue(dev)
+        for item in self._last_30_sec_DB:
+            if item[0].id() != dev.id():
+                common = [value for value in dev.get_DB_info().namespaces() if value in item[0].get_DB_info().namespaces()]
+                if common != []:
+                    llink: Link = None
+                    link_id = dev.id() + '-' + item[0].id()
+                    if (link_id in self._links):
+                        llink = self._links[link_id]
+                    else:
+                        llink = Link(dev.id(), item[0].id())
+                        self._links[link_id] = llink
+                    llink.set_DB_weight(len(common))
+                    llink.set_common_ns(common)
+
+    def update_queue(self,dev : Device):
+        if len(self._last_30_sec_DB) == 1 :
+            return
+        d2 = self._last_30_sec_DB.copy()
+        counter = 0
+        while counter < len(self._last_30_sec_DB):
+            if float(dev.last_DB_timestamp()) - float(d2[counter][1]) > 30:
+                self._last_30_sec_DB.pop()
+                counter += 1
+            else:
+                return
+        return
+
 
     def extract_Browser_info(self,packet: Packet):
         '''
@@ -1075,16 +1140,10 @@ class NetworkLAN:
         if ('ipv6' in packet):
             dev.update_IPv6(packet.ipv6.src[:])
 
+
         try:
             dest_hostname = packet.nbns.name
             dest_hostname = dest_hostname.replace('<00>','')
-        except AttributeError as e:
-            pass
-
-        if dest_hostname == 'wpad':
-            pass
-            #analyze wpad
-        else:
             dest_id = self.find_equivalent_node_hostname(dest_hostname)
             if dest_id != None:
                 llink: Link = None
@@ -1096,6 +1155,10 @@ class NetworkLAN:
                     self._links[link_id] = llink
 
                 llink.inc_nbns_frequency()
+        except AttributeError as e:
+            pass
+        except UnboundLocalError as e:
+            pass
 
     def find_equivalent_node_ip(self, ip : str):
         for _d in self._devices.values():
@@ -1183,6 +1246,8 @@ class NetworkLAN:
         my_data = packet['ARP']
         src_ip = my_data.src_proto_ipv4
         dst_ip = my_data.dst_proto_ipv4
+
+
         # IP addresses which are related to sysadmin : '146.48.96.3','146.48.96.1','146.48.96.2','146.48.98.155' ,'192.168.100.1'
         if src_ip == '0.0.0.0' or src_ip.startswith('169.254'):
             return
@@ -1197,11 +1262,7 @@ class NetworkLAN:
             dev = Device(name)
             self._devices[name] = dev
 
-        if ('ip' in packet):
-            dev.update_IPv4(packet.ip.src[:])
-
-        if ('ipv6' in packet):
-            dev.update_IPv6(packet.ipv6.src[:])
+        dev.update_IPv4(str(packet.arp.src_proto_ipv4))
 
         dst_node = self.find_equivalent_node_ip(dst_ip)
         if dst_node != None:
@@ -1220,6 +1281,7 @@ class NetworkLAN:
         :param packet: ONLY form "pyshark.Filecapture" create with option 'use_json=True'
         :return:
         '''
+        global domain_name
         name: str
         if ('eth' in packet and ('bootp' in packet or 'dhcpv6' in packet)):
             name = packet.eth.src[:]
@@ -1249,15 +1311,107 @@ class NetworkLAN:
                 try:
                     hostname = my_data.fqdn_name
                 except AttributeError:
-                    return
+                    pass
         else:
             my_data = packet['dhcpv6']
             try:
                 hostname = my_data.client_fqdn
             except AttributeError:
-                return
+                pass
 
         dev.update_dhcp_info(hostname)
+
+        try:
+            if int(my_data.option_dhcp) == 1:
+                #DHCP discover => no information
+                pass
+            elif int(my_data.option_dhcp) == 2:
+                #DHCP offer
+                # we can keep the information about the requester from destination of these packets.
+                dev: Device = None
+                name = packet.eth.dst
+                if (name in self._devices):
+                    dev = self._devices[name]
+                else:
+                    dev = Device(name)
+                    self._devices[name] = dev
+                dev.update_IPv4(packet.ip.dst[:])
+            elif int(my_data.option_dhcp) == 3:
+                #DHCP Request
+                pass
+            elif int(my_data.option_dhcp) == 5:
+                #DHCP ACK
+                dev: Device = None
+                name = packet.eth.dst
+                if (name in self._devices):
+                    dev = self._devices[name]
+                else:
+                    dev = Device(name)
+                    self._devices[name] = dev
+                dev.update_IPv4(packet.ip.dst[:])
+            elif int(my_data.option_dhcp) == 8:
+                #DHCP inform
+                pass
+        except AttributeError:
+            pass
+
+        # inspect ACK and offer DHCP packet types to get information about network
+        # this case happens for offer and ACK packet types of DHCP protocol
+        try:
+            dhcp_server = str(my_data.option_dhcp_server_id)
+            dhcp_server_node = self.find_equivalent_node_ip(dhcp_server)
+            if dhcp_server_node is not None:
+                dhcp_server_node.set_label("DHCP Server")
+                if (dhcp_server_node._kind == ''):
+                    dhcp_server_node._kind = 'Sysadmin'
+                else:
+                    dhcp_server_node._kind = dhcp_server_node._kind + ' / ' + 'Sysadmin'
+        except AttributeError:
+            pass
+
+        try:
+            dns_server = str(my_data.option_domain_name_server)
+            dns_server_node = self.find_equivalent_node_ip(dns_server)
+            if dns_server_node is not None:
+                dns_server_node.set_label("DNS Server")
+                if (dns_server_node._kind == ''):
+                    dns_server_node._kind = 'Sysadmin'
+                else:
+                    dns_server_node._kind = dns_server_node._kind + ' / ' + 'Sysadmin'
+        except AttributeError:
+            pass
+
+        try:
+            router = str(my_data.option_router)
+            router_node = self.find_equivalent_node_ip(router)
+            if router_node is not None:
+                router_node.set_label("Router")
+                if (router_node._kind == ''):
+                    router_node._kind = 'Sysadmin'
+                else:
+                    router_node._kind = router_node._kind + ' / ' + 'Sysadmin'
+        except AttributeError:
+            pass
+
+        try:
+            ntp_server = str(my_data.option_ntp_server)
+            ntp_server_node = self.find_equivalent_node_ip(ntp_server)
+            if ntp_server_node is not None:
+                ntp_server_node.set_label("NTP Server")
+                if (ntp_server_node._kind == ''):
+                    ntp_server_node._kind = 'Sysadmin'
+                else:
+                    ntp_server_node._kind = ntp_server_node._kind + ' / ' + 'Sysadmin'
+        except AttributeError:
+            pass
+
+        try:
+            domain_name = str(my_data.option_domain_name)
+            if not domain_name.startswith('.'):
+                domain_name = '.' + domain_name
+        except AttributeError:
+            pass
+
 
     def is_empty(self,any_structure):
         if any_structure:
@@ -1488,6 +1642,7 @@ class WhoIsWhat:
     SPEC: dict = _SPECprot
     UNKNOWN: str = '???'
     _protos: set
+    _label: str
     _bestMatches: set # set of all kinds that should be a real kind of devices
     _kindPool: dict # dictionary where indicate grade of trust of which kind the device could be
     _kind: str # the guessed kind
@@ -1510,6 +1665,19 @@ class WhoIsWhat:
 
         self.check()
 
+
+    def get_label(self):
+        return self._label
+
+    def kind(self):
+        return self._kind
+
+    def isunknown(self,variable : str):
+        if variable in ['',self.UNKNOWN]:
+            return True
+        else:
+            return False
+
     def check(self):
         '''Main function to analyze and guessing the kind of device'''
         dev: Device = self._device
@@ -1531,8 +1699,18 @@ class WhoIsWhat:
         if (self._rel_lev < 9):
             self.check_MDNS_proto()
 
+
+        self.check_against_dict(dev.dhcp_info(),False)
+        self.check_against_dict(dev.browser_hostname(),False)
+        self.check_against_dict(dev.browser_comment(),False)
+        self.check_against_dict(dev.db_name(),False)
+        self.check_against_dict(dev.browser_win_version(), True)
+
+
         if (dev.get_DB_info()!=None):
             self._bestMatches.add('DropBox Host')
+
+
 
     def check_dev_info(self, record: ServiceMDNS):
         '''
@@ -1586,38 +1764,74 @@ class WhoIsWhat:
         '''
         for alias in self._device.aliases():
             alias: str
-            if (alias.count('.local') > 0):
-                # get the name of device
-                keyw: str = alias.replace('.local', '')
+            keyw: str = alias.replace('.local', '')
+            # for evrery kind in dict 'keyword_on_alias', get his dict of keywords and search it in a alias/name device's
+            for kind, keyword_dict in keyword_on_alias.items():
 
-                # for evrery kind in dict 'keyword_on_alias', get his dict of keywords and search it in a alias/name device's
-                for kind, keyword_dict in keyword_on_alias.items():
+                for k in keyword_dict:
+                    if (keyw.count(k) > 0):
+                        keyw = k
+                        break
 
-                    for k in keyword_dict:
-                        if (keyw.count(k) > 0):
-                            keyw = k
-                            break
+                # if a keyword was found => cleanup the name/alias, trying to guess the owner of device
+                if (keyw in keyword_dict):
+                    howis = keyword_dict[keyw]
+                    owner = self.purify_str(alias)
+                    #owner = alias.replace(keyw, '').replace('.local', '')
+                    #owner = owner.replace('s-', '').replace('-di-', '').replace('-de-', '').replace('-von-', '').replace('-', ' ').replace('.', ' ')
+                    #owner = owner.replace('di', '').replace('de', '').replace('von', '')
 
-                    # if a keyword was found => cleanup the name/alias, trying to guess the owner of device
-                    if (keyw in keyword_dict):
-                        howis = keyword_dict[keyw]
-                        owner = self.purify_str(alias)
-                        #owner = alias.replace(keyw, '').replace('.local', '')
-                        #owner = owner.replace('s-', '').replace('-di-', '').replace('-de-', '').replace('-von-', '').replace('-', ' ').replace('.', ' ')
-                        #owner = owner.replace('di', '').replace('de', '').replace('von', '')
+                    # if len < 3 => maybe the remaining chars are number or not relevant
+                    if (len(owner) < 3):
+                        owner = self.UNKNOWN
+                    self._guess_owner = owner
 
-                        # if len < 3 => maybe the remaining chars are number or not relevant
-                        if (len(owner) < 3):
-                            owner = self.UNKNOWN
-                        self._guess_owner = owner
+                    if (self._rel_lev < 5):
+                        # add it into the set 'best matches'
+                        self._bestMatches.add(howis + ' (supposed by  dev`s name)')
+                        self._kindPool[kind] = 5    # indica che il tipo indovinato ha affidabilita' 5
+                        self._rel_lev = 5
 
-                        if (self._rel_lev < 5):
-                            # add it into the set 'best matches'
-                            self._bestMatches.add(howis + ' (supposed by  dev`s name)')
-                            self._kindPool[kind] = 5    # indica che il tipo indovinato ha affidabilita' 5
-                            self._rel_lev = 5
+    def check_against_dict(self,keyw : str,browser_os : bool):
+        if keyw == '' or keyw is None:
+            return
+        initial_str = keyw
+        initial_str = initial_str.replace(domain_name,'')
+
+        if not browser_os:
+            if not (self.isunknown(self._guess_owner) or len(self._bestMatches) == 0) :
+                return
+
+        # for evrery kind in dict 'keyword_on_alias', get his dict of keywords and search it in a alias/name device's
+        for kind, keyword_dict in keyword_on_alias.items():
+            for k in keyword_dict:
+                if (keyw.count(k) > 0):
+                    keyw = k
+                    break
+
+            # if a keyword was found => cleanup the name/alias, trying to guess the owner of device
+            if (keyw in keyword_dict):
+                howis = keyword_dict[keyw]
+
+                if not browser_os:
+                    owner = self.purify_str(initial_str)
+                    # owner = alias.replace(keyw, '').replace('.local', '')
+                    # owner = owner.replace('s-', '').replace('-di-', '').replace('-de-', '').replace('-von-', '').replace('-', ' ').replace('.', ' ')
+                    # owner = owner.replace('di', '').replace('de', '').replace('von', '')
+
+                    # if len < 3 => maybe the remaining chars are number or not relevant
+                    if (len(owner) < 3):
+                        owner = self.UNKNOWN
+                    self._guess_owner = owner
+
+                if (self._rel_lev < 5):
+                    # add it into the set 'best matches'
+                    self._bestMatches.add(howis + ' (supposed by  dev`s name)')
+                    self._kindPool[kind] = 5  # indica che il tipo indovinato ha affidabilita' 5
+                    self._rel_lev = 5
 
     def purify_str(self, string:str):
+        global domain_name
         clear_str:str = string
         for s in keyword_on_alias.values():
             for k in s:
@@ -1627,6 +1841,7 @@ class WhoIsWhat:
         for k in common_string_s:
             clear_str = clear_str.replace(k,' ')
 
+        clear_str = clear_str.replace(domain_name,'')
         if clear_str in ['','.','-','_',' ']:
             clear_str = string
         return clear_str

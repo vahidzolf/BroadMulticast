@@ -18,10 +18,10 @@ if len(sys.argv) < 3:
 
 
 folder:str= sys.argv[1]
-# files:list=['cs_general_fixed.pcap']
 files = sys.argv[2:]
+# files:list=['cs_general_fixed.pcap']
 # files:list=['CNR_Big_capture.pcap']
-files:list=['medium.pcap']
+# files:list=['medium.pcap']
 # files:list=['small.pcap']
 
 # folder:str='/root/captures/outdir/'
@@ -32,6 +32,7 @@ files:list=['medium.pcap']
 #             'CNR_chunk_00003_20190226175640.pcap',
 #             'CNR_chunk_00005_20190301070739.pcap',
 # ]
+
 
 
 net=NetworkLAN()
@@ -111,14 +112,14 @@ for file in files:
             net.extract_ARP_Links(pkt)
 # At this moment there are some nodes which no name assigned to them, while we can try to resolve the IP address of
 # them using dns or nmlookup
-# net.extract_unknown(file)
+net.extract_unknown(file)
 
 # show linked devices
-net.extract_DB_links()
+# net.extract_DB_links()
 
 # Online network probing
 
-# net.extract_snmp_info()
+net.extract_snmp_info()
 
 #calculating link weights
 net.aggregate_links()

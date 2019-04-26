@@ -3,7 +3,7 @@ NAS = 'NAS'
 PRINTER = 'PRINTER'
 MOBILE = 'MOBILE'
 MEDIA = 'MEDIA'
-
+PHONE = 'PHONE'
 _ALLprot: dict = {}
 '''
 Dictionary where are collected all known protocols, subdivided by kind of device:\n
@@ -334,6 +334,7 @@ keyword_on_alias[WORKSTATION] = {
     'PC': PC,
     'Computer': PC,
     'MacBook-Pro-di-': 'MacBook Pro Notebook',
+    'MBP': 'MacBook Pro Notebook',
     'iMac-di-': 'iMac PC Desktop',
     'iMac': 'iMac PC Desktop',
     's-iMac': 'iMac PC Desktop',
@@ -351,6 +352,11 @@ keyword_on_alias[MOBILE] = {
     'iPhone': iPhone
 }
 
+keyword_on_alias[PHONE] = {
+    'SIP-T': 'SIP Phone'
+    # finding the owner of phones are interesting case
+    # which can be found through correlation of ARP or DHCP packets with SIP server
+}
 
 keyword_on_alias[NAS] = {
     'AirPort-Time-Capsule' : 'AirPort running Time Capsule',
@@ -358,7 +364,8 @@ keyword_on_alias[NAS] = {
     'TimeCapsule' : 'Time Capsule',
     'TimeCapule' : 'Time Capsule',
     'TC' : 'Time Capsule',
-    'TIME CAPS' : 'Time Capsule'
+    'TIME CAPS' : 'Time Capsule',
+    'TIME-CAPS' : 'Time Capsule'
 }
 
 common_string : list = [
