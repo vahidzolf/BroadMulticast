@@ -4,6 +4,7 @@ PRINTER = 'PRINTER'
 MOBILE = 'MOBILE'
 MEDIA = 'MEDIA'
 PHONE = 'PHONE'
+SYSADMIN = 'SYSADMIN'
 _ALLprot: dict = {}
 '''
 Dictionary where are collected all known protocols, subdivided by kind of device:\n
@@ -328,6 +329,7 @@ Contain all dictionaries of common keyword on name devices, subdivided by kind(W
 \nEx: keyword_on_alias[WORKSTATION] = it contain keyword of form: < 'MacBook-Pro-di-': 'MacBook Pro Notebook' > 
 '''
 
+
 keyword_on_alias[WORKSTATION] = {
     'DESKTOP': 'Windows Desktop',
     's-MacBook-Air': 'MacBook Air Notebook',
@@ -341,7 +343,9 @@ keyword_on_alias[WORKSTATION] = {
     's-MacBookPro': 'MacBook Pro Notebook',
     's-mac-mini': 'Mac Mini Desktop',
     'Computer-di-': PC,
-    'Mac' : 'Mac PC'
+    'Mac' : 'Mac PC',
+    'DropBox Host' : 'Drop box ',
+    'WORKSTATION' : WORKSTATION
 }
 
 keyword_on_alias[MOBILE] = {
@@ -349,13 +353,40 @@ keyword_on_alias[MOBILE] = {
     's-iPad': iPad,
     'iPhone-de-': iPhone,
     'iPad-di-': iPad,
-    'iPhone': iPhone
+    'iPhone': iPhone,
+    'MOBILE' : MOBILE
+}
+
+keyword_on_alias[SYSADMIN] = {
+    'dns' : 'DNS Server',
+    'mail' : 'Mail Server',
+    'SMTP' : 'Mail Server',
+    'POP3' : 'Mail Server',
+    'voip' : 'Voip Server',
+    'mx'   : 'Mail Exchange',
+    'SYSADMIN' : SYSADMIN
 }
 
 keyword_on_alias[PHONE] = {
-    'SIP-T': 'SIP Phone'
+    'SIP-T': 'SIP Phone',
+    'PHONE' : PHONE
     # finding the owner of phones are interesting case
     # which can be found through correlation of ARP or DHCP packets with SIP server
+}
+
+keyword_on_alias[PRINTER] = {
+    'ipps': 'Printer',
+    'pdl-datastream': 'Printer',
+    'scanner':  'Printer',
+    'ipp': 'Printer',
+    'printer': 'Printer',
+    'PRINTER': 'Printer',
+    'laserjet': 'Printer',
+    'hp' : 'Printer',
+    'canon' : 'Printer',
+    'Lexmark' : 'Printer',
+    'NPI' : 'Printer',
+    'PRT' : 'Printer'
 }
 
 keyword_on_alias[NAS] = {
@@ -365,7 +396,8 @@ keyword_on_alias[NAS] = {
     'TimeCapule' : 'Time Capsule',
     'TC' : 'Time Capsule',
     'TIME CAPS' : 'Time Capsule',
-    'TIME-CAPS' : 'Time Capsule'
+    'TIME-CAPS' : 'Time Capsule',
+    'NAS' : NAS
 }
 
 common_string : list = [

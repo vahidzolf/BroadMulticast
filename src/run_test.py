@@ -24,9 +24,9 @@ files = sys.argv[2:]
 # files:list=['medium.pcap']
 # files:list=['small.pcap']
 
-# folder:str='/root/captures/outdir/'
-# files:list=['CNR_chunk_00000_20190222172518.pcap',
-#             'CNR_chunk_00002_20190225101908.pcap',
+folder:str='/root/captures/outdir/'
+files:list=['CNR_chunk_00000_20190222172518.pcap',
+            'CNR_chunk_00002_20190225101908.pcap']
 #             'CNR_chunk_00004_20190227235120.pcap',
 #             'CNR_chunk_00001_20190224014742.pcap',
 #             'CNR_chunk_00003_20190226175640.pcap',
@@ -50,9 +50,12 @@ for pkt in cap:
 '''
 
 
+net.active_probing()
 
 for file in files:
     print('###################### ',file,' #######################')
+    #First we have to allocate slots
+    net.form_time_slots(folder+file)
     # collect mDNS infos
     cap:FileCapture=pyshark.FileCapture(
         input_file=folder+file,
@@ -108,28 +111,23 @@ for file in files:
         elif 'nbns' in pkt:
             net.extract_nbns_infos(pkt)
         elif 'arp' in pkt:
-        #Analyze ARP packets to infer connections
             net.extract_ARP_Links(pkt)
-# At this moment there are some nodes which no name assigned to them, while we can try to resolve the IP address of
-# them using dns or nmlookup
-net.extract_unknown(file)
 
 # show linked devices
 # net.extract_DB_links()
 
 # Online network probing
 
-net.extract_snmp_info()
+# net.extract_snmp_info()
 
 #calculating link weights
 net.aggregate_links()
 
 #print snapshot of the network
-net.printAll()
+net.printAll(file)
 # net.print_browser_inf()
 
-
-
+net.ego_analysis()
 #net.all_kind_protocol()
 #net.all_local_alias()
 

@@ -5,16 +5,23 @@ from DropBox_utils import DBlspDISC
 import snmp_utils
 import subprocess
 import re
+import os
+import glob
+import matplotlib.pyplot as plt
+# from ego_analysis_lan import *
 from netaddr import IPAddress
 from nested_dict import nested_dict
 from collections import deque
 # from spacy.en import English
-# nlp = English(entity=True)
+import numpy as np
+from datetime import datetime,timedelta
+from textwrap import wrap
+
 
 # Print or not info of services
 DEBUG_SRV = False
 domain_name = ''
-
+slots = []
 
 class Target:
     ''' Represents a target that is referred to for a service (found in an SRV record), it contain a name and a set of ports'''
@@ -181,6 +188,7 @@ class Device(object):
     _dhcp_fqdn : str           # VZ : name extracted from DHCP request
     _db_name : str             # VZ : names resolved from our Database
     _last_DB_timestmp : str    # VZ : The timestamp of the last Dropbox packet seen in the capture
+    _category : str
 
     def __init__(self, dev_id: str, ip: str = ''):
         self._id = str(dev_id)
@@ -198,6 +206,7 @@ class Device(object):
         self._db_name = ''
         self._label = ''
         self._last_DB_timestmp = ''
+        self._category = ''
 
 
     def get_DB_info(self):
@@ -251,6 +260,13 @@ class Device(object):
     def db_name(self):
         return str(self._db_name)
 
+    def category(self):
+        return self._category
+
+    def set_category(self, newcat : str):
+        if newcat is not None:
+            self._category = newcat
+
     def update_IPv4(self, new_ip: str):
         if new_ip != '' and new_ip != None:
             temp = str(new_ip).replace('(','').replace(')','')
@@ -284,6 +300,28 @@ class Device(object):
         newlabel = re.sub(r'\([^)]*\)', '', newlabel)
         newlabel = newlabel.replace(' ','-')
         self._label = newlabel
+
+    def find_category(self):
+        #first read self.kind
+        for kind, keyword_dict in keyword_on_alias.items():
+            for k in keyword_dict:
+                k = k.lower()
+                if (self.label().lower().count(k) > 0):
+                    return kind
+                if (self.kind().lower().count(k) > 0):
+                    return kind
+                if self.browser_win_version().lower().count(k):
+                    return kind
+                if self.dhcp_info().lower().count(k) > 0 :
+                    return kind
+                if self.browser_hostname().lower().count(k):
+                    return kind
+                if self.browser_comment().lower().count(k):
+                    return kind
+                if self.db_name().lower().count(k):
+                    return kind
+
+
 
     def update_services(self, new_serv: ServiceMDNS):
         '''
@@ -348,8 +386,10 @@ class Device(object):
         :return:
         '''
         checker: WhoIsWhat = WhoIsWhat(self)
-        self._kind = checker.get_kind()
-        self._owner = checker.get_owner()
+        if self.isunknown(self._kind):
+            self._kind = checker.get_kind()
+        if self.isunknown(self._owner):
+            self._owner = checker.get_owner()
 
         self.extract_label(checker)
 
@@ -379,8 +419,8 @@ class Device(object):
                     keyw = checker.purify_str(keyw)
                     if any(x in keyw for x in keyword_on_alias['NAS']):
                         self.set_label(keyw)
-                if self._label == '':
-                    self.set_label(keyw)
+                    else:
+                        self.set_label(keyw)
                 elif 'WORKSTATION' in self.kind():
                     keyw: str = alias.replace('.local', '').lower()
                     keyw = checker.purify_str(keyw)
@@ -396,16 +436,17 @@ class Device(object):
                         keyw: str = list(self.aliases())[0].replace('.local', '').lower()
                         keyw = checker.purify_str(keyw)
                         self.set_label(keyw)
-                    elif not self.isunknown(self.dhcp_info()):
-                        self.set_label(checker.purify_str(self.dhcp_info()))
-                    elif not self.isunknown(self.browser_hostname()):
-                        self.set_label(checker.purify_str(self.browser_hostname()))
-                    elif not self.isunknown(self.browser_comment()):
-                        self.set_label(checker.purify_str(self.browser_comment()))
-                    elif not self.isunknown(self.db_name()):
-                        self.set_label(checker.purify_str(self.db_name()))
-                    else:
-                        self.set_label(self.id())
+            if self._label == '':
+                if not self.isunknown(self.dhcp_info()):
+                    self.set_label(checker.purify_str(self.dhcp_info()))
+                elif not self.isunknown(self.browser_hostname()):
+                    self.set_label(checker.purify_str(self.browser_hostname()))
+                elif not self.isunknown(self.browser_comment()):
+                    self.set_label(checker.purify_str(self.browser_comment()))
+                elif not self.isunknown(self.db_name()):
+                    self.set_label(checker.purify_str(self.db_name()))
+                else:
+                    self.set_label(self.id())
 
 
     def update_DB(self, new_db: DBlspDISC):
@@ -429,21 +470,22 @@ class Link(object):
     _device_to : Device
     _namespaces_in_common : dict
     _DB_weight : int
-    _nbns_frequency : int
-    _llmnr_frequency : int
-    _arp_frequency : int
+    _nbns_frequency_days : list
+    _llmnr_frequency_days : list
+    _arp_frequency_days : list
     _print_frequency : int
     _weight : int
 
     def __init__(self, dev_frm : Device , dev_to : Device):
+        global slots
         self.id = dev_frm + '-' + dev_to
         self._device_from = dev_frm
         self._device_to = dev_to
         self._namespaces_in_common = list()
         self._DB_weight = 0
-        self._nbns_frequency = 0
-        self._llmnr_frequency = 0
-        self._arp_frequency = 0
+        self._nbns_frequency_days = [0] * len(slots)
+        self._llmnr_frequency_days = [0] * len(slots)
+        self._arp_frequency_days = [0] * len(slots)
         self._print_frequency = 0
         self._weight = 0
     # getters
@@ -458,13 +500,13 @@ class Link(object):
         return self._device_to
 
     def nbns_frequency(self):
-        return self._nbns_frequency
+        return self._nbns_frequency_days
 
     def llmnr_frequency(self):
-        return self._llmnr_frequency
+        return self._llmnr_frequency_days
 
     def arp_frequency(self):
-        return self._arp_frequency
+        return self._arp_frequency_days
 
     def get_common_ns(self):
         return self._namespaces_in_common
@@ -489,14 +531,23 @@ class Link(object):
     def set_common_ns(self,ns_commons : list):
         self._namespaces_in_common = ns_commons
 
-    def inc_llmnr_frequency(self):
-        self._llmnr_frequency += 1
+    def inc_llmnr_frequency(self,day : int):
+        try:
+            self._llmnr_frequency_days[day] += 1
+        except TypeError as e:
+            pass
 
-    def inc_nbns_frequency(self):
-        self._nbns_frequency += 1
+    def inc_nbns_frequency(self,day : int):
+        try:
+            self._nbns_frequency_days[day] += 1
+        except TypeError as e:
+            pass
 
-    def inc_arp_frequency(self):
-        self._arp_frequency += 1
+    def inc_arp_frequency(self, day : int):
+        try:
+            self._arp_frequency_days[day] += 1
+        except TypeError as e:
+            pass
 
     def inc_print_frequency(self):
         self._print_frequency += 1
@@ -508,11 +559,16 @@ class Link(object):
         NBNS_factor    = 2
         ARP_factor     = 1
 
+
         weight = (self.DB_weight()       * Dropbox_factor) + \
-                 (self.print_frequency() * Print_factor) + \
-                 (self.llmnr_frequency() * LLMNR_factor) + \
-                 (self.nbns_frequency()  * NBNS_factor) + \
-                 (self.arp_frequency()   * ARP_factor)
+                 (self.print_frequency() * Print_factor)
+        if self.llmnr_frequency() != [] :
+            weight += (np.mean(self.llmnr_frequency()) * LLMNR_factor)
+        if self.nbns_frequency() != []:
+            weight += (np.mean(self.nbns_frequency()) * NBNS_factor)
+        if self.arp_frequency() !=[]:
+            weight += (np.mean(self.arp_frequency())  * ARP_factor)
+
 
 
         self._weight = weight
@@ -565,11 +621,11 @@ class NetworkLAN:
             if d.browser_win_version() != '':
                 print('Browser windows version : ' + d.browser_win_version())
 
-    def printAll(self):
+    def printAll(self,filename : str):
         ''' Print all infos of the network: devices(MAC addr, aliases, kind, rervices that offer, ...) '''
         counter = 0
         allnames = []
-        graph_file = open('lan_graph_cs.txt','w')
+        graph_file = open('lan_graph_{}.txt'.format(filename),'w')
         unknown_counter = 0
 
         for _d in self._devices.values():
@@ -633,6 +689,7 @@ class NetworkLAN:
             if d.label() != '':
                 print("label : " + str(d.label()))
 
+
             if not flag:
                 unknown_counter +=1
             if(DEBUG_SRV):
@@ -679,6 +736,157 @@ class NetworkLAN:
         print("\tNumber of nodes updated by cache: " + str(self._arp_cache_update_pkt))
         print("\tNumber of new nodes by arp cache: " + str(self._arp_cache_new_pkt))
         print("\tNumber of unknown nodes         : " + str(unknown_counter))
+
+
+    def ego_analysis(self):
+
+        base_path = '/root/PycharmProjects/printer_social/BroadMulticast/src/ego_analysis/'
+        for filename in os.listdir(base_path):
+            files = glob.glob(base_path + filename + '/*')
+            for f in files:
+                os.remove(f)
+
+        for _d in self._devices.values():
+            d: Device = _d
+            node_cat = d.find_category()
+            d.set_category(node_cat)
+
+        nd = nested_dict(2, list)
+
+        def add_to_nd(threshold, host_from, index):
+            nd[threshold][host_from][index] += 1
+
+        def PD_serv_sys_analyze(threshold, type_to, host_from):
+            nd.setdefault(threshold, {}).setdefault(host_from, [0] * (7))
+            if type_to == "WORKSTATION":
+                add_to_nd(threshold, host_from, 0)
+            elif type_to == "MOBILE":
+                add_to_nd(threshold, host_from, 1)
+            elif type_to == "SYSADMIN":
+                add_to_nd(threshold, host_from, 2)
+            elif type_to == "PHONE":
+                add_to_nd(threshold, host_from, 3)
+            elif type_to == "NAS":
+                add_to_nd(threshold, host_from, 4)
+            elif type_to == "PRINTER":
+                add_to_nd(threshold, host_from, 5)
+            else:
+                add_to_nd(threshold, host_from, 6)
+
+        threshold = 0
+        for li in self._links:
+            host_from = self._links[li].from_node()
+            host_to = self._links[li].to_node()
+            weight = self._links[li].weight()
+            if weight > (threshold):
+                type_from = self._devices[host_from].category()
+                type_to = self._devices[host_to].category()
+                PD_serv_sys_analyze(threshold, type_to, host_from)
+
+        ws_dict = {}
+        mob_dict = {}
+        sys_dict = {}
+        fon_dict = {}
+        nas_dict = {}
+        prt_dict = {}
+        unknown_dict = {}
+
+        def calculate_percent(my_list):
+            temp_list = []
+            for item in my_list:
+                temp_list.append(int(item / sum(my_list) * 100))
+            return temp_list
+
+        my_threshold = threshold
+        for id in nd[my_threshold]:
+            ttype = self._devices[id].category()
+            if ttype == "WORKSTATION":
+                ws_dict[id] = calculate_percent(nd[my_threshold][id])
+            elif ttype == 'MOBILE':
+                mob_dict[id] = calculate_percent(nd[my_threshold][id])
+            elif ttype == "SYSADMIN":
+                sys_dict[id] = calculate_percent(nd[my_threshold][id])
+            elif ttype == "PHONE":
+                fon_dict[id] = calculate_percent(nd[my_threshold][id])
+            elif ttype == "NAS":
+                nas_dict[id] = calculate_percent(nd[my_threshold][id])
+            elif ttype == "PRINTER":
+                prt_dict[id] = calculate_percent(nd[my_threshold][id])
+            else:
+                unknown_dict[id] = calculate_percent(nd[my_threshold][id])
+
+            width = 0.15
+            my_lables = 'WORKSTATION', 'MOBILE', 'SYSADMIN', 'PHONE' , 'NAS' , 'PRINTER' , 'UNKNOWNS'
+            #
+            x_ind = np.arange(len(ws_dict))
+
+            # # Plot
+            display_threshold = 30  # this means that each plot should have at most 30 xes.
+
+        counter = 0
+        for type_dict in [ws_dict,mob_dict, sys_dict, fon_dict,nas_dict, unknown_dict]:
+            partial_lists = []
+            my_bins = int(len(type_dict) / display_threshold)
+            type_dict_items = list(type_dict.items())
+            while len(type_dict_items) > 0:
+                cut_index = min(len(type_dict_items), display_threshold)
+                partial_lists.append(dict(type_dict_items[:cut_index]))
+                del type_dict_items[:cut_index]
+
+            in_counter = 1
+            for part_dict in partial_lists:
+                ws_values = [item[0] for item in part_dict.values()]
+                mob_values = [item[1] for item in part_dict.values()]
+                sys_values = [item[2] for item in part_dict.values()]
+                fon_values = [item[3] for item in part_dict.values()]
+                nas_values = [item[4] for item in part_dict.values()]
+                prt_values = [item[5] for item in part_dict.values()]
+                unknown_values = [item[6] for item in part_dict.values()]
+
+                x_ind = range(len(part_dict))
+                width = 0.5
+                plt.figure(figsize=(25, 10))  # width:20, height:3
+                p1 = plt.bar(x_ind, ws_values, color='tab:red', align='edge', width=width)
+                p2 = plt.bar(x_ind, mob_values, bottom=ws_values, color='tab:orange', align='edge', width=width)
+                p3 = plt.bar(x_ind, sys_values, bottom=[sum(x) for x in zip(ws_values, mob_values)], color='tab:blue',
+                             align='edge', width=width)
+                p4 = plt.bar(x_ind, fon_values, bottom=[sum(x) for x in zip(ws_values, mob_values,sys_values)], color='tab:pink',
+                             align='edge', width=width)
+                p5 = plt.bar(x_ind, nas_values, bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values,fon_values)],
+                             color='tab:purple', align='edge', width=width)
+                p6 = plt.bar(x_ind, prt_values, bottom=[sum(x) for x in zip(ws_values,mob_values, sys_values, fon_values,nas_values)],
+                             color='tab:green', align='edge', width=width)
+                p7 = plt.bar(x_ind, unknown_values,
+                             bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values, fon_values, nas_values,prt_values)],
+                             color='tab:brown', align='edge', width=width)
+
+                my_temp = [self._devices[item].label() for item in part_dict.keys()]
+                my_temp = ['\n'.join(wrap(l, 10)) for l in my_temp]
+
+                plt.xticks(x_ind, my_temp, rotation='vertical', fontsize=12)
+
+                plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0],p7[0]), (my_lables))
+
+                if counter == 0:
+                    out_pic = 'ego_analysis/ws_ego_figures/ws_ego_part' + str(in_counter) + ".png"
+                elif counter == 1:
+                    out_pic = 'ego_analysis/mob_ego_figures/mob_ego_part' + str(in_counter) + ".png"
+                elif counter == 2:
+                    out_pic = 'ego_analysis/sys_ego_figures/sys_ego_part' + str(in_counter) + ".png"
+                elif counter == 3:
+                    out_pic = 'ego_analysis/fon_ego_figures/fon_ego_part' + str(in_counter) + ".png"
+                elif counter == 4:
+                    out_pic = 'ego_analysis/nas_ego_figures/nas_ego_part' + str(in_counter) + ".png"
+                elif counter == 5:
+                    out_pic = 'ego_analysis/prt_ego_figures/prt_ego_part' + str(in_counter) + ".png"
+                if counter == 6:
+                    out_pic = 'ego_analysis/unknown_ego_figures/unknown_ego_part' + str(in_counter) + ".png"
+
+                plt.savefig(out_pic)
+                plt.clf()
+                in_counter += 1
+
+            counter += 1
 
     def aggregate_links(self):
         for li in self._links:
@@ -1115,6 +1323,51 @@ class NetworkLAN:
 
         dev.update_browser_info(server,comment,win_ver)
 
+
+    def form_time_slots(self,filename : str):
+
+
+        run_output = subprocess.run(['capinfos', filename], stdout=subprocess.PIPE)
+        output = run_output.stdout
+
+        for line in output.decode("utf-8").split('\n'):
+            if "First packet time:" in line:
+                str_time = " ".join(line.split()[-2:])
+            elif "Last packet time:" in line:
+                end_time = " ".join(line.split()[-2:])
+        # print (str_time + " ->" + end_time)
+
+        str_time = str_time.split(',')[0]
+        start_time = datetime.strptime(str_time, '%Y-%m-%d %H:%M:%S')
+
+        end_time = end_time.split(',')[0]
+        finish_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
+
+        duration = finish_time - start_time
+
+        # zero_day = datetime.datetime(start_time.year, start_time.month, start_time.day, 0, 0, 0, 0)
+        last_day = datetime(finish_time.year, finish_time.month, finish_time.day, 0, 0, 0, 0)
+
+        global slots
+
+        my_date = start_time
+        while my_date < finish_time:
+            next_day = datetime(my_date.year, my_date.month, my_date.day, 23, 59, 59, 0)
+            if next_day.weekday() < 5:  # Just consider the working days of the week
+                slots.append((my_date.timestamp(), min(next_day.timestamp(), finish_time.timestamp())))
+            one_sec = timedelta(seconds=1)
+            my_date = next_day + one_sec
+
+
+    def calculate_slot(self,pkt_time):
+        global slots
+        counter = 0
+        for item in slots:
+            if float(pkt_time) > item[0] and float(pkt_time) < (item[1] + 1.0):
+                return counter
+            else:
+                counter += 1
+
     def extract_nbns_infos(self,packet: Packet):
         '''
                 Givin a packet, extract DHCP information
@@ -1153,8 +1406,9 @@ class NetworkLAN:
                 else:
                     llink = Link(dev.id(), dest_id.id())
                     self._links[link_id] = llink
-
-                llink.inc_nbns_frequency()
+                pkt_time = str(packet.frame_info.time_epoch)
+                day_index = self.calculate_slot(pkt_time)
+                llink.inc_nbns_frequency(day_index)
         except AttributeError as e:
             pass
         except UnboundLocalError as e:
@@ -1234,7 +1488,9 @@ class NetworkLAN:
                 else:
                     llink = Link(dev.id(), dest_id.id())
                     self._links[link_id] = llink
-                llink.inc_llmnr_frequency()
+                pkt_time = str(packet.frame_info.time_epoch)
+                day_index = self.calculate_slot(pkt_time)
+                llink.inc_llmnr_frequency(day_index)
 
     def extract_ARP_Links(self, packet : Packet):
         name: str
@@ -1273,7 +1529,10 @@ class NetworkLAN:
             else:
                 llink = Link(dev.id(), dst_node.id())
                 self._links[link_id] = llink
-            llink.inc_arp_frequency()
+            pkt_time = str(packet.frame_info.time_epoch)
+            day_index = self.calculate_slot(pkt_time)
+            if day_index != None:
+                llink.inc_arp_frequency(day_index)
 
     def extract_DHCP_info(self,packet: Packet):
         '''
@@ -1361,7 +1620,7 @@ class NetworkLAN:
             dhcp_server = str(my_data.option_dhcp_server_id)
             dhcp_server_node = self.find_equivalent_node_ip(dhcp_server)
             if dhcp_server_node is not None:
-                dhcp_server_node.set_label("DHCP Server")
+                dhcp_server_node.set_label("DHCP_Server")
                 if (dhcp_server_node._kind == ''):
                     dhcp_server_node._kind = 'Sysadmin'
                 else:
@@ -1373,7 +1632,7 @@ class NetworkLAN:
             dns_server = str(my_data.option_domain_name_server)
             dns_server_node = self.find_equivalent_node_ip(dns_server)
             if dns_server_node is not None:
-                dns_server_node.set_label("DNS Server")
+                dns_server_node.set_label("DNS_Server")
                 if (dns_server_node._kind == ''):
                     dns_server_node._kind = 'Sysadmin'
                 else:
@@ -1397,7 +1656,7 @@ class NetworkLAN:
             ntp_server = str(my_data.option_ntp_server)
             ntp_server_node = self.find_equivalent_node_ip(ntp_server)
             if ntp_server_node is not None:
-                ntp_server_node.set_label("NTP Server")
+                ntp_server_node.set_label("NTP_Server")
                 if (ntp_server_node._kind == ''):
                     ntp_server_node._kind = 'Sysadmin'
                 else:
@@ -1422,7 +1681,7 @@ class NetworkLAN:
             return True
 
 
-    def extract_unknown(self,filename):
+    def active_probing(self):
         unknowns = []
         # command = '''tshark -r {} -T fields -e ip.src -e ip.dst | tr "\t" "\n" | sort | uniq '''.format(filename)
 
@@ -1833,6 +2092,8 @@ class WhoIsWhat:
     def purify_str(self, string:str):
         global domain_name
         clear_str:str = string
+        clear_str = clear_str.replace(domain_name,'')
+
         for s in keyword_on_alias.values():
             for k in s:
                 clear_str = clear_str.replace(k,'')
@@ -1841,7 +2102,6 @@ class WhoIsWhat:
         for k in common_string_s:
             clear_str = clear_str.replace(k,' ')
 
-        clear_str = clear_str.replace(domain_name,'')
         if clear_str in ['','.','-','_',' ']:
             clear_str = string
         return clear_str
