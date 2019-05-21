@@ -293,10 +293,7 @@ class Device(object):
 
 
     def set_label(self,newlabel : str):
-        if newlabel.startswith(' '):
-            newlabel = newlabel[1:]
-        if newlabel.endswith(' '):
-            newlabel = newlabel[:-1]
+        newlabel = newlabel.strip()
         newlabel = re.sub(r'\([^)]*\)', '', newlabel)
         newlabel = newlabel.replace(' ','-')
         self._label = newlabel
@@ -403,7 +400,7 @@ class Device(object):
     def extract_label(self,checker):
         keyw = ''
         if not self.isunknown(self._owner):
-            self._label = self._owner
+            self.set_label(self._owner)
             return
         else:
             for alias in self.aliases():
@@ -469,7 +466,7 @@ class Link(object):
     _device_from : Device
     _device_to : Device
     _namespaces_in_common : dict
-    _DB_weight : int
+    _DB_weight : float
     _nbns_frequency_days : list
     _llmnr_frequency_days : list
     _arp_frequency_days : list
@@ -522,7 +519,7 @@ class Link(object):
 
     # setters
 
-    def set_DB_weight(self,new_weight : int):
+    def set_DB_weight(self,new_weight : float):
         self._DB_weight += new_weight
 
     def set_weight(self,new_weight : int):
@@ -551,27 +548,6 @@ class Link(object):
 
     def inc_print_frequency(self):
         self._print_frequency += 1
-
-    def calculate_weight(self):
-        Dropbox_factor = 1
-        Print_factor   = 4
-        LLMNR_factor   = 2
-        NBNS_factor    = 2
-        ARP_factor     = 1
-
-
-        weight = (self.DB_weight()       * Dropbox_factor) + \
-                 (self.print_frequency() * Print_factor)
-        if self.llmnr_frequency() != [] :
-            weight += (np.mean(self.llmnr_frequency()) * LLMNR_factor)
-        if self.nbns_frequency() != []:
-            weight += (np.mean(self.nbns_frequency()) * NBNS_factor)
-        if self.arp_frequency() !=[]:
-            weight += (np.mean(self.arp_frequency())  * ARP_factor)
-
-
-
-        self._weight = weight
 
 
 class NetworkLAN:
@@ -738,6 +714,34 @@ class NetworkLAN:
         print("\tNumber of unknown nodes         : " + str(unknown_counter))
 
 
+    def print_db_graph(self,in_file : str):
+        graph_file = open('drpbx_graph_' + in_file + ".txt",  'w')
+        for li in self._links:
+            print(str(self._links[li].id) + "  [DropBox : " + str(self._links[li].DB_weight()))
+            dev_from = self._devices[self._links[li]._device_from]
+            dev_from.update_kind()
+            dev_from_label = dev_from.label()
+            # dev_from = self._links[li]._device_from
+            dev_to = self._devices[self._links[li]._device_to]
+            dev_to.update_kind()
+            dev_to_label = dev_to.label()
+            # dev_to = self._links[li]._device_to
+            weight = str(self._links[li].DB_weight())
+
+            if dev_from_label != dev_from.id():
+                from_label = dev_from_label + '(' + dev_from.id() + ')'
+            else:
+                from_label = dev_from_label
+
+            if dev_to_label != dev_to.id():
+                to_label = dev_to_label + '(' + dev_to.id() + ')'
+            else:
+                to_label = dev_to_label
+
+            graph_file.write(from_label + " " + to_label + " " + weight + '\n')
+
+        graph_file.close()
+
     def ego_analysis(self):
 
         base_path = '/root/PycharmProjects/printer_social/BroadMulticast/src/ego_analysis/'
@@ -889,8 +893,47 @@ class NetworkLAN:
             counter += 1
 
     def aggregate_links(self):
+        global slots
+        days = len(slots)
+        Dropbox_factor = 1
+        Print_factor = 4
+        LLMNR_factor = 2
+        NBNS_factor = 2
+        ARP_factor = 1
+        nd = nested_dict(3, list)
         for li in self._links:
-            self._links[li].calculate_weight()
+            llink = self._links[li]
+            if not all(v == 0 for v in llink._llmnr_frequency_days):
+                nd.setdefault('llmnr', {}).setdefault(llink._device_from, {}).setdefault(llink._device_to, llink._llmnr_frequency_days)
+            if not all(v == 0 for v in llink._nbns_frequency_days):
+                nd.setdefault('nbns', {}).setdefault(llink._device_from, {}).setdefault(llink._device_to, llink._nbns_frequency_days)
+            if not all(v == 0 for v in llink._arp_frequency_days):
+                nd.setdefault('arp', {}).setdefault(llink._device_from, {}).setdefault(llink._device_to, llink._arp_frequency_days)
+
+        for proto in nd:
+            for src in nd[proto]:
+                for day in range(0,days):
+                    freq_sum = sum([nd[proto][src][item][day] for item in nd[proto][src]])
+                    for dst in nd[proto][src]:
+                        if proto == 'arp':
+                            self._links[src + '-' + dst]._arp_frequency_days[day] = round(nd[proto][src][dst][day]/freq_sum,3)
+                        elif proto == 'llmnr':
+                            self._links[src + '-' + dst]._llmnr_frequency_days[day] = round(nd[proto][src][dst][day] / freq_sum, 3)
+                        elif proto == 'nbns':
+                            self._links[src + '-' + dst]._nbns_frequency_days[day] = round(nd[proto][src][dst][day]/freq_sum,3)
+
+        for li in self._links:
+            llink = self._links[li]
+            weight = (llink.DB_weight() * Dropbox_factor) + \
+                     (llink.print_frequency() * Print_factor)
+            if llink.llmnr_frequency() != [] :
+                weight += (np.mean(llink.llmnr_frequency()) * LLMNR_factor)
+            if llink.nbns_frequency() != []:
+                weight += (np.mean(llink.nbns_frequency()) * NBNS_factor)
+            if llink.arp_frequency() !=[]:
+                weight += (np.mean(llink.arp_frequency())  * ARP_factor)
+
+            llink._weight = weight
 
     def add_lost_property(self, lost_srv: ServiceMDNS):
         '''
@@ -1200,6 +1243,35 @@ class NetworkLAN:
         # save the device only if have useful infos
         if (len(dev.aliases()) > 0 or len(dev.get_services()) > 0):
             self._devices[name] = dev
+
+    def extract_DB_infos_old(self,packet: Packet):
+        '''
+                Givin a packet, extract Dropbox infos relative at db-lsp-disc Protocol using class DBlspDISC
+                :param packet: ONLY form "pyshark.Filecapture" create with option 'use_json=True'
+                :return:
+                '''
+        name: str
+        if ('eth' in packet and 'db-lsp-disc' in packet):
+            name = packet.eth.src[:]
+        else:
+            return
+
+        new_db_lsp_disc: DBlspDISC = DBlspDISC(packet)
+
+        dev: Device = None
+        if (name in self._devices):
+            dev = self._devices[name]
+        else:
+            dev = Device(name)
+            self._devices[name] = dev
+
+        if ('ip' in packet):
+            dev.update_IPv4(packet.ip.src[:])
+
+        if ('ipv6' in packet):
+            dev.update_IPv6(packet.ipv6.src[:])
+
+        dev.update_DB(new_db_lsp_disc)
 
     def extract_DB_infos(self, packet: Packet):
         '''
@@ -1848,9 +1920,13 @@ class NetworkLAN:
         # print('###########################################################')
 
         dbNet = self.find_dropbox_relations()
-        for dev_MAC in dbNet:
-            for dev_linked in dbNet[dev_MAC]:
+        all_dropboxers = set()
+        nd = nested_dict(2, float)
 
+        for dev_MAC in dbNet:
+            all_dropboxers.add(dev_MAC)
+            for dev_linked in dbNet[dev_MAC]:
+                all_dropboxers.add(dev_linked)
                 llink: Link = None
                 link_id = dev_MAC + '-' + dev_linked
                 if ( link_id in self._links):
@@ -1860,8 +1936,35 @@ class NetworkLAN:
                     self._links[link_id] = llink
 
                 llink.set_common_ns(dbNet[dev_MAC][dev_linked])
+                nd.setdefault(dev_MAC,{}).setdefault(dev_linked , 0)
+                nd[dev_MAC][dev_linked] = len(dbNet[dev_MAC][dev_linked]) / len(self._devices[dev_MAC]._db_lsp_disc._namespaces)
+                #llink.set_DB_weight(len(dbNet[dev_MAC][dev_linked]))
 
+        self.calculate_DB_weight(llink,nd,len(all_dropboxers))
 
+    def calculate_DB_weight(self, llink : Link,nd : nested_dict,num_all_DB_nodes : int):
+        namespace_freq = {}
+        all_ns = set()
+        for li in self._links:
+            for ns in self._links[li]._namespaces_in_common:
+                all_ns.add(ns)
+                try:
+                    namespace_freq[ns] += 1
+                except KeyError:
+                    namespace_freq[ns] = 1
+        num_links = len(self._links)
+        P = {} #dictionary for keeping P for each ns
+        for ns in all_ns:
+            P[ns] = ( num_all_DB_nodes - (namespace_freq[ns] -1) ) / num_all_DB_nodes
+
+        for li in self._links:
+            numenator = 0
+            for ns in self._links[li]._namespaces_in_common:
+                numenator += P[ns]
+            dev_from = self._links[li]._device_from
+            dev_to = self._links[li]._device_to
+            nd[dev_from][dev_to] = nd[dev_from][dev_to] * (numenator / len(self._links[li]._namespaces_in_common))
+            self._links[li].set_DB_weight(nd[dev_from][dev_to])
 
 
     def all_kind_protocol(self):

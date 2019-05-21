@@ -24,9 +24,9 @@ files = sys.argv[2:]
 # files:list=['medium.pcap']
 # files:list=['small.pcap']
 
-folder:str='/root/captures/outdir/'
-files:list=['CNR_chunk_00000_20190222172518.pcap',
-            'CNR_chunk_00002_20190225101908.pcap']
+# folder:str='/root/captures/outdir/'
+# files:list=['CNR_chunk_00000_20190222172518.pcap',
+#             'CNR_chunk_00002_20190225101908.pcap']
 #             'CNR_chunk_00004_20190227235120.pcap',
 #             'CNR_chunk_00001_20190224014742.pcap',
 #             'CNR_chunk_00003_20190226175640.pcap',
@@ -127,7 +127,7 @@ net.aggregate_links()
 net.printAll(file)
 # net.print_browser_inf()
 
-net.ego_analysis()
+# net.ego_analysis()
 #net.all_kind_protocol()
 #net.all_local_alias()
 
