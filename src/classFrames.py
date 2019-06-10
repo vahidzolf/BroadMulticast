@@ -780,8 +780,8 @@ class NetworkLAN:
                 add_to_nd(threshold, host_from, 4)
             elif type_to == "PRINTER":
                 add_to_nd(threshold, host_from, 5)
-            else:
-                del nd[threshold][host_from]
+            # else:
+            #     del nd[threshold][host_from]
 
         threshold = 0
         for li in self._links:
@@ -817,9 +817,15 @@ class NetworkLAN:
         total_nas = 0
         total_prt = 0
         total_unknown = 0
+        only_unknown = 0
+
+        newfile = open("ego_dataset.csv", 'w')
 
         for id in nd[my_threshold]:
             total_ds += 1
+            if all(v == 0 for v in nd[my_threshold][id]):
+                del nd[my_threshold][id]
+                only_unknown += 1
             ttype = self._devices[id].category()
             if ttype == "WORKSTATION":
                 total_ws += 1
@@ -841,11 +847,12 @@ class NetworkLAN:
                 prt_dict[id] = calculate_percent(nd[my_threshold][id])
             else:
                 total_unknown += 1
+                continue
+
+            newfile.write(str(id) +',' +
+                          ','.join([str(item) for item in calculate_percent(nd[my_threshold][id])]) +
+                          "," + str(ttype) + '\n')
             #     unknown_dict[id] = calculate_percent(nd[my_threshold][id])
-
-
-
-
 
 
         print("")
@@ -860,79 +867,79 @@ class NetworkLAN:
         print("\tNumber of printer nodes     : " + str(total_prt))
         print("\tNumber of Unknown Nodes     : " + str(total_unknown))
 
-        width = 0.15
-        my_lables = 'WORKSTATION', 'MOBILE', 'SYSADMIN', 'PHONE' , 'NAS' , 'PRINTER'
+        # width = 0.15
+        # my_lables = 'WORKSTATION', 'MOBILE', 'SYSADMIN', 'PHONE' , 'NAS' , 'PRINTER'
+        # #
+        # x_ind = np.arange(len(ws_dict))
         #
-        x_ind = np.arange(len(ws_dict))
-
-        # # Plot
-        display_threshold = 30  # this means that each plot should have at most 30 xes.
-
-        counter = 0
-        for type_dict in [ws_dict,mob_dict, sys_dict, fon_dict,nas_dict, unknown_dict]:
-            partial_lists = []
-            my_bins = int(len(type_dict) / display_threshold)
-            type_dict_items = list(type_dict.items())
-            while len(type_dict_items) > 0:
-                cut_index = min(len(type_dict_items), display_threshold)
-                partial_lists.append(dict(type_dict_items[:cut_index]))
-                del type_dict_items[:cut_index]
-
-            in_counter = 1
-            for part_dict in partial_lists:
-                ws_values = [item[0] for item in part_dict.values()]
-                mob_values = [item[1] for item in part_dict.values()]
-                sys_values = [item[2] for item in part_dict.values()]
-                fon_values = [item[3] for item in part_dict.values()]
-                nas_values = [item[4] for item in part_dict.values()]
-                prt_values = [item[5] for item in part_dict.values()]
-                # unknown_values = [item[6] for item in part_dict.values()]
-
-                x_ind = range(len(part_dict))
-                width = 0.5
-                plt.figure(figsize=(25, 10))  # width:20, height:3
-                p1 = plt.bar(x_ind, ws_values, color='tab:red', align='edge', width=width)
-                p2 = plt.bar(x_ind, mob_values, bottom=ws_values, color='tab:orange', align='edge', width=width)
-                p3 = plt.bar(x_ind, sys_values, bottom=[sum(x) for x in zip(ws_values, mob_values)], color='tab:blue',
-                             align='edge', width=width)
-                p4 = plt.bar(x_ind, fon_values, bottom=[sum(x) for x in zip(ws_values, mob_values,sys_values)], color='tab:pink',
-                             align='edge', width=width)
-                p5 = plt.bar(x_ind, nas_values, bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values,fon_values)],
-                             color='tab:purple', align='edge', width=width)
-                p6 = plt.bar(x_ind, prt_values, bottom=[sum(x) for x in zip(ws_values,mob_values, sys_values, fon_values,nas_values)],
-                             color='tab:green', align='edge', width=width)
-                # p7 = plt.bar(x_ind, unknown_values,
-                #              bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values, fon_values, nas_values,prt_values)],
-                #              color='tab:brown', align='edge', width=width)
-
-                my_temp = [self._devices[item].label() for item in part_dict.keys()]
-                my_temp = ['\n'.join(wrap(l, 10)) for l in my_temp]
-
-                plt.xticks(x_ind, my_temp, rotation='vertical', fontsize=12)
-
-                # plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0],p7[0]), (my_lables))
-                plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0]), (my_lables))
-
-                if counter == 0:
-                    out_pic = 'ego_analysis/ws_ego_figures/ws_ego_part' + str(in_counter) + ".png"
-                elif counter == 1:
-                    out_pic = 'ego_analysis/mob_ego_figures/mob_ego_part' + str(in_counter) + ".png"
-                elif counter == 2:
-                    out_pic = 'ego_analysis/sys_ego_figures/sys_ego_part' + str(in_counter) + ".png"
-                elif counter == 3:
-                    out_pic = 'ego_analysis/fon_ego_figures/fon_ego_part' + str(in_counter) + ".png"
-                elif counter == 4:
-                    out_pic = 'ego_analysis/nas_ego_figures/nas_ego_part' + str(in_counter) + ".png"
-                elif counter == 5:
-                    out_pic = 'ego_analysis/prt_ego_figures/prt_ego_part' + str(in_counter) + ".png"
-                # if counter == 6:
-                #     out_pic = 'ego_analysis/unknown_ego_figures/unknown_ego_part' + str(in_counter) + ".png"
-
-                plt.savefig(out_pic)
-                plt.clf()
-                in_counter += 1
-
-            counter += 1
+        # # # Plot
+        # display_threshold = 30  # this means that each plot should have at most 30 xes.
+        #
+        # counter = 0
+        # for type_dict in [ws_dict,mob_dict, sys_dict, fon_dict,nas_dict, unknown_dict]:
+        #     partial_lists = []
+        #     my_bins = int(len(type_dict) / display_threshold)
+        #     type_dict_items = list(type_dict.items())
+        #     while len(type_dict_items) > 0:
+        #         cut_index = min(len(type_dict_items), display_threshold)
+        #         partial_lists.append(dict(type_dict_items[:cut_index]))
+        #         del type_dict_items[:cut_index]
+        #
+        #     in_counter = 1
+        #     for part_dict in partial_lists:
+        #         ws_values = [item[0] for item in part_dict.values()]
+        #         mob_values = [item[1] for item in part_dict.values()]
+        #         sys_values = [item[2] for item in part_dict.values()]
+        #         fon_values = [item[3] for item in part_dict.values()]
+        #         nas_values = [item[4] for item in part_dict.values()]
+        #         prt_values = [item[5] for item in part_dict.values()]
+        #         # unknown_values = [item[6] for item in part_dict.values()]
+        #
+        #         x_ind = range(len(part_dict))
+        #         width = 0.5
+        #         plt.figure(figsize=(25, 10))  # width:20, height:3
+        #         p1 = plt.bar(x_ind, ws_values, color='tab:red', align='edge', width=width)
+        #         p2 = plt.bar(x_ind, mob_values, bottom=ws_values, color='tab:orange', align='edge', width=width)
+        #         p3 = plt.bar(x_ind, sys_values, bottom=[sum(x) for x in zip(ws_values, mob_values)], color='tab:blue',
+        #                      align='edge', width=width)
+        #         p4 = plt.bar(x_ind, fon_values, bottom=[sum(x) for x in zip(ws_values, mob_values,sys_values)], color='tab:pink',
+        #                      align='edge', width=width)
+        #         p5 = plt.bar(x_ind, nas_values, bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values,fon_values)],
+        #                      color='tab:purple', align='edge', width=width)
+        #         p6 = plt.bar(x_ind, prt_values, bottom=[sum(x) for x in zip(ws_values,mob_values, sys_values, fon_values,nas_values)],
+        #                      color='tab:green', align='edge', width=width)
+        #         # p7 = plt.bar(x_ind, unknown_values,
+        #         #              bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values, fon_values, nas_values,prt_values)],
+        #         #              color='tab:brown', align='edge', width=width)
+        #
+        #         my_temp = [self._devices[item].label() for item in part_dict.keys()]
+        #         my_temp = ['\n'.join(wrap(l, 10)) for l in my_temp]
+        #
+        #         plt.xticks(x_ind, my_temp, rotation='vertical', fontsize=12)
+        #
+        #         # plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0],p7[0]), (my_lables))
+        #         plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0]), (my_lables))
+        #
+        #         if counter == 0:
+        #             out_pic = 'ego_analysis/ws_ego_figures/ws_ego_part' + str(in_counter) + ".png"
+        #         elif counter == 1:
+        #             out_pic = 'ego_analysis/mob_ego_figures/mob_ego_part' + str(in_counter) + ".png"
+        #         elif counter == 2:
+        #             out_pic = 'ego_analysis/sys_ego_figures/sys_ego_part' + str(in_counter) + ".png"
+        #         elif counter == 3:
+        #             out_pic = 'ego_analysis/fon_ego_figures/fon_ego_part' + str(in_counter) + ".png"
+        #         elif counter == 4:
+        #             out_pic = 'ego_analysis/nas_ego_figures/nas_ego_part' + str(in_counter) + ".png"
+        #         elif counter == 5:
+        #             out_pic = 'ego_analysis/prt_ego_figures/prt_ego_part' + str(in_counter) + ".png"
+        #         # if counter == 6:
+        #         #     out_pic = 'ego_analysis/unknown_ego_figures/unknown_ego_part' + str(in_counter) + ".png"
+        #
+        #         plt.savefig(out_pic)
+        #         plt.clf()
+        #         in_counter += 1
+        #
+        #     counter += 1
 
     def aggregate_links(self):
         global slots
