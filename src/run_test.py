@@ -6,8 +6,6 @@ from classFrames import NetworkLAN
 from DropBox_utils import DBlspDISC
 
 
-def dropboxStudy(pkt:Packet):
-    pass
 
 
 if len(sys.argv) < 3:
@@ -24,14 +22,14 @@ files = sys.argv[2:]
 # files:list=['medium.pcap']
 # files:list=['small.pcap']
 
-# folder:str='/root/captures/outdir/'
-# files:list=['CNR_chunk_00000_20190222172518.pcap',
-#             'CNR_chunk_00002_20190225101908.pcap']
-#             'CNR_chunk_00004_20190227235120.pcap',
-#             'CNR_chunk_00001_20190224014742.pcap',
-#             'CNR_chunk_00003_20190226175640.pcap',
-#             'CNR_chunk_00005_20190301070739.pcap',
-# ]
+#folder :str='/root/captures/outdir/'
+#files:list=['CNR_chunk_00000_20190222172518.pcap',
+#            'CNR_chunk_00002_20190225101908.pcap',
+#            'CNR_chunk_00004_20190227235120.pcap',
+#            'CNR_chunk_00001_20190224014742.pcap',
+#            'CNR_chunk_00003_20190226175640.pcap',
+#            'CNR_chunk_00005_20190301070739.pcap',
+#]
 
 
 
@@ -52,6 +50,8 @@ for pkt in cap:
 
 net.active_probing()
 
+# pkt_list = {}
+
 for file in files:
     print('###################### ',file,' #######################')
     #First we have to allocate slots
@@ -60,12 +60,16 @@ for file in files:
     cap:FileCapture=pyshark.FileCapture(
         input_file=folder+file,
         keep_packets=False,
-        use_json=False,
-        display_filter = "not arp"
+        use_json=False
     )
     # cap.set_debug()
 
     for pkt in cap:
+
+        # pkt_list.setdefault(file,[])
+        #
+        # pkt_list[file].append(pkt)
+
         if 'eth' in pkt:
             # collect mdns infos
             if 'mdns' in pkt:
@@ -78,7 +82,7 @@ for file in files:
                 net.extract_DHCP_info(pkt)
             #regardless of the protocol of
 
-    del cap
+    cap.close()
 
 
 
@@ -93,9 +97,9 @@ for file in files:
     )
 
     for pkt in cap:
-        net.extract_DB_infos(pkt)
+        net.extract_DB_infos_old(pkt)
 
-    del cap
+    cap.close()
 
     # collect nbns and llmnr infos
     cap: FileCapture = pyshark.FileCapture(
@@ -114,7 +118,7 @@ for file in files:
             net.extract_ARP_Links(pkt)
 
 # show linked devices
-# net.extract_DB_links()
+net.extract_DB_links()
 
 # Online network probing
 
@@ -127,7 +131,7 @@ net.aggregate_links()
 net.printAll(file)
 # net.print_browser_inf()
 
-# net.ego_analysis()
+net.ego_analysis()
 #net.all_kind_protocol()
 #net.all_local_alias()
 

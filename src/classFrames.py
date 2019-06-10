@@ -691,8 +691,8 @@ class NetworkLAN:
                   "  [DropBox : " + str(self._links[li].DB_weight()) +
                      " ,LLMNR : "  + str(self._links[li].llmnr_frequency()) +
                      " ,NBNS : "   + str(self._links[li].nbns_frequency()) +
-                     " ,ARP : "    + str(self._links[li].arp_frequency()) +
-                     " ,Printer : "+ str(self._links[li].print_frequency()) + "]" )
+                     " ,ARP : "    + str(self._links[li].arp_frequency()) )
+                     # " ,Printer : "+ str(self._links[li].print_frequency()) + "]" )
             dev_from = self._devices[self._links[li]._device_from].label()
             dev_to = self._devices[self._links[li]._device_to].label()
             weight = str(self._links[li].weight())
@@ -742,7 +742,17 @@ class NetworkLAN:
 
         graph_file.close()
 
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! EGO ANALYSIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
+
     def ego_analysis(self):
+
+
+        for _d in self._devices.values():
+            d: Device = _d
+            node_cat = d.find_category()
+            d.set_category(node_cat)
+
 
         base_path = '/root/PycharmProjects/printer_social/BroadMulticast/src/ego_analysis/'
         for filename in os.listdir(base_path):
@@ -750,10 +760,6 @@ class NetworkLAN:
             for f in files:
                 os.remove(f)
 
-        for _d in self._devices.values():
-            d: Device = _d
-            node_cat = d.find_category()
-            d.set_category(node_cat)
 
         nd = nested_dict(2, list)
 
@@ -761,7 +767,7 @@ class NetworkLAN:
             nd[threshold][host_from][index] += 1
 
         def PD_serv_sys_analyze(threshold, type_to, host_from):
-            nd.setdefault(threshold, {}).setdefault(host_from, [0] * (7))
+            nd.setdefault(threshold, {}).setdefault(host_from, [0] * (6))
             if type_to == "WORKSTATION":
                 add_to_nd(threshold, host_from, 0)
             elif type_to == "MOBILE":
@@ -775,7 +781,7 @@ class NetworkLAN:
             elif type_to == "PRINTER":
                 add_to_nd(threshold, host_from, 5)
             else:
-                add_to_nd(threshold, host_from, 6)
+                del nd[threshold][host_from]
 
         threshold = 0
         for li in self._links:
@@ -802,30 +808,65 @@ class NetworkLAN:
             return temp_list
 
         my_threshold = threshold
+
+        total_ds = 0
+        total_ws = 0
+        total_mob = 0
+        total_sys = 0
+        total_fon = 0
+        total_nas = 0
+        total_prt = 0
+        total_unknown = 0
+
         for id in nd[my_threshold]:
+            total_ds += 1
             ttype = self._devices[id].category()
             if ttype == "WORKSTATION":
+                total_ws += 1
                 ws_dict[id] = calculate_percent(nd[my_threshold][id])
             elif ttype == 'MOBILE':
+                total_mob += 1
                 mob_dict[id] = calculate_percent(nd[my_threshold][id])
             elif ttype == "SYSADMIN":
+                total_sys += 1
                 sys_dict[id] = calculate_percent(nd[my_threshold][id])
             elif ttype == "PHONE":
+                total_fon += 1
                 fon_dict[id] = calculate_percent(nd[my_threshold][id])
             elif ttype == "NAS":
+                total_nas += 1
                 nas_dict[id] = calculate_percent(nd[my_threshold][id])
             elif ttype == "PRINTER":
+                total_prt += 1
                 prt_dict[id] = calculate_percent(nd[my_threshold][id])
             else:
-                unknown_dict[id] = calculate_percent(nd[my_threshold][id])
+                total_unknown += 1
+            #     unknown_dict[id] = calculate_percent(nd[my_threshold][id])
 
-            width = 0.15
-            my_lables = 'WORKSTATION', 'MOBILE', 'SYSADMIN', 'PHONE' , 'NAS' , 'PRINTER' , 'UNKNOWNS'
-            #
-            x_ind = np.arange(len(ws_dict))
 
-            # # Plot
-            display_threshold = 30  # this means that each plot should have at most 30 xes.
+
+
+
+
+        print("")
+        print("DataSet Statistics: ")
+        print("\tTotal number of Nodes       : " + str(total_ds))
+        print("\tNumber of known nodes       : " + str(total_ds - total_unknown))
+        print("\tNumber of workstation nodes : " + str(total_ws))
+        print("\tNumber of  Mobile nodes     : " + str(total_mob))
+        print("\tNumber of  SysAdmin nodes   : " + str(total_sys))
+        print("\tNumber of Phone Nodes       : " + str(total_fon))
+        print("\tNumber of NAS nodes         : " + str(total_nas))
+        print("\tNumber of printer nodes     : " + str(total_prt))
+        print("\tNumber of Unknown Nodes     : " + str(total_unknown))
+
+        width = 0.15
+        my_lables = 'WORKSTATION', 'MOBILE', 'SYSADMIN', 'PHONE' , 'NAS' , 'PRINTER'
+        #
+        x_ind = np.arange(len(ws_dict))
+
+        # # Plot
+        display_threshold = 30  # this means that each plot should have at most 30 xes.
 
         counter = 0
         for type_dict in [ws_dict,mob_dict, sys_dict, fon_dict,nas_dict, unknown_dict]:
@@ -845,7 +886,7 @@ class NetworkLAN:
                 fon_values = [item[3] for item in part_dict.values()]
                 nas_values = [item[4] for item in part_dict.values()]
                 prt_values = [item[5] for item in part_dict.values()]
-                unknown_values = [item[6] for item in part_dict.values()]
+                # unknown_values = [item[6] for item in part_dict.values()]
 
                 x_ind = range(len(part_dict))
                 width = 0.5
@@ -860,16 +901,17 @@ class NetworkLAN:
                              color='tab:purple', align='edge', width=width)
                 p6 = plt.bar(x_ind, prt_values, bottom=[sum(x) for x in zip(ws_values,mob_values, sys_values, fon_values,nas_values)],
                              color='tab:green', align='edge', width=width)
-                p7 = plt.bar(x_ind, unknown_values,
-                             bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values, fon_values, nas_values,prt_values)],
-                             color='tab:brown', align='edge', width=width)
+                # p7 = plt.bar(x_ind, unknown_values,
+                #              bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values, fon_values, nas_values,prt_values)],
+                #              color='tab:brown', align='edge', width=width)
 
                 my_temp = [self._devices[item].label() for item in part_dict.keys()]
                 my_temp = ['\n'.join(wrap(l, 10)) for l in my_temp]
 
                 plt.xticks(x_ind, my_temp, rotation='vertical', fontsize=12)
 
-                plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0],p7[0]), (my_lables))
+                # plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0],p7[0]), (my_lables))
+                plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0]), (my_lables))
 
                 if counter == 0:
                     out_pic = 'ego_analysis/ws_ego_figures/ws_ego_part' + str(in_counter) + ".png"
@@ -883,8 +925,8 @@ class NetworkLAN:
                     out_pic = 'ego_analysis/nas_ego_figures/nas_ego_part' + str(in_counter) + ".png"
                 elif counter == 5:
                     out_pic = 'ego_analysis/prt_ego_figures/prt_ego_part' + str(in_counter) + ".png"
-                if counter == 6:
-                    out_pic = 'ego_analysis/unknown_ego_figures/unknown_ego_part' + str(in_counter) + ".png"
+                # if counter == 6:
+                #     out_pic = 'ego_analysis/unknown_ego_figures/unknown_ego_part' + str(in_counter) + ".png"
 
                 plt.savefig(out_pic)
                 plt.clf()
@@ -895,11 +937,13 @@ class NetworkLAN:
     def aggregate_links(self):
         global slots
         days = len(slots)
-        Dropbox_factor = 1
-        Print_factor = 4
+        Dropbox_factor = 6
+        # Print_factor = 4
         LLMNR_factor = 2
         NBNS_factor = 2
         ARP_factor = 1
+        # factors_sum = Dropbox_factor + Print_factor + LLMNR_factor + NBNS_factor + ARP_factor
+        factors_sum = Dropbox_factor + LLMNR_factor + NBNS_factor + ARP_factor
         nd = nested_dict(3, list)
         for li in self._links:
             llink = self._links[li]
@@ -924,8 +968,8 @@ class NetworkLAN:
 
         for li in self._links:
             llink = self._links[li]
-            weight = (llink.DB_weight() * Dropbox_factor) + \
-                     (llink.print_frequency() * Print_factor)
+            weight = (llink.DB_weight() * Dropbox_factor)
+                     # (llink.print_frequency() * Print_factor)
             if llink.llmnr_frequency() != [] :
                 weight += (np.mean(llink.llmnr_frequency()) * LLMNR_factor)
             if llink.nbns_frequency() != []:
@@ -933,7 +977,7 @@ class NetworkLAN:
             if llink.arp_frequency() !=[]:
                 weight += (np.mean(llink.arp_frequency())  * ARP_factor)
 
-            llink._weight = weight
+            llink._weight = weight / factors_sum
 
     def add_lost_property(self, lost_srv: ServiceMDNS):
         '''
@@ -1959,6 +2003,8 @@ class NetworkLAN:
 
         for li in self._links:
             numenator = 0
+            if len(self._links[li]._namespaces_in_common) == 0:
+                continue
             for ns in self._links[li]._namespaces_in_common:
                 numenator += P[ns]
             dev_from = self._links[li]._device_from
