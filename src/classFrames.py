@@ -745,7 +745,7 @@ class NetworkLAN:
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! EGO ANALYSIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
 
-    def ego_analysis(self):
+    def ego_analysis(self,base_path:str):
 
 
         for _d in self._devices.values():
@@ -754,7 +754,6 @@ class NetworkLAN:
             d.set_category(node_cat)
 
 
-        base_path = '/root/PycharmProjects/printer_social/BroadMulticast/src/ego_analysis/'
         for filename in os.listdir(base_path):
             files = glob.glob(base_path + filename + '/*')
             for f in files:
@@ -855,10 +854,12 @@ class NetworkLAN:
                 total_unknown += 1
                 continue
 
-            newfile.write(str(id) +',' +
-                          ','.join([str(item) for item in calculate_percent(nd[my_threshold][id])]) +
-                          "," + str(ttype) + '\n')
+            if fflag:
+                newfile.write(str(id) +',' +
+                              ','.join([str(item) for item in calculate_percent(nd[my_threshold][id])]) +
+                              "," + str(ttype) + '\n')
             #     unknown_dict[id] = calculate_percent(nd[my_threshold][id])
+            fflag = True
 
         for iid in del_list:
             del nd[my_threshold][iid]

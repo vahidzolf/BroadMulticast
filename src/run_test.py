@@ -8,15 +8,18 @@ from DropBox_utils import DBlspDISC
 
 
 
-if len(sys.argv) < 3:
+if len(sys.argv) < 4:
     print("invalid usage")
-    print("\tUsage: python3 run_test.py <Folder_path> <filename_1> <filename_2> ... ")
+    print("\tUsage: python3 run_test.py <ego_output_path> <Folder_path> <filename_1> <filename_2> ... ")
     print("\tNote that filenames are the name of files resided in Folder_path")
     exit(1)
 
 
-folder:str= sys.argv[1]
-files = sys.argv[2:]
+ego_path = sys.argv[1]
+folder:str= sys.argv[2]
+files = sys.argv[3:]
+# folder :str='/root/captures/'
+
 # files:list=['cs_general_fixed.pcap']
 # files:list=['CNR_Big_capture.pcap']
 # files:list=['medium.pcap']
@@ -131,7 +134,7 @@ net.aggregate_links()
 net.printAll(file)
 # net.print_browser_inf()
 
-net.ego_analysis()
+net.ego_analysis(ego_path)
 #net.all_kind_protocol()
 #net.all_local_alias()
 
