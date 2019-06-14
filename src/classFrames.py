@@ -1835,6 +1835,7 @@ class NetworkLAN:
         output = result.stdout.decode()
         hostname = ''
         for line in output.split('\n'):
+            Mac_addr = ''
             if "Nmap scan report" in line:
                 if hostname != '':
                     if (Mac_addr in self._devices):
