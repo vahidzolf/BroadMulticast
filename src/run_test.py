@@ -19,7 +19,7 @@ folder:str= sys.argv[1]
 files = sys.argv[2:]
 # files:list=['cs_general_fixed.pcap']
 # files:list=['CNR_Big_capture.pcap']
-files:list=['medium.pcap']
+# files:list=['medium.pcap']
 # files:list=['small.pcap']
 
 #folder :str='/root/captures/outdir/'
@@ -48,7 +48,7 @@ for pkt in cap:
 '''
 
 
-net.active_probing()
+# net.active_probing()
 
 # pkt_list = {}
 

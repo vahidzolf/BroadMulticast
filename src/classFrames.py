@@ -802,9 +802,12 @@ class NetworkLAN:
         unknown_dict = {}
 
         def calculate_percent(my_list):
-            temp_list = []
-            for item in my_list:
-                temp_list.append(int(item / sum(my_list) * 100))
+            temp_list = [0] * len(my_list)
+            if sum(my_list) > 0:
+                for item in my_list:
+                    temp_list.append(int(item / sum(my_list) * 100))
+                return temp_list
+
             return temp_list
 
         my_threshold = threshold
@@ -821,10 +824,13 @@ class NetworkLAN:
 
         newfile = open("ego_dataset.csv", 'w')
 
+        del_list = []
+        fflag = True
         for id in nd[my_threshold]:
             total_ds += 1
             if all(v == 0 for v in nd[my_threshold][id]):
-                del nd[my_threshold][id]
+                ffalg = False
+                del_list.append(id)
                 only_unknown += 1
             ttype = self._devices[id].category()
             if ttype == "WORKSTATION":
@@ -854,6 +860,8 @@ class NetworkLAN:
                           "," + str(ttype) + '\n')
             #     unknown_dict[id] = calculate_percent(nd[my_threshold][id])
 
+        for iid in del_list:
+            del nd[my_threshold][iid]
 
         print("")
         print("DataSet Statistics: ")
@@ -1461,9 +1469,11 @@ class NetworkLAN:
         # print (str_time + " ->" + end_time)
 
         str_time = str_time.split(',')[0]
+        str_time = str_time.split('.')[0]
         start_time = datetime.strptime(str_time, '%Y-%m-%d %H:%M:%S')
 
         end_time = end_time.split(',')[0]
+        end_time = end_time.split('.')[0]
         finish_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
 
         duration = finish_time - start_time
@@ -2184,7 +2194,7 @@ class WhoIsWhat:
             for kind, keyword_dict in keyword_on_alias.items():
 
                 for k in keyword_dict:
-                    if (keyw.count(k) > 0):
+                    if (keyw.lower().count(k.lower()) > 0):
                         keyw = k
                         break
 
