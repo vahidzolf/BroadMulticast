@@ -5,6 +5,7 @@ MOBILE = 'MOBILE'
 MEDIA = 'MEDIA'
 PHONE = 'PHONE'
 SYSADMIN = 'SYSADMIN'
+SERVICE = 'SERVICE'
 _ALLprot: dict = {}
 '''
 Dictionary where are collected all known protocols, subdivided by kind of device:\n
@@ -163,12 +164,20 @@ pMOBILE: dict = {
     '_touch-able' : (3, 'Able Touch on Apple TV from Mobile')
 }
 _ALLprot[MOBILE] = pMOBILE
+
 _SPECprot[MOBILE]={
     '_apple-mobdev2',
     '_airdroid',
     '_KeynoteControl',
     '_keynotepair',
     '_touch-able'
+}
+
+_SPECprot[SYSADMIN] = {
+    '_domain._udp',
+    '_ntp._udp',
+    '_imap._tcp',
+    '_pop3._tcp',
 }
 
 pACCESSPOINT: set = {
@@ -367,9 +376,9 @@ keyword_on_alias[SYSADMIN] = {
     'SYSADMIN' : SYSADMIN
 }
 
-keyword_on_alias[PHONE] = {
+keyword_on_alias[MEDIA] = {
     'SIP-T': 'SIP Phone',
-    'PHONE' : PHONE
+    'PHONE' : MEDIA
     # finding the owner of phones are interesting case
     # which can be found through correlation of ARP or DHCP packets with SIP server
 }

@@ -383,6 +383,7 @@ class Device(object):
         :return:
         '''
         checker: WhoIsWhat = WhoIsWhat(self)
+        checker.check()
         if self.isunknown(self._kind):
             self._kind = checker.get_kind()
         if self.isunknown(self._owner):
@@ -748,10 +749,10 @@ class NetworkLAN:
     def ego_analysis(self,base_path:str):
 
 
-        for _d in self._devices.values():
-            d: Device = _d
-            node_cat = d.find_category()
-            d.set_category(node_cat)
+        # for _d in self._devices.values():
+        #     d: Device = _d
+            # node_cat = d.find_category()
+            # d.set_category(node_cat)
 
 
         for filename in os.listdir(base_path):
@@ -773,7 +774,7 @@ class NetworkLAN:
                 add_to_nd(threshold, host_from, 1)
             elif type_to == "SYSADMIN":
                 add_to_nd(threshold, host_from, 2)
-            elif type_to == "PHONE":
+            elif type_to == "MEDIA":
                 add_to_nd(threshold, host_from, 3)
             elif type_to == "NAS":
                 add_to_nd(threshold, host_from, 4)
@@ -795,7 +796,7 @@ class NetworkLAN:
         ws_dict = {}
         mob_dict = {}
         sys_dict = {}
-        fon_dict = {}
+        med_dict = {}
         nas_dict = {}
         prt_dict = {}
         unknown_dict = {}
@@ -815,7 +816,7 @@ class NetworkLAN:
         total_ws = 0
         total_mob = 0
         total_sys = 0
-        total_fon = 0
+        total_med = 0
         total_nas = 0
         total_prt = 0
         total_unknown = 0
@@ -841,9 +842,9 @@ class NetworkLAN:
             elif ttype == "SYSADMIN":
                 total_sys += 1
                 sys_dict[id] = calculate_percent(nd[my_threshold][id])
-            elif ttype == "PHONE":
-                total_fon += 1
-                fon_dict[id] = calculate_percent(nd[my_threshold][id])
+            elif ttype == "MEDIA":
+                total_med += 1
+                med_dict[id] = calculate_percent(nd[my_threshold][id])
             elif ttype == "NAS":
                 total_nas += 1
                 nas_dict[id] = calculate_percent(nd[my_threshold][id])
@@ -867,88 +868,88 @@ class NetworkLAN:
         print("")
         print("DataSet Statistics: ")
         print("\tTotal number of Nodes       : " + str(total_ds))
-        print("\tNumber of known nodes       : " + str(total_ds - total_unknown))
+        print("\tNumber of Known nodes       : " + str(total_ds - total_unknown))
+        print("\tNumber of Unknown Nodes     : " + str(total_unknown) + "\n")
         print("\tNumber of workstation nodes : " + str(total_ws))
-        print("\tNumber of  Mobile nodes     : " + str(total_mob))
-        print("\tNumber of  SysAdmin nodes   : " + str(total_sys))
-        print("\tNumber of Phone Nodes       : " + str(total_fon))
+        print("\tNumber of Mobile nodes     : " + str(total_mob))
+        print("\tNumber of SysAdmin nodes   : " + str(total_sys))
+        print("\tNumber of Media Nodes       : " + str(total_med))
         print("\tNumber of NAS nodes         : " + str(total_nas))
         print("\tNumber of printer nodes     : " + str(total_prt))
-        print("\tNumber of Unknown Nodes     : " + str(total_unknown))
 
-        # width = 0.15
-        # my_lables = 'WORKSTATION', 'MOBILE', 'SYSADMIN', 'PHONE' , 'NAS' , 'PRINTER'
-        # #
-        # x_ind = np.arange(len(ws_dict))
+        width = 0.15
+        my_lables = 'WORKSTATION', 'MOBILE', 'SYSADMIN', 'MEDIA' , 'NAS' , 'PRINTER'
         #
-        # # # Plot
-        # display_threshold = 30  # this means that each plot should have at most 30 xes.
-        #
-        # counter = 0
-        # for type_dict in [ws_dict,mob_dict, sys_dict, fon_dict,nas_dict, unknown_dict]:
-        #     partial_lists = []
-        #     my_bins = int(len(type_dict) / display_threshold)
-        #     type_dict_items = list(type_dict.items())
-        #     while len(type_dict_items) > 0:
-        #         cut_index = min(len(type_dict_items), display_threshold)
-        #         partial_lists.append(dict(type_dict_items[:cut_index]))
-        #         del type_dict_items[:cut_index]
-        #
-        #     in_counter = 1
-        #     for part_dict in partial_lists:
-        #         ws_values = [item[0] for item in part_dict.values()]
-        #         mob_values = [item[1] for item in part_dict.values()]
-        #         sys_values = [item[2] for item in part_dict.values()]
-        #         fon_values = [item[3] for item in part_dict.values()]
-        #         nas_values = [item[4] for item in part_dict.values()]
-        #         prt_values = [item[5] for item in part_dict.values()]
-        #         # unknown_values = [item[6] for item in part_dict.values()]
-        #
-        #         x_ind = range(len(part_dict))
-        #         width = 0.5
-        #         plt.figure(figsize=(25, 10))  # width:20, height:3
-        #         p1 = plt.bar(x_ind, ws_values, color='tab:red', align='edge', width=width)
-        #         p2 = plt.bar(x_ind, mob_values, bottom=ws_values, color='tab:orange', align='edge', width=width)
-        #         p3 = plt.bar(x_ind, sys_values, bottom=[sum(x) for x in zip(ws_values, mob_values)], color='tab:blue',
-        #                      align='edge', width=width)
-        #         p4 = plt.bar(x_ind, fon_values, bottom=[sum(x) for x in zip(ws_values, mob_values,sys_values)], color='tab:pink',
-        #                      align='edge', width=width)
-        #         p5 = plt.bar(x_ind, nas_values, bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values,fon_values)],
-        #                      color='tab:purple', align='edge', width=width)
-        #         p6 = plt.bar(x_ind, prt_values, bottom=[sum(x) for x in zip(ws_values,mob_values, sys_values, fon_values,nas_values)],
-        #                      color='tab:green', align='edge', width=width)
-        #         # p7 = plt.bar(x_ind, unknown_values,
-        #         #              bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values, fon_values, nas_values,prt_values)],
-        #         #              color='tab:brown', align='edge', width=width)
-        #
-        #         my_temp = [self._devices[item].label() for item in part_dict.keys()]
-        #         my_temp = ['\n'.join(wrap(l, 10)) for l in my_temp]
-        #
-        #         plt.xticks(x_ind, my_temp, rotation='vertical', fontsize=12)
-        #
-        #         # plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0],p7[0]), (my_lables))
-        #         plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0]), (my_lables))
-        #
-        #         if counter == 0:
-        #             out_pic = 'ego_analysis/ws_ego_figures/ws_ego_part' + str(in_counter) + ".png"
-        #         elif counter == 1:
-        #             out_pic = 'ego_analysis/mob_ego_figures/mob_ego_part' + str(in_counter) + ".png"
-        #         elif counter == 2:
-        #             out_pic = 'ego_analysis/sys_ego_figures/sys_ego_part' + str(in_counter) + ".png"
-        #         elif counter == 3:
-        #             out_pic = 'ego_analysis/fon_ego_figures/fon_ego_part' + str(in_counter) + ".png"
-        #         elif counter == 4:
-        #             out_pic = 'ego_analysis/nas_ego_figures/nas_ego_part' + str(in_counter) + ".png"
-        #         elif counter == 5:
-        #             out_pic = 'ego_analysis/prt_ego_figures/prt_ego_part' + str(in_counter) + ".png"
-        #         # if counter == 6:
-        #         #     out_pic = 'ego_analysis/unknown_ego_figures/unknown_ego_part' + str(in_counter) + ".png"
-        #
-        #         plt.savefig(out_pic)
-        #         plt.clf()
-        #         in_counter += 1
-        #
-        #     counter += 1
+        x_ind = np.arange(len(ws_dict))
+
+        # # Plot
+        display_threshold = 30  # this means that each plot should have at most 30 xes.
+
+        counter = 0
+        for type_dict in [ws_dict,mob_dict, sys_dict, med_dict,nas_dict, unknown_dict]:
+            partial_lists = []
+            my_bins = int(len(type_dict) / display_threshold)
+            type_dict_items = list(type_dict.items())
+            while len(type_dict_items) > 0:
+                cut_index = min(len(type_dict_items), display_threshold)
+                partial_lists.append(dict(type_dict_items[:cut_index]))
+                del type_dict_items[:cut_index]
+
+            in_counter = 1
+            for part_dict in partial_lists:
+                ws_values = [item[0] for item in part_dict.values()]
+                mob_values = [item[1] for item in part_dict.values()]
+                sys_values = [item[2] for item in part_dict.values()]
+                med_values = [item[3] for item in part_dict.values()]
+                nas_values = [item[4] for item in part_dict.values()]
+                prt_values = [item[5] for item in part_dict.values()]
+                # unknown_values = [item[6] for item in part_dict.values()]
+
+                x_ind = range(len(part_dict))
+                width = 0.5
+                plt.figure(figsize=(25, 10))  # width:20, height:3
+                p1 = plt.bar(x_ind, ws_values, color='tab:red', align='edge', width=width)
+                p2 = plt.bar(x_ind, mob_values, bottom=ws_values, color='tab:orange', align='edge', width=width)
+                p3 = plt.bar(x_ind, sys_values, bottom=[sum(x) for x in zip(ws_values, mob_values)], color='tab:blue',
+                             align='edge', width=width)
+                p4 = plt.bar(x_ind, med_values, bottom=[sum(x) for x in zip(ws_values, mob_values,sys_values)], color='tab:pink',
+                             align='edge', width=width)
+                p5 = plt.bar(x_ind, nas_values, bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values,med_values)],
+                             color='tab:purple', align='edge', width=width)
+                p6 = plt.bar(x_ind, prt_values, bottom=[sum(x) for x in zip(ws_values,mob_values, sys_values, med_values,nas_values)],
+                             color='tab:green', align='edge', width=width)
+                # p7 = plt.bar(x_ind, unknown_values,
+                #              bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values, med_values, nas_values,prt_values)],
+                #              color='tab:brown', align='edge', width=width)
+
+                my_temp = [self._devices[item].label() for item in part_dict.keys()]
+                my_temp = ['\n'.join(wrap(l, 10)) for l in my_temp]
+
+                plt.xticks(x_ind, my_temp, rotation='vertical', fontsize=12)
+
+                # plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0],p7[0]), (my_lables))
+                plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0]), (my_lables))
+
+                if counter == 0:
+                    out_pic = 'ego_analysis/ws_ego_figures/ws_ego_part' + str(in_counter) + ".png"
+                elif counter == 1:
+                    out_pic = 'ego_analysis/mob_ego_figures/mob_ego_part' + str(in_counter) + ".png"
+                elif counter == 2:
+                    out_pic = 'ego_analysis/sys_ego_figures/sys_ego_part' + str(in_counter) + ".png"
+                elif counter == 3:
+                    out_pic = 'ego_analysis/med_ego_figures/med_ego_part' + str(in_counter) + ".png"
+                elif counter == 4:
+                    out_pic = 'ego_analysis/nas_ego_figures/nas_ego_part' + str(in_counter) + ".png"
+                elif counter == 5:
+                    out_pic = 'ego_analysis/prt_ego_figures/prt_ego_part' + str(in_counter) + ".png"
+                # if counter == 6:
+                #     out_pic = 'ego_analysis/unknown_ego_figures/unknown_ego_part' + str(in_counter) + ".png"
+
+                plt.savefig(out_pic)
+                plt.clf()
+                in_counter += 1
+
+            counter += 1
 
     def aggregate_links(self):
         global slots
@@ -975,6 +976,9 @@ class NetworkLAN:
                 for day in range(0,days):
                     freq_sum = sum([nd[proto][src][item][day] for item in nd[proto][src]])
                     for dst in nd[proto][src]:
+                        if freq_sum == 0:
+                            continue
+                            
                         if proto == 'arp':
                             self._links[src + '-' + dst]._arp_frequency_days[day] = round(nd[proto][src][dst][day]/freq_sum,3)
                         elif proto == 'llmnr':
@@ -2090,7 +2094,6 @@ class WhoIsWhat:
 
         self._device: Device = dev
 
-        self.check()
 
 
     def get_label(self):
@@ -2108,34 +2111,41 @@ class WhoIsWhat:
     def check(self):
         '''Main function to analyze and guessing the kind of device'''
         dev: Device = self._device
-        # First, check mDNS recod: 'device-info' => with this record can guess almost surely what is the right kind
+
+        #First check if it has Dropbox we can say its for sure its a workstation
+        if (dev.get_DB_info()!=None):
+            self._bestMatches.add('DropBox Host')
+            self._rel_lev = 9
+            dev.set_category('WORKSTATION')
+
+        # Second, check mDNS recod: 'device-info' => with this record can guess almost surely what is the right kind
         for s in dev.get_services().values():
             s: ServiceMDNS
             self._protos.add(s.protocol())
             if (s.protocol() == '_device-info'):
                 info: str = self.check_dev_info(s)
                 if (info != None):
-                    self._kind = info
-                    # self._rel_lev=9
-
-        # Next, try to extract a kind(and maybe a owner) from aliases '.local'
-        # Note: the reliability of this guessing is 5/9
-        self.check_on_local_alias()
+                    self._bestMatches.add(info)
+                    self._rel_lev=9
+                    dev.set_category('WORKSTATION')
 
         # At the end, if no device-info was found, try to guess basing from mDNS's services detected
         if (self._rel_lev < 9):
             self.check_MDNS_proto()
 
+        # Next, try to extract a kind(and maybe a owner) from aliases '.local'
+        # Note: the reliability of this guessing is 5/9
+        self.check_on_local_alias()
 
+
+
+        self.check_against_dict(dev.db_name(),False)
         self.check_against_dict(dev.dhcp_info(),False)
         self.check_against_dict(dev.browser_hostname(),False)
         self.check_against_dict(dev.browser_comment(),False)
-        self.check_against_dict(dev.db_name(),False)
         self.check_against_dict(dev.browser_win_version(), True)
 
 
-        if (dev.get_DB_info()!=None):
-            self._bestMatches.add('DropBox Host')
 
 
 
@@ -2194,10 +2204,11 @@ class WhoIsWhat:
             keyw: str = alias.replace('.local', '')
             # for evrery kind in dict 'keyword_on_alias', get his dict of keywords and search it in a alias/name device's
             for kind, keyword_dict in keyword_on_alias.items():
-
                 for k in keyword_dict:
                     if (keyw.lower().count(k.lower()) > 0):
                         keyw = k
+                        if self._device.category() == '':
+                            self._device.set_category(kind)
                         break
 
                 # if a keyword was found => cleanup the name/alias, trying to guess the owner of device
@@ -2234,6 +2245,8 @@ class WhoIsWhat:
             for k in keyword_dict:
                 if (keyw.count(k) > 0):
                     keyw = k
+                    if self._device.category() == '':
+                        self._device.set_category(kind)
                     break
 
             # if a keyword was found => cleanup the name/alias, trying to guess the owner of device
@@ -2286,6 +2299,9 @@ class WhoIsWhat:
             for kind, kind_set in zip(self.SPEC, self.SPEC.values()):
 
                 if p in kind_set:
+                    if self._device.category() == '':
+                        self._device.set_category(kind)
+
                     trust = self.ALL[kind][p][0] # reliability of that sprotocol to guess that kind
 
                     if (self._kindPool[kind] < trust): # update only if the kind-reliability of that kind is upper than previous
@@ -2301,6 +2317,8 @@ class WhoIsWhat:
             for p in self._protos:
                 for kind, kind_dict in zip(self.ALL, self.ALL.values()):
                     if p in kind_dict:
+                        if self._device.category() == '':
+                            self._device.set_category(kind)
                         trust = kind_dict[p][0]
                         if (trust > self._kindPool[kind]):
                             self._bestMatches.add(kind)

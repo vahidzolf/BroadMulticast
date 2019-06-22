@@ -23,16 +23,18 @@ files = sys.argv[3:]
 # files:list=['cs_general_fixed.pcap']
 # files:list=['CNR_Big_capture.pcap']
 # files:list=['medium.pcap']
-# files:list=['small.pcap']
+#files:list=['cs_medium.pcap']
+# files:list=['for_debug.pcap']
 
-#folder :str='/root/captures/outdir/'
-#files:list=['CNR_chunk_00000_20190222172518.pcap',
-#            'CNR_chunk_00002_20190225101908.pcap',
-#            'CNR_chunk_00004_20190227235120.pcap',
-#            'CNR_chunk_00001_20190224014742.pcap',
-#            'CNR_chunk_00003_20190226175640.pcap',
-#            'CNR_chunk_00005_20190301070739.pcap',
-#]
+# folder :str='/root/captures/outdir/'
+# files:list=['CNR_chunk_00000_20190222172518.pcap',
+#             'CNR_chunk_00002_20190225101908.pcap',
+#             'CNR_chunk_00004_20190227235120.pcap',
+#             'CNR_chunk_00001_20190224014742.pcap',
+#             'CNR_chunk_00003_20190226175640.pcap',
+#             'CNR_chunk_00005_20190301070739.pcap',
+# ]
+# files :list = ['CNR_chunk_00005_20190301070739.pcap']
 
 
 
@@ -51,9 +53,8 @@ for pkt in cap:
 '''
 
 
-# net.active_probing()
+net.active_probing()
 
-# pkt_list = {}
 
 for file in files:
     print('###################### ',file,' #######################')
