@@ -10,14 +10,15 @@ from DropBox_utils import DBlspDISC
 
 if len(sys.argv) < 4:
     print("invalid usage")
-    print("\tUsage: python3 run_test.py <ego_output_path> <Folder_path> <filename_1> <filename_2> ... ")
+    print("\tUsage: python3 run_test.py <ego_output_path> <printer_file> <Folder_path> <filename_1> <filename_2> ... ")
     print("\tNote that filenames are the name of files resided in Folder_path")
     exit(1)
 
 
 ego_path = sys.argv[1]
-folder:str= sys.argv[2]
-files = sys.argv[3:]
+printer_file = sys.argv[2]
+folder:str= sys.argv[3]
+files = sys.argv[4:]
 # folder :str='/root/captures/'
 
 # files:list=['cs_general_fixed.pcap']
@@ -25,6 +26,8 @@ files = sys.argv[3:]
 # files:list=['medium.pcap']
 #files:list=['cs_medium.pcap']
 # files:list=['for_debug.pcap']
+# files:list=['for_debug_cs.pcap']
+# printer_file = 'CS_printer_query_new'
 
 # folder :str='/root/captures/outdir/'
 # files:list=['CNR_chunk_00000_20190222172518.pcap',
@@ -53,7 +56,7 @@ for pkt in cap:
 '''
 
 
-net.active_probing()
+# net.active_probing()
 
 
 for file in files:
@@ -126,8 +129,8 @@ net.extract_DB_links()
 
 # Online network probing
 
-# net.extract_snmp_info()
-
+net.extract_offline_snmp_ip(printer_file)
+# net.extract_offline_snmp_mac()
 #calculating link weights
 net.aggregate_links()
 

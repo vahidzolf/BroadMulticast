@@ -877,79 +877,79 @@ class NetworkLAN:
         print("\tNumber of NAS nodes         : " + str(total_nas))
         print("\tNumber of printer nodes     : " + str(total_prt))
 
-        width = 0.15
-        my_lables = 'WORKSTATION', 'MOBILE', 'SYSADMIN', 'MEDIA' , 'NAS' , 'PRINTER'
+        # width = 0.15
+        # my_lables = 'WORKSTATION', 'MOBILE', 'SYSADMIN', 'MEDIA' , 'NAS' , 'PRINTER'
+        # #
+        # x_ind = np.arange(len(ws_dict))
         #
-        x_ind = np.arange(len(ws_dict))
-
-        # # Plot
-        display_threshold = 30  # this means that each plot should have at most 30 xes.
-
-        counter = 0
-        for type_dict in [ws_dict,mob_dict, sys_dict, med_dict,nas_dict, unknown_dict]:
-            partial_lists = []
-            my_bins = int(len(type_dict) / display_threshold)
-            type_dict_items = list(type_dict.items())
-            while len(type_dict_items) > 0:
-                cut_index = min(len(type_dict_items), display_threshold)
-                partial_lists.append(dict(type_dict_items[:cut_index]))
-                del type_dict_items[:cut_index]
-
-            in_counter = 1
-            for part_dict in partial_lists:
-                ws_values = [item[0] for item in part_dict.values()]
-                mob_values = [item[1] for item in part_dict.values()]
-                sys_values = [item[2] for item in part_dict.values()]
-                med_values = [item[3] for item in part_dict.values()]
-                nas_values = [item[4] for item in part_dict.values()]
-                prt_values = [item[5] for item in part_dict.values()]
-                # unknown_values = [item[6] for item in part_dict.values()]
-
-                x_ind = range(len(part_dict))
-                width = 0.5
-                plt.figure(figsize=(25, 10))  # width:20, height:3
-                p1 = plt.bar(x_ind, ws_values, color='tab:red', align='edge', width=width)
-                p2 = plt.bar(x_ind, mob_values, bottom=ws_values, color='tab:orange', align='edge', width=width)
-                p3 = plt.bar(x_ind, sys_values, bottom=[sum(x) for x in zip(ws_values, mob_values)], color='tab:blue',
-                             align='edge', width=width)
-                p4 = plt.bar(x_ind, med_values, bottom=[sum(x) for x in zip(ws_values, mob_values,sys_values)], color='tab:pink',
-                             align='edge', width=width)
-                p5 = plt.bar(x_ind, nas_values, bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values,med_values)],
-                             color='tab:purple', align='edge', width=width)
-                p6 = plt.bar(x_ind, prt_values, bottom=[sum(x) for x in zip(ws_values,mob_values, sys_values, med_values,nas_values)],
-                             color='tab:green', align='edge', width=width)
-                # p7 = plt.bar(x_ind, unknown_values,
-                #              bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values, med_values, nas_values,prt_values)],
-                #              color='tab:brown', align='edge', width=width)
-
-                my_temp = [self._devices[item].label() for item in part_dict.keys()]
-                my_temp = ['\n'.join(wrap(l, 10)) for l in my_temp]
-
-                plt.xticks(x_ind, my_temp, rotation='vertical', fontsize=12)
-
-                # plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0],p7[0]), (my_lables))
-                plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0]), (my_lables))
-
-                if counter == 0:
-                    out_pic = 'ego_analysis/ws_ego_figures/ws_ego_part' + str(in_counter) + ".png"
-                elif counter == 1:
-                    out_pic = 'ego_analysis/mob_ego_figures/mob_ego_part' + str(in_counter) + ".png"
-                elif counter == 2:
-                    out_pic = 'ego_analysis/sys_ego_figures/sys_ego_part' + str(in_counter) + ".png"
-                elif counter == 3:
-                    out_pic = 'ego_analysis/med_ego_figures/med_ego_part' + str(in_counter) + ".png"
-                elif counter == 4:
-                    out_pic = 'ego_analysis/nas_ego_figures/nas_ego_part' + str(in_counter) + ".png"
-                elif counter == 5:
-                    out_pic = 'ego_analysis/prt_ego_figures/prt_ego_part' + str(in_counter) + ".png"
-                # if counter == 6:
-                #     out_pic = 'ego_analysis/unknown_ego_figures/unknown_ego_part' + str(in_counter) + ".png"
-
-                plt.savefig(out_pic)
-                plt.clf()
-                in_counter += 1
-
-            counter += 1
+        # # # Plot
+        # display_threshold = 30  # this means that each plot should have at most 30 xes.
+        #
+        # counter = 0
+        # for type_dict in [ws_dict,mob_dict, sys_dict, med_dict,nas_dict, unknown_dict]:
+        #     partial_lists = []
+        #     my_bins = int(len(type_dict) / display_threshold)
+        #     type_dict_items = list(type_dict.items())
+        #     while len(type_dict_items) > 0:
+        #         cut_index = min(len(type_dict_items), display_threshold)
+        #         partial_lists.append(dict(type_dict_items[:cut_index]))
+        #         del type_dict_items[:cut_index]
+        #
+        #     in_counter = 1
+        #     for part_dict in partial_lists:
+        #         ws_values = [item[0] for item in part_dict.values()]
+        #         mob_values = [item[1] for item in part_dict.values()]
+        #         sys_values = [item[2] for item in part_dict.values()]
+        #         med_values = [item[3] for item in part_dict.values()]
+        #         nas_values = [item[4] for item in part_dict.values()]
+        #         prt_values = [item[5] for item in part_dict.values()]
+        #         # unknown_values = [item[6] for item in part_dict.values()]
+        #
+        #         x_ind = range(len(part_dict))
+        #         width = 0.5
+        #         plt.figure(figsize=(25, 10))  # width:20, height:3
+        #         p1 = plt.bar(x_ind, ws_values, color='tab:red', align='edge', width=width)
+        #         p2 = plt.bar(x_ind, mob_values, bottom=ws_values, color='tab:orange', align='edge', width=width)
+        #         p3 = plt.bar(x_ind, sys_values, bottom=[sum(x) for x in zip(ws_values, mob_values)], color='tab:blue',
+        #                      align='edge', width=width)
+        #         p4 = plt.bar(x_ind, med_values, bottom=[sum(x) for x in zip(ws_values, mob_values,sys_values)], color='tab:pink',
+        #                      align='edge', width=width)
+        #         p5 = plt.bar(x_ind, nas_values, bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values,med_values)],
+        #                      color='tab:purple', align='edge', width=width)
+        #         p6 = plt.bar(x_ind, prt_values, bottom=[sum(x) for x in zip(ws_values,mob_values, sys_values, med_values,nas_values)],
+        #                      color='tab:green', align='edge', width=width)
+        #         # p7 = plt.bar(x_ind, unknown_values,
+        #         #              bottom=[sum(x) for x in zip(ws_values, mob_values, sys_values, med_values, nas_values,prt_values)],
+        #         #              color='tab:brown', align='edge', width=width)
+        #
+        #         my_temp = [self._devices[item].label() for item in part_dict.keys()]
+        #         my_temp = ['\n'.join(wrap(l, 10)) for l in my_temp]
+        #
+        #         plt.xticks(x_ind, my_temp, rotation='vertical', fontsize=12)
+        #
+        #         # plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0],p7[0]), (my_lables))
+        #         plt.legend((p1[0], p2[0], p3[0], p4[0],p5[0],p6[0]), (my_lables))
+        #
+        #         if counter == 0:
+        #             out_pic = 'ego_analysis/ws_ego_figures/ws_ego_part' + str(in_counter) + ".png"
+        #         elif counter == 1:
+        #             out_pic = 'ego_analysis/mob_ego_figures/mob_ego_part' + str(in_counter) + ".png"
+        #         elif counter == 2:
+        #             out_pic = 'ego_analysis/sys_ego_figures/sys_ego_part' + str(in_counter) + ".png"
+        #         elif counter == 3:
+        #             out_pic = 'ego_analysis/med_ego_figures/med_ego_part' + str(in_counter) + ".png"
+        #         elif counter == 4:
+        #             out_pic = 'ego_analysis/nas_ego_figures/nas_ego_part' + str(in_counter) + ".png"
+        #         elif counter == 5:
+        #             out_pic = 'ego_analysis/prt_ego_figures/prt_ego_part' + str(in_counter) + ".png"
+        #         # if counter == 6:
+        #         #     out_pic = 'ego_analysis/unknown_ego_figures/unknown_ego_part' + str(in_counter) + ".png"
+        #
+        #         plt.savefig(out_pic)
+        #         plt.clf()
+        #         in_counter += 1
+        #
+        #     counter += 1
 
     def aggregate_links(self):
         global slots
@@ -1961,23 +1961,86 @@ class NetworkLAN:
 
         return printers
 
-    def extract_snmp_info(self):
-        printers = self.find_printers()
-        for printer in printers :
-            output = snmp_utils.walk(printer.last_IPv4_know(), 'iso.3.6.1.2.1.6.13.1.2')
-            relations = snmp_utils.extract_relations(output,False)
-            for item in relations:
-                src_node = self.find_equivalent_node_ip(item[0])
-                dst_node = self.find_equivalent_node_ip(item[1])
-                if dst_node != None and src_node != None:
-                    llink: Link = None
-                    link_id = src_node.id() + '-' + dst_node.id()
-                    if (link_id in self._links):
-                        llink = self._links[link_id]
+
+    def extract_offline_snmp_mac(self):
+        verbose = False
+        allline = open('CS_printer_query_new', 'r')
+        printer_ip = ''
+        relations = {}
+        hosts = set()
+        for line in allline.readlines():
+            line = line[:-1]
+            if line == "":
+                continue
+            if line.startswith('SNMP'):
+                line = line.replace("SNMPv2-SMI::mib-2.6.13.1.2.", '')
+                temp = line.split()[0].split('.')
+                srcIP = '.'.join(temp[0:4])
+                srcPort = temp[4]
+                dstIP = '.'.join(temp[5:9])
+                dstport = temp[9]
+                if not verbose:
+                    if dstIP in ["0.0.0.0", "127.0.0.1", printer_ip]:
+                        continue
                     else:
-                        llink = Link(src_node.id(), dst_node.id())
-                        self._links[link_id] = llink
-                    llink.inc_print_frequency()
+                        try:
+                            relations[printer_ip].add(dstIP)
+                        except KeyError:
+                            relations[printer_ip] = {dstIP}
+                print(srcIP + ':' + srcPort + '->' + dstIP + ':' + dstport)
+            elif len(line.split('.')) == 4:
+                printer_ip = line
+
+        print(relations)
+
+    def extract_offline_snmp_ip(self,infile: str):
+        verbose = False
+        allline = open(infile,'r')
+        printer_ip = ''
+        relations = {}
+        hosts = set()
+        for line in allline.readlines():
+            line = line[:-1]
+            if line == "":
+                continue
+            if line.startswith('SNMP'):
+                line = line.replace("SNMPv2-SMI::mib-2.6.13.1.2.", '')
+                temp = line.split()[0].split('.')
+                srcIP = '.'.join(temp[0:4])
+                srcPort = temp[4]
+                dstIP = '.'.join(temp[5:9])
+                dstport = temp[9]
+                if not verbose:
+                    if dstIP in ["0.0.0.0", "127.0.0.1",printer_ip]:
+                        continue
+                    else:
+                        try:
+                            relations[printer_ip].add(dstIP)
+                        except KeyError:
+                            relations[printer_ip] = {dstIP}
+                print(srcIP + ':' + srcPort + '->' + dstIP + ':' + dstport)
+            elif len(line.split('.')) == 4:
+                printer_ip = line
+
+        for printer_ip in relations:
+            for i in relations[printer_ip]:
+                for j in relations[printer_ip]:
+                    src_node = self.find_equivalent_node_ip(i)
+                    if src_node is not None:
+                        if i!=j:
+                            dst_node = self.find_equivalent_node_ip(j)
+                            if dst_node is not None:
+                                if dst_node != None and src_node != None:
+                                    llink: Link = None
+                                    link_id = src_node.id() + '-' + dst_node.id()
+                                    if (link_id in self._links):
+                                        llink = self._links[link_id]
+                                    else:
+                                        llink = Link(src_node.id(), dst_node.id())
+                                        self._links[link_id] = llink
+                                    llink.inc_print_frequency()
+        print(relations)
+
 
 
     def extract_DB_links(self):

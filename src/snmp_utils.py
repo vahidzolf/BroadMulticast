@@ -54,7 +54,7 @@ def extract_relations(lines,verbose):
     for line in lines.split('\n') :
         if line == "":
             continue
-        line=line.replace("SNMPv2-SMI::mib-2.6.13.1.2.",'')
+        line=line.replace("SNMPv2-SMI::mib-2.6.13.1.1.",'')
         temp = line.split()[0].split('.')
         srcIP = '.'.join(temp[0:4])
         srcPort = temp[4]

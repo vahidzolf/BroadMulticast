@@ -58,6 +58,8 @@ pWORKSTATION: dict = {
     #'_readynas' : (),
     '_servermgr' : (9, 'Server Admin (Apple)'),
     '_xserveraid' : (9, 'Xserver RAID (Apple)'),
+    '_googlecast._tcp.local'  : (9,'Google Cast (Chromecast)'),
+    '_googlezone._tcp.local'  : (9,'Google Zone (Chromecast)')
     #'_ftp' : (3, 'Workstation Share Files')
 }
 _ALLprot['WORKSTATION'] = pWORKSTATION
