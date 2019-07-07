@@ -43,20 +43,9 @@ files = sys.argv[4:]
 
 net=NetworkLAN()
 
-'''
-cap:FileCapture=pyshark.FileCapture(input_file=folder+files[6], use_json=True)
-
-for pkt in cap:
-    d:DBlspDISC=DBlspDISC(pkt)
-    print('host_int:', d._host_int, end=',  ')
-    print('version:', d._version, end=',  ')
-    print('displayname:', d._displayname, end=',  ')
-    print('port:', d._port)
-    print(d._namespaces)
-'''
 
 
-# net.active_probing()
+net.active_probing()
 
 
 for file in files:

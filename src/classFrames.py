@@ -663,8 +663,8 @@ class NetworkLAN:
                 flag = True
                 print('Resolved Name : ' + d.db_name())
                 allnames.append(d.db_name())
-            if d.label() != '':
-                print("label : " + str(d.label()))
+            if d.category() != '':
+                print("Category : " + str(d.category()))
 
 
             if not flag:
