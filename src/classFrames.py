@@ -802,7 +802,8 @@ class NetworkLAN:
         unknown_dict = {}
 
         def calculate_percent(my_list):
-            temp_list = [0] * len(my_list)
+            # temp_list = [0] * len(my_list)
+            temp_list = []
             if sum(my_list) > 0:
                 for item in my_list:
                     temp_list.append(int(item / sum(my_list) * 100))
@@ -829,7 +830,7 @@ class NetworkLAN:
         for id in nd[my_threshold]:
             total_ds += 1
             if all(v == 0 for v in nd[my_threshold][id]):
-                ffalg = False
+                fflag = False
                 del_list.append(id)
                 only_unknown += 1
             ttype = self._devices[id].category()
@@ -1837,24 +1838,34 @@ class NetworkLAN:
         command = 'nmap -sP {}/{}'.format(local_ip,cidr)
         result = subprocess.run(command.split(),stdout=subprocess.PIPE)
         output = result.stdout.decode()
+        dev_data = nested_dict(2,str)
+        Mac_addr = ''
         hostname = ''
+        ip_addr = ''
+        counter = 0
         for line in output.split('\n'):
-            Mac_addr = ''
             if "Nmap scan report" in line:
-                if hostname != '':
-                    if (Mac_addr in self._devices):
-                        self._nmap_pkt_update +=1
-                        dev = self._devices[Mac_addr]
-                    else:
-                        self._nmap_pkt_new += 1
-                        dev = Device(Mac_addr)
-                        self._devices[Mac_addr] = dev
-                    dev.update_db_name(hostname)
-                    dev.update_IPv4(ip_addr)
                 ip_addr = line.split()[-1].replace('(', '').replace(')', '')
                 hostname = line.split()[-2]
+                dev_data.setdefault(counter,{}).setdefault('ip',ip_addr)
+                dev_data.setdefault(counter, {}).setdefault('hostname', hostname)
             elif "MAC Address" in line:
                 Mac_addr = line.split()[2]
+                dev_data.setdefault(counter , {}).setdefault('MAC',Mac_addr)
+                counter += 1
+
+        for count in dev_data:
+            if 'MAC' in dev_data[count]:
+                Mac_addr = dev_data[count]['MAC']
+                if ( Mac_addr in self._devices):
+                    self._nmap_pkt_update += 1
+                    dev = self._devices[Mac_addr]
+                else:
+                    self._nmap_pkt_new += 1
+                    dev = Device(Mac_addr)
+                    self._devices[Mac_addr] = dev
+                dev.update_db_name(dev_data[count]['hostname'])
+                dev.update_IPv4(dev_data[count]['ip'])
 
 
         # now the arp cache is filled !! we can search through it to convert mac to IP address
