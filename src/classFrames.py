@@ -471,7 +471,7 @@ class Link(object):
     _nbns_frequency_days : list
     _llmnr_frequency_days : list
     _arp_frequency_days : list
-    _print_frequency : int
+    _print_frequency : float
     _weight : int
 
     def __init__(self, dev_frm : Device , dev_to : Device):
@@ -547,8 +547,8 @@ class Link(object):
         except TypeError as e:
             pass
 
-    def inc_print_frequency(self):
-        self._print_frequency += 1
+    def set__print_frequency(self,new_freq : float):
+        self._print_frequency = new_freq
 
 
 class NetworkLAN:
@@ -692,8 +692,8 @@ class NetworkLAN:
                   "  [DropBox : " + str(self._links[li].DB_weight()) +
                      " ,LLMNR : "  + str(self._links[li].llmnr_frequency()) +
                      " ,NBNS : "   + str(self._links[li].nbns_frequency()) +
-                     " ,ARP : "    + str(self._links[li].arp_frequency()) )
-                     # " ,Printer : "+ str(self._links[li].print_frequency()) + "]" )
+                     " ,ARP : "    + str(self._links[li].arp_frequency()) +
+                     " ,Printer : "+ str(self._links[li].print_frequency()) + "]" )
             dev_from = self._devices[self._links[li]._device_from].label()
             dev_to = self._devices[self._links[li]._device_to].label()
             weight = str(self._links[li].weight())
@@ -956,12 +956,12 @@ class NetworkLAN:
         global slots
         days = len(slots)
         Dropbox_factor = 6
-        # Print_factor = 4
+        Print_factor = 4
         LLMNR_factor = 2
         NBNS_factor = 2
         ARP_factor = 1
         # factors_sum = Dropbox_factor + Print_factor + LLMNR_factor + NBNS_factor + ARP_factor
-        factors_sum = Dropbox_factor + LLMNR_factor + NBNS_factor + ARP_factor
+        factors_sum = Dropbox_factor + LLMNR_factor + NBNS_factor + ARP_factor + Print_factor
         nd = nested_dict(3, list)
         for li in self._links:
             llink = self._links[li]
@@ -997,7 +997,8 @@ class NetworkLAN:
                 weight += (np.mean(llink.nbns_frequency()) * NBNS_factor)
             if llink.arp_frequency() !=[]:
                 weight += (np.mean(llink.arp_frequency())  * ARP_factor)
-
+            if llink.print_frequency() != 0:
+                weight += llink.print_frequency()
             llink._weight = weight / factors_sum
 
     def add_lost_property(self, lost_srv: ServiceMDNS):
@@ -1561,6 +1562,13 @@ class NetworkLAN:
 
         return None
 
+    def find_equivalent_node_mac(self, mac : str):
+        for _d in self._devices.values():
+            d: Device = _d
+            if d.id() == str(mac) :
+                return d
+
+            return None
 
     def find_equivalent_node_hostname(self,hostname : str):
         hostname = hostname.lower()
@@ -1973,36 +1981,55 @@ class NetworkLAN:
         return printers
 
 
-    def extract_offline_snmp_mac(self):
+
+    def extract_offline_snmp_mac(self, infile : str):
         verbose = False
-        allline = open('CS_printer_query_new', 'r')
+        allline = open(infile, 'r')
         printer_ip = ''
         relations = {}
         hosts = set()
+
+        def split_by_n(seq, n):
+            '''A generator to divide a sequence into chunks of n units.'''
+            while seq:
+                yield seq[:n]
+                seq = seq[n:]
+
         for line in allline.readlines():
             line = line[:-1]
             if line == "":
                 continue
             if line.startswith('SNMP'):
-                line = line.replace("SNMPv2-SMI::mib-2.6.13.1.2.", '')
-                temp = line.split()[0].split('.')
-                srcIP = '.'.join(temp[0:4])
-                srcPort = temp[4]
-                dstIP = '.'.join(temp[5:9])
-                dstport = temp[9]
+                line = line.replace("SNMPv2-SMI::mib-2.3.1.1.2.2.", '')
+                temp = line.split('=')[1].replace(' ','')
+                mac = ':'.join(split_by_n(temp.replace('0x',''),2))
                 if not verbose:
-                    if dstIP in ["0.0.0.0", "127.0.0.1", printer_ip]:
-                        continue
-                    else:
+                    if mac != 'ff:ff:ff:ff:ff:ff':
                         try:
-                            relations[printer_ip].add(dstIP)
+                            relations[printer_ip].add(mac)
                         except KeyError:
-                            relations[printer_ip] = {dstIP}
-                print(srcIP + ':' + srcPort + '->' + dstIP + ':' + dstport)
+                            relations[printer_ip] = {mac}
+                # print(srcIP + ':' + srcPort + '->' + dstIP + ':' + dstport)
             elif len(line.split('.')) == 4:
                 printer_ip = line
 
-        print(relations)
+
+        for printer_ip in relations:
+            for i in relations[printer_ip]:
+                src_node = self.find_equivalent_node_mac(i)
+                if src_node is not None:
+                    for j in relations[printer_ip]:
+                            if i!=j:
+                                dst_node = self.find_equivalent_node_mac(j)
+                                if dst_node is not None:
+                                    llink: Link = None
+                                    link_id = src_node.id() + '-' + dst_node.id()
+                                    if (link_id in self._links):
+                                        llink = self._links[link_id]
+                                    else:
+                                        llink = Link(src_node.id(), dst_node.id())
+                                        self._links[link_id] = llink
+                                    llink.set__print_frequency(1/len(relations[printer_ip]))
 
     def extract_offline_snmp_ip(self,infile: str):
         verbose = False
@@ -2029,7 +2056,7 @@ class NetworkLAN:
                             relations[printer_ip].add(dstIP)
                         except KeyError:
                             relations[printer_ip] = {dstIP}
-                print(srcIP + ':' + srcPort + '->' + dstIP + ':' + dstport)
+                # print(srcIP + ':' + srcPort + '->' + dstIP + ':' + dstport)
             elif len(line.split('.')) == 4:
                 printer_ip = line
 
@@ -2041,16 +2068,15 @@ class NetworkLAN:
                         if i!=j:
                             dst_node = self.find_equivalent_node_ip(j)
                             if dst_node is not None:
-                                if dst_node != None and src_node != None:
-                                    llink: Link = None
-                                    link_id = src_node.id() + '-' + dst_node.id()
-                                    if (link_id in self._links):
-                                        llink = self._links[link_id]
-                                    else:
-                                        llink = Link(src_node.id(), dst_node.id())
-                                        self._links[link_id] = llink
-                                    llink.inc_print_frequency()
-        print(relations)
+                                llink: Link = None
+                                link_id = src_node.id() + '-' + dst_node.id()
+                                if (link_id in self._links):
+                                    llink = self._links[link_id]
+                                else:
+                                    llink = Link(src_node.id(), dst_node.id())
+                                    self._links[link_id] = llink
+                                llink.set__print_frequency(1 / len(relations[printer_ip]))
+        # print(relations)
 
 
 
