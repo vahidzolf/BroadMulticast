@@ -191,7 +191,7 @@ class Device(object):
     _category : str
 
     def __init__(self, dev_id: str, ip: str = ''):
-        self._id = str(dev_id)
+        self._id = str(dev_id).lower()
         self._lastIPv4 = ''
         self._lastIPv6 = ''
         self._services = dict()
@@ -476,9 +476,9 @@ class Link(object):
 
     def __init__(self, dev_frm : Device , dev_to : Device):
         global slots
-        self.id = dev_frm + '-' + dev_to
-        self._device_from = dev_frm
-        self._device_to = dev_to
+        self.id = str(dev_frm).lower() + '-' + str(dev_to).lower()
+        self._device_from = str(dev_frm).lower()
+        self._device_to = str(dev_to).lower()
         self._namespaces_in_common = list()
         self._DB_weight = 0
         self._nbns_frequency_days = [0] * len(slots)
@@ -708,7 +708,7 @@ class NetworkLAN:
         print("\tNumber of Dropbox nodes         : " + str(self._dropbox_pkt))
         print("\tNumber of Browser nodes         : " + str(self._browser_pkt))
         print("\tNumber of DHCP nodes            : " + str(self._dhcp_pkt))
-        print("\tNumber of nodes updated by nmap : " + str(self._nmap_pkt_update))
+        print("\tNumber of nodes updated by nmapm,  : " + str(self._nmap_pkt_update))
         print("\tNumber of new nodes by nmap     : " + str(self._nmap_pkt_new))
         print("\tNumber of nodes updated by cache: " + str(self._arp_cache_update_pkt))
         print("\tNumber of new nodes by arp cache: " + str(self._arp_cache_new_pkt))
@@ -825,6 +825,8 @@ class NetworkLAN:
 
         newfile = open("ego_dataset.csv", 'w')
 
+        unknown_nodes = open('unknown_nodes.txt','w')
+
         del_list = []
         fflag = True
         for id in nd[my_threshold]:
@@ -853,6 +855,7 @@ class NetworkLAN:
                 total_prt += 1
                 prt_dict[id] = calculate_percent(nd[my_threshold][id])
             else:
+                unknown_nodes.write(id + '\n')
                 total_unknown += 1
                 continue
 
@@ -981,11 +984,11 @@ class NetworkLAN:
                             continue
                             
                         if proto == 'arp':
-                            self._links[src + '-' + dst]._arp_frequency_days[day] = round(nd[proto][src][dst][day]/freq_sum,3)
+                            self._links[src + '-' + dst]._arp_frequency_days[day] = round(nd[proto][src][dst][day]/freq_sum,5)
                         elif proto == 'llmnr':
-                            self._links[src + '-' + dst]._llmnr_frequency_days[day] = round(nd[proto][src][dst][day] / freq_sum, 3)
+                            self._links[src + '-' + dst]._llmnr_frequency_days[day] = round(nd[proto][src][dst][day] / freq_sum, 5)
                         elif proto == 'nbns':
-                            self._links[src + '-' + dst]._nbns_frequency_days[day] = round(nd[proto][src][dst][day]/freq_sum,3)
+                            self._links[src + '-' + dst]._nbns_frequency_days[day] = round(nd[proto][src][dst][day]/freq_sum,5)
 
         for li in self._links:
             llink = self._links[li]
@@ -999,7 +1002,8 @@ class NetworkLAN:
                 weight += (np.mean(llink.arp_frequency())  * ARP_factor)
             if llink.print_frequency() != 0:
                 weight += llink.print_frequency()
-            llink._weight = weight / factors_sum
+            llink._weight = round(weight / factors_sum,5)
+            # llink._weight = weight / factors_sum
 
     def add_lost_property(self, lost_srv: ServiceMDNS):
         '''
@@ -1109,7 +1113,7 @@ class NetworkLAN:
                 'mdns' in packet and
                 # 'dns_count_answers' in packet.mdns and
                 packet.mdns.dns_count_answers.hex_value > 0):
-            name = packet.eth.src.show[:]
+            name = str(packet.eth.src.show[:]).lower()
         else:
             return
 
@@ -1308,7 +1312,7 @@ class NetworkLAN:
 
         # save the device only if have useful infos
         if (len(dev.aliases()) > 0 or len(dev.get_services()) > 0):
-            self._devices[name] = dev
+            self._devices[name.lower()] = dev
 
     def extract_DB_infos_old(self,packet: Packet):
         '''
@@ -1318,7 +1322,7 @@ class NetworkLAN:
                 '''
         name: str
         if ('eth' in packet and 'db-lsp-disc' in packet):
-            name = packet.eth.src[:]
+            name = str(packet.eth.src[:]).lower()
         else:
             return
 
@@ -1347,7 +1351,7 @@ class NetworkLAN:
         '''
         name: str
         if ('eth' in packet and 'db-lsp-disc' in packet):
-            name = packet.eth.src[:]
+            name = str(packet.eth.src[:]).lower()
         else:
             return
 
@@ -1384,7 +1388,7 @@ class NetworkLAN:
                     if (link_id in self._links):
                         llink = self._links[link_id]
                     else:
-                        llink = Link(dev.id(), item[0].id())
+                        llink = Link(dev.id().lower(), item[0].id().lower())
                         self._links[link_id] = llink
                     llink.set_DB_weight(len(common))
                     llink.set_common_ns(common)
@@ -1411,7 +1415,7 @@ class NetworkLAN:
         '''
         name: str
         if ('eth' in packet and 'browser' in packet):
-            name = packet.eth.src[:]
+            name = str(packet.eth.src[:]).lower()
         else:
             return
 
@@ -1516,7 +1520,7 @@ class NetworkLAN:
         '''
         name: str
         if ('eth' in packet and 'nbns' in packet):
-            name = packet.eth.src[:]
+            name = str(packet.eth.src[:]).lower()
         else:
             return
 
@@ -1544,7 +1548,7 @@ class NetworkLAN:
                 if (link_id in self._links):
                     llink = self._links[link_id]
                 else:
-                    llink = Link(dev.id(), dest_id.id())
+                    llink = Link(dev.id().lower(), dest_id.id().lower())
                     self._links[link_id] = llink
                 pkt_time = str(packet.frame_info.time_epoch)
                 day_index = self.calculate_slot(pkt_time)
@@ -1565,7 +1569,7 @@ class NetworkLAN:
     def find_equivalent_node_mac(self, mac : str):
         for _d in self._devices.values():
             d: Device = _d
-            if d.id() == str(mac) :
+            if d.id() == str(mac).lower() :
                 return d
 
             return None
@@ -1601,7 +1605,7 @@ class NetworkLAN:
         '''
         name: str
         if ('eth' in packet and 'llmnr' in packet):
-            name = packet.eth.src[:]
+            name = str(packet.eth.src[:]).lower()
         else:
             return
 
@@ -1633,7 +1637,7 @@ class NetworkLAN:
                 if (link_id in self._links):
                     llink = self._links[link_id]
                 else:
-                    llink = Link(dev.id(), dest_id.id())
+                    llink = Link(dev.id().lower(), dest_id.id().lower())
                     self._links[link_id] = llink
                 pkt_time = str(packet.frame_info.time_epoch)
                 day_index = self.calculate_slot(pkt_time)
@@ -1642,7 +1646,7 @@ class NetworkLAN:
     def extract_ARP_Links(self, packet : Packet):
         name: str
         if ('eth' in packet and 'arp' in packet ):
-            name = packet.eth.src[:]
+            name = str(packet.eth.src[:]).lower()
         else:
             return
 
@@ -1690,7 +1694,7 @@ class NetworkLAN:
         global domain_name
         name: str
         if ('eth' in packet and ('bootp' in packet or 'dhcpv6' in packet)):
-            name = packet.eth.src[:]
+            name = str(packet.eth.src[:]).lower()
         else:
             return
 
@@ -1735,7 +1739,7 @@ class NetworkLAN:
                 #DHCP offer
                 # we can keep the information about the requester from destination of these packets.
                 dev: Device = None
-                name = packet.eth.dst
+                name = str(packet.eth.dst).lower()
                 if (name in self._devices):
                     dev = self._devices[name]
                 else:
@@ -1748,7 +1752,7 @@ class NetworkLAN:
             elif int(my_data.option_dhcp) == 5:
                 #DHCP ACK
                 dev: Device = None
-                name = packet.eth.dst
+                name = str(packet.eth.dst).lower()
                 if (name in self._devices):
                     dev = self._devices[name]
                 else:
@@ -1858,7 +1862,7 @@ class NetworkLAN:
                 dev_data.setdefault(counter,{}).setdefault('ip',ip_addr)
                 dev_data.setdefault(counter, {}).setdefault('hostname', hostname)
             elif "MAC Address" in line:
-                Mac_addr = line.split()[2]
+                Mac_addr = line.split()[2].lower()
                 dev_data.setdefault(counter , {}).setdefault('MAC',Mac_addr)
                 counter += 1
 
@@ -1896,11 +1900,11 @@ class NetworkLAN:
             line_ip = line.split()[1]
             if (line_mac in self._devices):
                 self._arp_cache_update_pkt += 1
-                dev = self._devices[line_mac]
+                dev = self._devices[line_mac.lower()]
             else:
                 self._arp_cache_new_pkt += 1
                 dev = Device(line_mac)
-                self._devices[line_mac] = dev
+                self._devices[line_mac.lower()] = dev
             if hostname != '?':
                 dev.update_db_name(hostname)
             dev.update_IPv4(line_ip)
@@ -2016,20 +2020,24 @@ class NetworkLAN:
 
         for printer_ip in relations:
             for i in relations[printer_ip]:
-                src_node = self.find_equivalent_node_mac(i)
-                if src_node is not None:
-                    for j in relations[printer_ip]:
-                            if i!=j:
-                                dst_node = self.find_equivalent_node_mac(j)
-                                if dst_node is not None:
-                                    llink: Link = None
-                                    link_id = src_node.id() + '-' + dst_node.id()
-                                    if (link_id in self._links):
-                                        llink = self._links[link_id]
-                                    else:
-                                        llink = Link(src_node.id(), dst_node.id())
-                                        self._links[link_id] = llink
-                                    llink.set__print_frequency(1/len(relations[printer_ip]))
+                try:
+                    src_node = self._devices[i]
+                except KeyError :
+                    continue
+                for j in relations[printer_ip]:
+                        if i!=j:
+                            try:
+                                dst_node = self._devices[j]
+                            except KeyError:
+                                continue
+                            llink: Link = None
+                            link_id = i + '-' + j
+                            if (link_id in self._links):
+                                llink = self._links[link_id]
+                            else:
+                                llink = Link(i, j)
+                                self._links[link_id] = llink
+                            llink.set__print_frequency(1/len(relations[printer_ip]))
 
     def extract_offline_snmp_ip(self,infile: str):
         verbose = False
@@ -2073,7 +2081,7 @@ class NetworkLAN:
                                 if (link_id in self._links):
                                     llink = self._links[link_id]
                                 else:
-                                    llink = Link(src_node.id(), dst_node.id())
+                                    llink = Link(src_node.id().lower(), dst_node.id().lower())
                                     self._links[link_id] = llink
                                 llink.set__print_frequency(1 / len(relations[printer_ip]))
         # print(relations)
@@ -2099,7 +2107,7 @@ class NetworkLAN:
                 if ( link_id in self._links):
                     llink = self._links[link_id]
                 else:
-                    llink = Link(dev_MAC, dev_linked)
+                    llink = Link(dev_MAC.lower(), dev_linked.lower())
                     self._links[link_id] = llink
 
                 llink.set_common_ns(dbNet[dev_MAC][dev_linked])
